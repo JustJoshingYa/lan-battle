@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/HMl22mQbC7aGLaoqIqu1 
+//link: https://sprig.hackclub.com/share/hgrqRyZDkGrDkzVUiMcv 
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1496,9 +1496,20 @@ onInput("w", () => {
   }else if (tprogression > 2 || gprogression > 1) {
   getFirst(playerSprites[mode]).y -= 1;
   } else if (gprogression == 1){
-    
+     if (boss1dead == true){
     getFirst(choose).remove()
     addSprite(1, 0, choose)
+  }else{
+    currentBoss = "Boss 1"
+    setMap(levels[1])
+    addSprite(5, 2, enemy1)
+    addSprite(4, 3, shield1)
+    addSprite(4, 4, shield2)
+    gprogression = 2 
+    moveShieldRandomly(shield1)
+    moveShieldRandomly(shield2)
+    moveEnemyRandomly(enemy1)
+    }
   }
 });
 
@@ -1523,6 +1534,7 @@ onInput("a", () => {
     addSprite(4, 4, shield2)
     gprogression = 2 
     moveShieldRandomly(shield1)
+      moveShieldRandomly(shield2)
     moveEnemyRandomly(enemy1)
     }
   }
@@ -1538,9 +1550,20 @@ onInput("s", () => {
   else if (tprogression > 2 || gprogression > 1) {
   getFirst(playerSprites[mode]).y += 1;
   }else if (gprogression == 1){
-    
+    if (boss4dead == true){
     getFirst(choose).remove()
     addSprite(1, 0, choose)
+  }else{
+    currentBoss = "Boss 4"
+    setMap(levels[1])
+    addSprite(5, 2, shield3)
+    addSprite(4, 3, shield1)
+    addSprite(4, 4, shield2)
+    gprogression = 2 
+    moveShieldRandomly(shield1)
+    moveShieldRandomly(shield2)
+    moveEnemyRandomly(shield3)
+    }
   }
 });
 
@@ -1554,9 +1577,20 @@ onInput("d", () => {
   }else if (tprogression > 2 || gprogression > 1) {
     getFirst(playerSprites[mode]).x += 1;
   }else if (gprogression == 1){
-    
+    if (boss3dead == true){
     getFirst(choose).remove()
     addSprite(1, 0, choose)
+  }else{
+    currentBoss = "Boss 3"
+    setMap(levels[1])
+    addSprite(5, 2, enemy1)
+    addSprite(4, 3, enemy2)
+    addSprite(4, 4, shield1)
+    gprogression = 2 
+    moveShieldRandomly(shield1)
+    moveEnemyRandomly(enemy1)
+    moveEnemyRandomly(enemy2)
+    }
   }
 });
 
@@ -1936,6 +1970,10 @@ function stopChipTimer() {
   clearInterval(chipTimer);
 
 }
+
+
+
+
 
 
 
