@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/S9smY2AwTr7HXW4hUy7N
+//link: https://sprig.hackclub.com/share/nmvWOqxlyI2O9sCbk4pf
 
 /*
 First time? Check out the tutorial game:
@@ -296,7 +296,25 @@ var bossSpeed = 500
 let progression = 0;
 let elapsedTime;
 let busterPw = 1
+let wave = 0
 setLegend(
+  [ bUp, bitmap`
+0000000000000000
+0LL2LLLLLLLLLLL0
+0L212LLLL00LLLL0
+0LL2LLL003300LL0
+0LLLLL00037700L0
+0LLLL033001730L0
+0LLL0333660330L0
+0LL03336660000L0
+0LL0336663330LL0
+0L00336633300LL0
+0L0333333300L2L0
+00033333300L2120
+0003333000LLL2L0
+03300000LLLLLLL0
+033300LLLLLLLLL0
+0000000000000000`],
   [ boss2, bitmap`
 ....444000......
 ...44004.00.....
@@ -1293,8 +1311,17 @@ if (what == "busterUp"){
   chargeCooldownTime = 1000
 } else if (what == "speed"){
   enemySpeed = 2000
+}else if (what == "autoFire"){
+//player starts shooting lv 2 bullets automatically at a reduced cooldown rate, all the player needs to do is just move to avoid attacks
+  
+}else if (what == "shotgun"){
+  //does small damage to all enemies 
+}else if (what == "health30"){
+phit = phit + 30
+}else if (what == "health50"){
+phit = phit + 50
+}else if (what == "health100"){
 }
-
 }
-
+  
 
