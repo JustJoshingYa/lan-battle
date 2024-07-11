@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/i0XlI6RfJPDjYz9L6UBZ
+//link: https://sprig.hackclub.com/share/WSezNLMV9rMvSaQ41Nuo
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -46,7 +46,7 @@ const pfloor = "r"
 const spike = "i"
 const enemy1 = "e"
 const enemy2 = "~"
-const enemy3 = "'"
+const shield3 = "'"
 const title1 = "1"
 const title2 = "2"
 const title3 = "3"
@@ -373,6 +373,11 @@ let boss3X;
 let boss3Y;
 let boss4X;
 let boss4Y;
+var chipStartTime;
+var chipTimer;
+var elapsedChipTime;
+var shotInterval1
+var shotInterval2
 setLegend(
   [ choose, bitmap`
 6666666666666666
@@ -1139,6 +1144,23 @@ CCCCCCC.........
 C101101.........
 .101.0..........
 ..0..0..........`],
+  [ shield3, bitmap`
+..CCCC..........
+.CC11...........
+CC111...........
+C111............
+C11.............
+C11.............
+C11.............
+C11.............
+C11.............
+C111............
+C1111...........
+CC111...........
+CCCCCCC.........
+C10..01.........
+.101101.........
+..0..0..........` ],
   [ enemy1, bitmap`
 ................
 ................
@@ -1157,23 +1179,6 @@ C101101.........
 .......000..00..
 ......0000..000.` ],
   [ enemy2, bitmap`
-................
-................
-.........0000...
-........044400..
-........004000..
-.........0000...
-.......0..00....
-......000.000...
-......3300110...
-......000.000...
-.......0..00....
-..........00....
-.........000....
-.........0.00...
-.......000..00..
-......0000..000.` ],
-  [ enemy3, bitmap`
 ................
 ................
 .........0000...
@@ -1498,19 +1503,40 @@ tutorial();
       playerY = getFirst(playerSprites[mode]).y
       if (currentBoss == "Boss 1"){
         if (gprogression > 1){
-          
+      enemy1X = getFirst(enemy1).x
+      enemy1Y = getFirst(enemy1).y
+      shield1X = getFirst(shield1).x
+      shield1X = getFirst(shield1).y 
+      shield2X = getFirst(shield2).x
+      shield2X = getFirst(shield2).y 
       }
       }else if (currentBoss == "Boss 2"){
         if (gprogression > 1){
-          
+      enemy1X = getFirst(enemy1).x
+      enemy1Y = getFirst(enemy1).y
+      shield1X = getFirst(shield1).x
+      shield1X = getFirst(shield1).y 
+      shield2X = getFirst(shield2).x
+      shield2X = getFirst(shield2).y 
       }
       }else if (currentBoss == "Boss 3"){
         if (gprogression > 1){
-          
+      enemy1X = getFirst(enemy1).x
+      enemy1Y = getFirst(enemy1).y
+      shield1X = getFirst(shield1).x
+      shield1X = getFirst(shield1).y 
+      enemy2X = getFirst(enemy2).x
+      enemy2X = getFirst(enemy2).y 
+     
       }
       }else if (currentBoss == "Boss 4"){
         if (gprogression > 1){
-          
+          shield1X = getFirst(shield1).x
+      shield1X = getFirst(shield1).y 
+      shield2X = getFirst(shield2).x
+      shield2X = getFirst(shield2).y 
+      shield3X = getFirst(shield3).x
+      shield3X = getFirst(shield3).y 
       }
       }
     
@@ -1896,8 +1922,7 @@ function getRandomDirectionY() {
 function getRandomDirection() {
   return directions[Math.floor(Math.random() * directions.length)];
 }
-let shotInterval1
-let shotInterval2
+
 
 
 // Function to move the enemy on efloor
@@ -2142,9 +2167,7 @@ function battleStart(){
   
 }
 
-let chipStartTime;
-let chipTimer;
-let elapsedChipTime;
+
   
 function chipTimeStart() {
   chipStartTime = performance.now();
@@ -2152,7 +2175,7 @@ function chipTimeStart() {
   chipTimer = setInterval(() => {
     elapsedChipTime = performance.now() - chipStartTime;
     addText(`c time: ${elapsedChipTime}`, { x:0, y:0, color: color `D` });
-    if (elapsedChipTime > 30000){
+    if (elapsedChipTime > 10000){
       canChip = true;
     }
   }, 1000);
@@ -2175,6 +2198,7 @@ function stopChipTimer() {
   }
   clearInterval(movementIntervale)
   clearInterval(movementIntervals)
+  elapsedChipTime = 0
 }
 
 
