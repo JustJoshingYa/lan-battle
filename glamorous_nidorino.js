@@ -1,4 +1,5 @@
-//link: https://sprig.hackclub.com/share/XgolimXGjOVXPTa3HKPV
+//link: https://sprig.hackclub.com/share/RAs2YVdvyVBZG1rOyHvf
+
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -33,7 +34,7 @@ const title9 = "9"
 const black = "0"
 const target1 = "-"
 const shield2 = "_"
-const target3 = "="
+const arrow1 = "="
 const kaboom = "?"
 const fire = "!"
 const cooldown = "@"
@@ -339,23 +340,23 @@ CCCCCCC.........
 C101101.........
 .101.0..........
 ..0..0..........` ],
-  [ target3, bitmap`
-................
-...222222.......
-..223333.2......
-.2232222322.....
-.2322332232.....
-.2323223232.....
-.232322323200...
-.2323223232.0...
-.2323223232.0...
-.2322332232.0...
-.22322223220....
-..2233332200....
-...222222L.00...
-......11111.0...
-.....111111L0...
-....LLLLLLLL0...` ],
+  [ arrow1, bitmap`
+....00..........
+...0220.........
+...02220........
+...022220.......
+...0222220......
+...02222220.....
+...022222220....
+...0222222220...
+...02222222220..
+...02222220000..
+...02202220.....
+...020.02220....
+...00..02220....
+........02220...
+........02220...
+.........000....` ],
   [ charge, bitmap`
 ................
 ....55..........
@@ -852,7 +853,8 @@ progression = progression + 1
     addText("fire a charged shot", { x:1, y:14, color: color `2` })
 }else if (progression == 5){
   clearText();
-  addSprite(4,2, shield)
+    t1hit = 4
+  addSprite(4,2, shield1)
     updateBattleText();
     moveShieldRandomly();
     addText("Enemy: Shield", { x:3, y:12, color: color `2` })
@@ -945,14 +947,15 @@ onInput("j", () => {
   
 
 });
-
+let frontTile;
+let enemyX;
 function hitDetect(){
   let k = 0
 for (let i = 0; i < 6; i++) {
-    let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-     enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1);
+    frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
+     enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1 || sprite.type === shield1);
     
-    let enemyX = frontTile.find(sprite => sprite.type === enemy || sprite.type === target1)?.x;
+    enemyX = frontTile.find(sprite => sprite.type === enemy || sprite.type === target1 || sprite.type === shield1)?.x;
 
     // Check if enemy is directly in front on the same x-axis
     if (enemyInFront && enemyX === getFirst(playerSprites[mode]).x + i) {
@@ -998,7 +1001,8 @@ function ouch(j){
         ehit = ehit - 4
         }else if (chargeState == 4){
         ehit = ehit - 5
-        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1)){
+    }
+        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
         s1hit = s1hit - 0
         }else if (chargeState == 1){
@@ -1008,10 +1012,10 @@ function ouch(j){
         }else if (chargeState == 3){
         s1hit = s1hit - 2.5
         }else if (chargeState == 4){
-        s1hit = s1hit - 3
-   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2)){
+        s1hit = s1hit - 3}
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
-        shield2 = shield2 - 0
+        s2hit = s2hit - 0
         }else if (chargeState == 1){
         s2hit = s2hit - 0
         }else if (chargeState == 2){
@@ -1023,6 +1027,7 @@ function ouch(j){
    }
 }
 }
+
 function death(){
 if (t1hit <= 0){
    getFirst(target1).remove()
@@ -1033,6 +1038,8 @@ if (t1hit <= 0){
     progression = progression + 1
     tutorial();
         }
+}else if (t1hit <= 0){
+   getFirst(shield1).remove()
 }
 }
 
@@ -1054,15 +1061,15 @@ function moveShieldRandomly() {
   let ey = 0;
 
   const movementInterval = setInterval(() => {
-    let currentTile = getTile(getFirst(shield).x, getFirst(shield).y + ey);
+    let currentTile = getTile(getFirst(shield1).x, getFirst(shield1).y + ey);
     const nextDirection = getRandomDirectionY();
 
     switch (nextDirection) {
       case "up":
         ey = -1
-        currentTile = getTile(getFirst(shield).x, getFirst(shield).y + ey);
+        currentTile = getTile(getFirst(shield1).x, getFirst(shield1).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(shield).y -= 1;
+          getFirst(shield1).y -= 1;
           ey = 0;
         } else {
           ey = 0;
@@ -1070,9 +1077,9 @@ function moveShieldRandomly() {
         break;
       case "down":
         ey = 1
-        currentTile = getTile(getFirst(shield).x, getFirst(shield).y + ey);
+        currentTile = getTile(getFirst(shield1).x, getFirst(shield1).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(shield).y += 1;
+          getFirst(shield1).y += 1;
           ey = 0;
         } else {
           ey = 0;
@@ -1228,13 +1235,14 @@ addSprite(x, y, playerSprites[newmode]);
   mode = newmode;
 }
 function updateBattleText(){
-
+if (progression <= 4 && progression > 1){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
+}else if (progression == 5){
+  addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
+  addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
 }
-
-
-
+}
 
 
 
