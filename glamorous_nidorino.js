@@ -1,4 +1,4 @@
-// link: https://sprig.hackclub.com/share/8AyQezIpjhCTeSnvOU5n
+// link: https://sprig.hackclub.com/share/R6zDsIgMiw5SUWRvViUc
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -648,7 +648,7 @@ addText("Hold down J", { x:1, y:5, color: color `2` })
 addText( "to charge weapon", { x:1, y:6, color: color `2` })
 addText("to deal damage", { x:1, y:7, color: color `2` })
 setSolids([ pfloor, black, enemy])
-setSolids([ efloor, playerSprites[mode], black ])
+setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4],])
 setPushables({
   [ playerSprites[mode] ]: []
 })
@@ -659,7 +659,8 @@ onInput("i",() => {
 //replacePlayer(playerSprites[mode], 0);  
 level++
 setMap(levels[level])
-clearText();
+clearText(); 
+updateBattleText();
 addSprite(playerX, playerY, playerSprites[mode])
 addSprite(5, 3, enemy) // Spawn the enemy on efloor
 });
@@ -813,9 +814,9 @@ onInput("j", () => {
       startChargingCooldown(); // Start the cooldown after releasing 'j'
       
       for (i = 0; i < 6; i++){
-      const player = getFirst(playerSprites[mode]);
-      const frontTile = getTile(player.x, player.y + i);
-      const enemyInFront = frontTile.some(sprite => sprite.type === enemy);
+
+      let frontTile = getTile(playerSprites[mode].x + i, playerSprites[mode].y) ;
+      let enemyInFront = frontTile.some(sprite => sprite.type === enemy);
       
       if (enemyInFront) {
         playTune(shot)
@@ -837,7 +838,8 @@ function replacePlayer(oldSprite, newmode) {
 addSprite(x, y, playerSprites[newmode]);
   mode = newmode;
 }
-function updateBattleText (){
+function updateBattleText(){
+  clearText();
 addText(`${ehit}`, { x:1, y:2, color: color `2` })
   
 }
