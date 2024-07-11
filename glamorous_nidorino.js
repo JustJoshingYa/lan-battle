@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/n2XCYchzuvxgLWm3YEnp
+//link: https://sprig.hackclub.com/share/77SRACJU1AnTRPxefO2B
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -100,7 +100,7 @@ let boss3hit = 40
 let boss4hit = 40
 
 const boss4Mouth = [boss49, boss410]
-const playerSprites = [normal, charge, beam, chargebeam, superchargebeam, fire, cooldown]
+const playerSprites = [normal, charge, beam, chargebeam, superchargebeam, fire, cooldown, normalg, normalf, normale, normalw]
 let mode = 0;
 let level = 0;
 const levels = [map`
@@ -1429,7 +1429,7 @@ setMap(levels[level])
 addText("LAN Battle", { x:5, y:6, color: color `2` })
 addText("press i to proceed", { x:1, y:9, color: color `2` })
 setSolids([ pfloor, black, enemy1])
-setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4]])
+setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4],playerSprites[5],playerSprites[6],playerSprites[7],playerSprites[8],playerSprites[9],playerSprites[10]])
 setPushables({
   [ playerSprites[mode] ]: []
 })
@@ -1527,6 +1527,8 @@ onInput("w", () => {
   }else{
     currentBoss = "Boss 1"
     setMap(levels[1])
+    updateBattleText()
+    addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, enemy1)
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
@@ -1554,6 +1556,8 @@ onInput("a", () => {
     }else{
     currentBoss = "Boss 2"
     setMap(levels[1])
+      updateBattleText()
+    addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, enemy1)
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
@@ -1580,7 +1584,9 @@ onInput("s", () => {
     addSprite(1, 0, choose)
   }else{
     currentBoss = "Boss 4"
+     updateBattleText()
     setMap(levels[1])
+    addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, shield3)
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
@@ -1608,6 +1614,8 @@ onInput("d", () => {
   }else{
     currentBoss = "Boss 3"
     setMap(levels[1])
+    updateBattleText()
+    addSprite(2, 3, playerSprites[mode]) 
     addSprite(5, 2, enemy1)
     addSprite(4, 3, enemy2)
     addSprite(4, 4, shield1)
@@ -1627,7 +1635,7 @@ onInput("j", () => {
     }else {
     playTune(overheat)
   }
-    } else if (tprogression > 3){
+    } else if (tprogression > 3 || gprogression > 1){
    if (canCharge) {
     if (!charging) {
       startChargingAnimation();
@@ -1650,9 +1658,9 @@ function hitDetect(){
   let k = 0
 for (let i = 0; i < 6; i++) {
     frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-     enemyInFront = frontTile.some(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1);
+     enemyInFront = frontTile.some(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2);
     
-    enemyX = frontTile.find(sprite => sprite.type === enemy1 || sprite.type === target1 || sprite.type === shield1)?.x;
+    enemyX = frontTile.find(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2)?.x;
 
     // Check if enemy is directly in front on the same x-axis
     if (enemyInFront && enemyX === getFirst(playerSprites[mode]).x + i) {
@@ -1687,17 +1695,29 @@ function ouch(j){
         }else if (chargeState == 4){
         t1hit = t1hit - (5 * busterPw)
         }
-   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy && enemyX === getFirst(playerSprites[mode]).x + j)){
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy1 && enemyX === getFirst(playerSprites[mode]).x + j)){
     if (chargeState == 0){
-        ehit = ehit - (1 * busterPw)
+        e1hit = e1hit - (1 * busterPw)
         }else if (chargeState == 1){
-        ehit = ehit - (2 * busterPw)
+        e1hit = e1hit - (2 * busterPw)
         }else if (chargeState == 2){
-        ehit = ehit - (3 * busterPw)
+        e1hit = e1hit - (3 * busterPw)
         }else if (chargeState == 3){
-        ehit = ehit - (4 * busterPw)
+        e1hit = e1hit - (4 * busterPw)
         }else if (chargeState == 4){
-        ehit = ehit - (5 * busterPw)
+        e1hit = e1hit - (5 * busterPw)
+    }
+     }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy2 && enemyX === getFirst(playerSprites[mode]).x + j)){
+    if (chargeState == 0){
+        e2hit = e2hit - (1 * busterPw)
+        }else if (chargeState == 1){
+        e2hit = e2hit - (2 * busterPw)
+        }else if (chargeState == 2){
+        e2hit = e2hit - (3 * busterPw)
+        }else if (chargeState == 3){
+        e2hit = e2hit - (4 * busterPw)
+        }else if (chargeState == 4){
+        e2hit = e2hit - (5 * busterPw)
     }
         }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
@@ -1905,7 +1925,7 @@ function startChargingAnimation() {
   chargeStartTime = performance.now();
  charging = true;
   
-    if (tprogression >= 4){
+    if (tprogression >= 4 || gprogression > 1){
     chargeAnimationTimer = setInterval(() => {
     addText(`c time: ${elapsedTime}`, { x:0, y:0, color: color `D` })  
      elapsedTime = performance.now() - chargeStartTime;
@@ -1941,7 +1961,7 @@ function stopChargingAnimation() {
   playTune(shot);
 }
 function stopChargingTimer() {
-  if (tprogression >= 4){
+  if (tprogression >= 4 || gprogression > 1){
   clearInterval(chargeAnimationTimer);
 }
 }
@@ -1976,11 +1996,11 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
 } else if (gprogression > 1){
   addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
   
-  if (currentBoss == "Boss 1"){
+  if (currentBoss == "Boss 2"){
      if (gprogression == 2){
-       addText(`E1: ${e1hit}`, { x:12, y:2, color: color `3` })
+       addText(`E1: ${e1hit}`, { x:12, y:3, color: color `3` })
        addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
-       addText(`S2: ${s2hit}`, { x:12, y:2, color: color `3` })
+       addText(`S2: ${s2hit}`, { x:12, y:1, color: color `3` })
      }
   }
 }
@@ -2038,8 +2058,5 @@ function stopChipTimer() {
   clearInterval(chipTimer);
 
 }
-
-
-
 
 
