@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/CDwejZfoYIvqxILRg6Rh 
+//link: https://sprig.hackclub.com/share/9bS3wXXUuSvAXGYWILts
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -355,6 +355,24 @@ let jcheck = false;
 let shotland = 0
 let movementIntervals; 
 let movementIntervale; 
+let enemy1X;
+let enemy1Y;
+let enemy2X;
+let enemy2Y;
+let shield1X;
+let shield1Y;
+let shield2X;
+let shield2Y;
+let shield3X;
+let shield3Y;
+let boss1X;
+let boss1Y;
+let boss2X;
+let boss2Y;
+let boss3X;
+let boss3Y;
+let boss4X;
+let boss4Y;
 setLegend(
   [ choose, bitmap`
 6666666666666666
@@ -1462,6 +1480,7 @@ if (tprogression == 0){
 
         
 onInput("i",() => {
+  if (gprogression == 0){
   if (tprogression == 0){
 level++
 setMap(levels[level])
@@ -1472,7 +1491,13 @@ tutorial();
   clearText();
     tutorial();
 }
-//addSprite(5, 3, enemy) // Spawn the enemy on efloor
+  }else if(gprogression > 1){
+    if (canChip == true){
+    stopChipTimer()
+      setMap(levels[0])
+      
+    }
+  }
 });
 
 function tutorial(){
@@ -1565,6 +1590,7 @@ onInput("a", () => {
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
     gprogression = 2 
+    chipTimeStart()
     moveShieldRandomly(shield1)
       moveShieldRandomly(shield2)
     moveEnemyRandomly(enemy1)
@@ -1778,18 +1804,18 @@ if (t1hit <= 0){
 
 if (gprogression > 1) {
     if (s1hit <= 0){
-  clearInterval(movementIntervals)
+    clearInterval(movementIntervals)
    getFirst(shield1).remove()
 } else if (e1hit <= 0){
    clearInterval(movementIntervale)
-    getFirst(enemy1).remove()  
+      getFirst(enemy1).remove()  
 } else if (s2hit <= 0){
   clearInterval(movementIntervals) 
     getFirst(shield2).remove()
       
 } else if (e2hit <= 0){
-  clearInterval(movementIntervale)
    getFirst(enemy2).remove() 
+  clearInterval(movementIntervale)
 }
   }
 }
@@ -1913,7 +1939,7 @@ function moveEnemyRandomly(spriteE) {
         while (ball1Exists() != true){
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
         let movement = getFirst(spriteE).x
-        let shotInterval = setInterval(() => {
+       shotInterval2= setInterval(() => {
           playerhit()
           if (shotland == 0){
           movement = movement - 1
@@ -1921,13 +1947,13 @@ function moveEnemyRandomly(spriteE) {
          getFirst(ball1).x -= 1; 
           } else {
           getFirst(ball1).remove()
-            clearInterval(shotInterval)
+            clearInterval(shotInterval1)
           }
           }else if (shotland == 1){
             getFirst(ball1).remove()
             phit = phit - 5
             updateBattleText();
-             clearInterval(shotInterval)
+             clearInterval(shotInterval2)
             shotland = 0
           }
            }, 500);
@@ -1936,7 +1962,7 @@ function moveEnemyRandomly(spriteE) {
           while (ball2Exists() != true){
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
         let movement = getFirst(spriteE).x
-        const shotInterval = setInterval(() => {
+         shotInterval2 = setInterval(() => {
           playerhit()
           if (shotland == 0){
           movement = movement - 1
@@ -1944,14 +1970,14 @@ function moveEnemyRandomly(spriteE) {
          getFirst(ball2).x -= 1; 
           } else {
           getFirst(ball2).remove()
-            clearInterval(shotInterval)
+            clearInterval(shotInterval2)
           }
           }else if (shotland == 2){
             getFirst(ball2).remove()
             phit = phit - 5
             updateBattleText();
             shotland = 0
-          clearInterval(shotInterval)
+          clearInterval(shotInterval2)
           }
            }, 500);
         }
@@ -1970,7 +1996,6 @@ function startChargingAnimation() {
   
     if (tprogression >= 4 || gprogression > 1){
     chargeAnimationTimer = setInterval(() => {
-    addText(`c time: ${elapsedTime}`, { x:0, y:0, color: color `D` })  
      elapsedTime = performance.now() - chargeStartTime;
     if(elapsedTime < 2900){
       chargeState = 0
@@ -2045,9 +2070,28 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
        addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
        addText(`S2: ${s2hit}`, { x:12, y:1, color: color `3` })
      }
-  }
+  }else if (currentBoss == "Boss 3"){
+     if (gprogression == 2){
+       addText(`E1: ${e1hit}`, { x:12, y:3, color: color `3` })
+       addText(`S1: ${e2hit}`, { x:12, y:2, color: color `3` })
+       addText(`S2: ${s1hit}`, { x:12, y:1, color: color `3` })
+     }
+    }else if (currentBoss == "Boss 4"){
+     if (gprogression == 2){
+       addText(`S1: ${s1hit}`, { x:12, y:3, color: color `3` })
+       addText(`S2: ${s2hit}`, { x:12, y:2, color: color `3` })
+       addText(`S3: ${s3hit}`, { x:12, y:1, color: color `3` })
+     }
+    }else if (currentBoss == "Boss 1"){
+     if (gprogression == 2){
+       addText(`E1: ${e1hit}`, { x:12, y:3, color: color `3` })
+       addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
+       addText(`S2: ${s2hit}`, { x:12, y:1, color: color `3` })
+     }
 }
 }
+}
+
 
 function upgrade(what){
 if (what == "busterUp"){
@@ -2082,8 +2126,8 @@ function chipTimeStart() {
   chipStartTime = performance.now();
 
   chipTimer = setInterval(() => {
+    elapsedChipTime = performance.now() - chipStartTime;
     addText(`c time: ${elapsedChipTime}`, { x:0, y:0, color: color `D` });
-    elapsedChipTime = performance.now() - chargeStartTime;
     if (elapsedChipTime > 30000){
       canChip = true;
     }
