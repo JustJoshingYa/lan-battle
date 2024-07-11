@@ -1,5 +1,4 @@
-//link: https://sprig.hackclub.com/share/nbjvLZqnP2YHT0c1Wd2A
-
+//link: https://sprig.hackclub.com/share/XgolimXGjOVXPTa3HKPV
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -959,7 +958,7 @@ for (let i = 0; i < 6; i++) {
     if (enemyInFront && enemyX === getFirst(playerSprites[mode]).x + i) {
       
       k = k + 1
-      ouch(); // Call hit function only if enemy is on the same x-axis
+      ouch(i); // Call hit function only if enemy is on the same x-axis
       updateBattleText();
       death();
      
@@ -974,9 +973,9 @@ for (let i = 0; i < 6; i++) {
 }
   
 
-function ouch(){
+function ouch(j){
   playTune(hit)
-
+   if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyX === getFirst(playerSprites[mode]).x + j)){
         if (chargeState == 0){
         t1hit = t1hit - 1
         }else if (chargeState == 1){
@@ -988,6 +987,41 @@ function ouch(){
         }else if (chargeState == 4){
         t1hit = t1hit - 5
         }
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy && enemyX === getFirst(playerSprites[mode]).x + j)){
+    if (chargeState == 0){
+        ehit = ehit - 1
+        }else if (chargeState == 1){
+        ehit = ehit - 2
+        }else if (chargeState == 2){
+        ehit = ehit - 3
+        }else if (chargeState == 3){
+        ehit = ehit - 4
+        }else if (chargeState == 4){
+        ehit = ehit - 5
+        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1)){
+      if (chargeState == 0){
+        s1hit = s1hit - 0
+        }else if (chargeState == 1){
+        s1hit = s1hit - 0
+        }else if (chargeState == 2){
+        s1hit = s1hit - 2
+        }else if (chargeState == 3){
+        s1hit = s1hit - 2.5
+        }else if (chargeState == 4){
+        s1hit = s1hit - 3
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2)){
+      if (chargeState == 0){
+        shield2 = shield2 - 0
+        }else if (chargeState == 1){
+        s2hit = s2hit - 0
+        }else if (chargeState == 2){
+        s2hit = s2hit - 2
+        }else if (chargeState == 3){
+        s2hit = s2hit - 2.5
+        }else if (chargeState == 4){
+        s2hit = s2hit - 3
+   }
+}
 }
 function death(){
 if (t1hit <= 0){
@@ -1198,6 +1232,7 @@ function updateBattleText(){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
 }
+
 
 
 
