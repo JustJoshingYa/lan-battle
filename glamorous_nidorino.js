@@ -1,4 +1,4 @@
-// link: https://sprig.hackclub.com/share/R6zDsIgMiw5SUWRvViUc
+//link: https://sprig.hackclub.com/share/3N97pwmmUWiHu06HwgFs
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -32,6 +32,7 @@ const title8 = "8"
 const title9 = "9"
 const black = "0"
 const target = "-"
+
 
 let charging = false;
 let chargeStartTime;
@@ -245,6 +246,10 @@ let isButtonPressed = false;
 let buttonStartTime = 0;
 var Timer= 0;
 let chargeTimer; 
+let playback;
+const directions = ["up", "down", "left", "right", "shoot"];
+let canCharge = true; // Flag to track if the player can start charging again
+const chargeCooldownTime = 2000; // Cooldown time in milliseconds
 
 setLegend(
   [ target, bitmap`
@@ -641,29 +646,45 @@ LLLLLLLLLLLLLLLL`],
   
   )
 setMap(levels[level])
-addText("LAN Battle", { x:1, y:2, color: color `2` })
-addText("Move with WASD", { x:2, y:3, color: color `2` })
-addText("Shoot with J", { x:3, y:4, color: color `2` })
-addText("Hold down J", { x:1, y:5, color: color `2` })
-addText( "to charge weapon", { x:1, y:6, color: color `2` })
-addText("to deal damage", { x:1, y:7, color: color `2` })
+addText("LAN Battle", { x:5, y:6, color: color `2` })
+//addText("Move with WASD", { x:2, y:3, color: color `2` })
+//addText("Shoot with J", { x:3, y:4, color: color `2` })
+//addText("Hold down J", { x:1, y:5, color: color `2` })
+//addText( "to charge weapon", { x:1, y:6, color: color `2` })
+addText("press i to proceed", { x:1, y:9, color: color `2` })
 setSolids([ pfloor, black, enemy])
 setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4],])
 setPushables({
   [ playerSprites[mode] ]: []
 })
 onInput("i",() => {
-//stopTimer(); z
-//time == 0;
-//chargeAmount = 0;
-//replacePlayer(playerSprites[mode], 0);  
 level++
 setMap(levels[level])
 clearText(); 
 updateBattleText();
-addSprite(playerX, playerY, playerSprites[mode])
-addSprite(5, 3, enemy) // Spawn the enemy on efloor
+tutorial();
+
+//addSprite(5, 3, enemy) // Spawn the enemy on efloor
 });
+function tutorial(){
+  let progression = 0;
+addSprite(2, 3, playerSprites[mode])
+addText("Hey!", { x:9, y:12, color: color `2` })
+setTimeout(100);
+addText("Welcome to arena!", { x:2, y:13, color: color `2` })
+//addText("Move with WASD", { x:2, y:3, color: color `2` })
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 onInput("w", () => {
@@ -686,9 +707,6 @@ onInput("d", () => {
   
 });
 
-let playback;
-  
-const directions = ["up", "down", "left", "right"];
 
 // Function to generate a random direction
 function getRandomDirection() {
@@ -752,12 +770,16 @@ function moveEnemyRandomly() {
           ex = 0;
         }
         break;
+        case "shoot":
+        addSprite(getFirst(enemy).x, getFirst(enemy).y - 1, ball);
+        ballmove
+        break;
     }
   
          }, 1000); // Adjust the interval for movement speed
 }
 
-moveEnemyRandomly(); // Call the function to start moving the enemy
+ //moveEnemyRandomly(); // Call the function to start moving the enemy
 function startChargingAnimation() {
   charging = true;
   chargeStartTime = performance.now();
@@ -795,8 +817,7 @@ function stopChargingAnimation() {
   playTune(shot)
 }
 
-let canCharge = true; // Flag to track if the player can start charging again
-const chargeCooldownTime = 2000; // Cooldown time in milliseconds
+
 
 function startChargingCooldown() {
   canCharge = false;
@@ -838,7 +859,7 @@ addSprite(x, y, playerSprites[newmode]);
 }
 function updateBattleText(){
   clearText();
-addText(`${ehit}`, { x:1, y:2, color: color `2` })
+addText(`${phit}`, { x:1, y:2, color: color `2` })
   
 }
 
