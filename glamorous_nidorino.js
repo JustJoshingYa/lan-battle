@@ -1,5 +1,4 @@
-//link: https://sprig.hackclub.com/share/sfaNU7fY4kp88IiGxCeZ 
-
+//link: https://sprig.hackclub.com/share/23MY1VCqhsEFB4WQtALX
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -259,6 +258,16 @@ const hit = tune`
 37.5: E5/37.5 + F5/37.5 + G5/37.5 + A5/37.5 + D5^37.5,
 37.5: A4/37.5 + G4/37.5 + F4/37.5 + E4/37.5 + B4^37.5,
 37.5: E5/37.5 + F5/37.5 + G5/37.5 + A5/37.5 + D5^37.5,
+900`
+const miss = tune`
+37.5: A4-37.5,
+37.5: A4-37.5,
+37.5: G4-37.5,
+37.5: F4-37.5,
+37.5: F4-37.5 + E4-37.5,
+37.5: E4-37.5 + D4-37.5,
+37.5: D4-37.5 + C4-37.5,
+37.5: C4-37.5,
 900`
 const melody = [charges, beams, chargebeams, superchargebeams, shot]
 const playerX = 2; 
@@ -825,6 +834,7 @@ progression = progression + 1
 }else if (progression == 3){
     clearText();
     addSprite(5,3, target1)
+    updateBattleText()
    addText("Tap J twice", { x:3, y:13, color: color `2` }) 
   addText("to shoot", { x:3, y:14, color: color `2` }) 
 }else if (progression == 4){
@@ -833,8 +843,8 @@ progression = progression + 1
     updateBattleText();
     addSprite(5,3, target1)
    addText("Tap J, wait,", { x:3, y:13, color: color `2` }) 
-  addText("then tap J again", { x:3, y:14, color: color `2` }) 
-    addText("to shoot", { x:3, y:15, color: color `2` })
+  addText("then tap J again to", { x:1, y:14, color: color `2` }) 
+    addText("fire a charged shot", { x:1, y:15, color: color `2` })
 }
 }
 
@@ -923,23 +933,45 @@ onInput("j", () => {
 });
 
 function hitDetect(){
-for (i = 0; i < 6; i++){
-        let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-        let enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1);
-      if (enemyInFront == frontTile.some(sprite => sprite.type === target1) ) {
-        playTune(hit)
-        t1hit = t1hit - 1
-        updateBattleText();
-        death();
-        break
-
+  let k = 0
+for (let i = 0; i < 6; i++) {
+    let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
+    let enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1);
     
-  } 
+    let enemyX = frontTile.find(sprite => sprite.type === enemy || sprite.type === target1)?.x;
+
+    // Check if enemy is directly in front on the same x-axis
+    if (enemyInFront && enemyX === getFirst(playerSprites[mode]).x + i) {
+      k = k + 1
+      ouch(); // Call hit function only if enemy is on the same x-axis
+      updateBattleText();
+      death();
+     
+      
+    
+}
+  if(k = 0){
+    playTune(miss)  
+  }
     
   }
-  
 }
+  
 
+function ouch(){
+  playTune(hit)
+        if (chargeState == 0){
+        t1hit = t1hit - 1
+        }else if (chargeState == 1){
+        t1hit = t1hit - 1.5
+        }else if (chargeState == 2){
+        t1hit = t1hit - 2
+        }else if (chargeState == 3){
+        t1hit = t1hit - 3
+        }else if (chargeState == 4){
+        t1hit = t1hit - 5
+        }
+}
 function death(){
 if (t1hit == 0){
    getFirst(target1).remove()
@@ -1033,23 +1065,27 @@ function moveEnemyRandomly() {
         break;
         case "shoot":
         addSprite(getFirst(enemy).x, getFirst(enemy).y - 1, ball);
-        ballmove
+        
         break;
     }
   
          }, 1000); // Adjust the interval for movement speed
 }
-
+let elapsedTime;
  //moveEnemyRandomly(); // Call the function to start moving the enemy
 function startChargingAnimation() {
   charging = true;
   chargeStartTime = performance.now();
-  
+ 
   chargeAnimationTimer = setInterval(() => {
-    const elapsedTime = performance.now() - chargeStartTime;
     
     
-    if (elapsedTime < 3000) {
+    addText(`c time: ${elapsedTime}`, { x:0, y:0, color: color `D` })  
+     elapsedTime = performance.now() - chargeStartTime;
+    if (elapsedTime > 100 && elapsedTime < 2900){
+      chargeState = 0
+      replacePlayer(playerSprites[mode], 5);
+    }else if (elapsedTime < 3000) {
       chargeState = 1
       playback = playTune(melody[0]);
       replacePlayer(playerSprites[mode], 1); // Charge animation
@@ -1066,10 +1102,11 @@ function startChargingAnimation() {
       playback = playTune(melody[3]);
       replacePlayer(playerSprites[mode], 4); // Superchargebeam animation
     }
-  }, 1000);
+  }, 100);
 }
 
 function stopChargingAnimation() {
+  elapsedTime = 0
   charging = false;
   replacePlayer(playerSprites[mode], 5);
   if (progression >= 4){
@@ -1105,7 +1142,6 @@ function updateBattleText(){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
 }
-
 
 
 
