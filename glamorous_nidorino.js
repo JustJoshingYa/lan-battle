@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/hgrqRyZDkGrDkzVUiMcv 
+//link: https://sprig.hackclub.com/share/szIjiSVekOwUuW2Q2c6y
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -14,7 +14,8 @@ const beam = "b"
 const charge = "q"
 const chargebeam = "c"
 const superchargebeam = "h"
-const ball = "y"
+const ball1 = "y"
+const ball2 = "#"
 const bUp = "t"
 const phead = "Q"
 const choose = "P"
@@ -974,7 +975,24 @@ C10..01.........
 .3339.333.......
 3333..3333......
 ................` ],
-  [ ball, bitmap`
+  [ ball1, bitmap`
+................
+................
+................
+................
+................
+......HHHH......
+.....HH33HH.....
+.....H3333H.....
+.....H3333H.....
+.....HH33HH.....
+......HHHH......
+................
+................
+................
+................
+................` ],
+  [ ball2, bitmap`
 ................
 ................
 ................
@@ -1568,7 +1586,7 @@ onInput("s", () => {
 });
 
 onInput("d", () => {
-  if (gprogression == 0) 
+  
   if (tprogression == 2){
   addText("D", { x:16, y:13, color: color `4` })
   getFirst(playerSprites[mode]).x += 1;
@@ -1839,8 +1857,35 @@ function moveEnemyRandomly(spriteE) {
         }
         break;
         case "shoot":
-        addSprite(getFirst(spriteE).x, getFirst(spriteE).y - 1, ball);
-        
+        if (spriteE == enemy1){
+        while (ball1Exists() != true){
+        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball);
+        let movement = getFirst(spriteE).x
+        const shotInterval = setInterval(() => {
+          movement = movement - 1
+          if (movement > 1){
+         getFirst(ball1).x -= 1; 
+          } else {
+          getFirst(ball1).remove()
+            clearInterval(shotInterval)
+          }
+           }, enemySpeed);
+        }
+        } else {
+          while (ball2Exists() != true){
+        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball);
+        let movement = getFirst(spriteE).x
+        const shotInterval = setInterval(() => {
+          movement = movement - 1
+          if (movement > 1){
+         getFirst(ball2).x -= 1; 
+          } else {
+          getFirst(ball2).remove()
+            clearInterval(shotInterval)
+          }
+           }, enemySpeed);
+        }
+        } 
         break;
     }
   
@@ -1965,6 +2010,9 @@ function chipTimeStart() {
 }
 
 
+function ballExists(spriteType) {
+  return getAll(ball).length > 0;
+}
 
 function stopChipTimer() {
   clearInterval(chipTimer);
