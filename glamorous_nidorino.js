@@ -1,4 +1,5 @@
-//link: https://sprig.hackclub.com/share/BhtkECF7ZsrnJEz8MLLl
+//link: https://sprig.hackclub.com/share/nbjvLZqnP2YHT0c1Wd2A
+
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -32,12 +33,12 @@ const title8 = "8"
 const title9 = "9"
 const black = "0"
 const target1 = "-"
-const target2 = "_"
+const shield2 = "_"
 const target3 = "="
 const kaboom = "?"
 const fire = "!"
 const cooldown = "@"
-const shield = "*"
+const shield1 = "*"
 const warning = "%"
 
 
@@ -47,8 +48,8 @@ var chargeAnimationTimer;
 let phit = 10
 let ehit = 10
 let t1hit = 2
-let t2hit = 1
-let t3hit = 1
+let s1hit = 4
+let s2hit = 1
 
 const playerSprites = [normal, charge, beam, chargebeam, superchargebeam, fire, cooldown]
 let mode = 0;
@@ -322,23 +323,23 @@ setLegend(
 ......11111.0...
 .....111111L0...
 ....LLLLLLLL0...` ],
-  [ target2, bitmap`
-................
-...222222.......
-..223333.2......
-.2232222322.....
-.2322332232.....
-.2323223232.....
-.232322323200...
-.2323223232.0...
-.2323223232.0...
-.2322332232.0...
-.22322223220....
-..2233332200....
-...222222L.00...
-......11111.0...
-.....111111L0...
-....LLLLLLLL0...` ],
+  [ shield2, bitmap`
+..CCCC..........
+.CC11...........
+CC111...........
+C111............
+C11.............
+C11.............
+C11.............
+C11.............
+C11.............
+C111............
+C1111...........
+CC111...........
+CCCCCCC.........
+C101101.........
+.101.0..........
+..0..0..........` ],
   [ target3, bitmap`
 ................
 ...222222.......
@@ -526,7 +527,7 @@ setLegend(
 .3339.333.......
 3333..3333......
 ................` ],
-  [ shield, bitmap`
+  [ shield1, bitmap`
 ..CCCC..........
 .CC11...........
 CC111...........
@@ -853,12 +854,17 @@ progression = progression + 1
 }else if (progression == 5){
   clearText();
   addSprite(4,2, shield)
+    updateBattleText();
     moveShieldRandomly();
+    addText("Enemy: Shield", { x:3, y:12, color: color `2` })
+     addText("Shields only get hit ", { x:0, y:13, color: color `2` })
+    addText("with > level 2 ", { x:3, y:14, color: color `2` })
+    addText("shots", { x:3, y:15, color: color `2` })
   }
 }
 
 
-
+var enemyInFront;
 
 
 
@@ -945,12 +951,13 @@ function hitDetect(){
   let k = 0
 for (let i = 0; i < 6; i++) {
     let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-    let enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1);
+     enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1);
     
     let enemyX = frontTile.find(sprite => sprite.type === enemy || sprite.type === target1)?.x;
 
     // Check if enemy is directly in front on the same x-axis
     if (enemyInFront && enemyX === getFirst(playerSprites[mode]).x + i) {
+      
       k = k + 1
       ouch(); // Call hit function only if enemy is on the same x-axis
       updateBattleText();
@@ -969,6 +976,7 @@ for (let i = 0; i < 6; i++) {
 
 function ouch(){
   playTune(hit)
+
         if (chargeState == 0){
         t1hit = t1hit - 1
         }else if (chargeState == 1){
@@ -982,7 +990,7 @@ function ouch(){
         }
 }
 function death(){
-if (t1hit == 0){
+if (t1hit <= 0){
    getFirst(target1).remove()
   if (progression == 3){
     progression = progression + 1
@@ -1190,6 +1198,7 @@ function updateBattleText(){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
 }
+
 
 
 
