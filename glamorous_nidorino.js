@@ -1,4 +1,5 @@
-//link: https://sprig.hackclub.com/share/60rwuNDz6PSxcV2TwOAy
+//link: https://sprig.hackclub.com/share/aWUJHxAKAcN1hd2wSUmb 
+
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -17,7 +18,6 @@ const superchargebeam = "h"
 const ball = "y"
 const bUp = "t"
 const phead = "Q"
-
 const choose = "P"
 const port1 = "O"
 const port2 = "I"
@@ -38,6 +38,7 @@ const normalw = "("
 const normale = ")"
 const normalf = ","
 const normalg = ":"
+const fires = "`"
 
 const wfloor = ">"
 const efloor = "f"
@@ -71,11 +72,16 @@ const h50Up = "D"
 const h100Up = "E"
 const speedUp = "F"
 
-
+let unlocked = "normal"
 var canChip = false
 let charging = false;
 let chargeStartTime;
 var chargeAnimationTimer;
+let boss1dead = false
+let boss2dead = false
+let boss3dead = false
+let boss4dead = false
+
 let phit = 10
 let ehit = 10
 let t1hit = 2
@@ -106,7 +112,7 @@ XCZ
 LMV
 KJH`];
 let jcount = 0;
-
+let currentBoss = "No Boss"
 const titlemelody = tune`
 120: C4-120,
 120: C4-120 + C5^120 + A4/120,
@@ -1372,12 +1378,19 @@ onInput("l",() => {
 if (tprogression == 0){
   setMap(levels[2])
   clearText();
-  
-  
+  gprogression = 1
+  addSprite(0, 1, choose)
 }
 });
 
-
+onInput("k",() => {
+if (tprogression == 0){
+  setMap(levels[2])
+  clearText();
+  gprogression = 1
+  addSprite(0, 1, choose)
+}
+});
 
 
 
@@ -1448,6 +1461,10 @@ onInput("w", () => {
   checkInput();
   }else if (tprogression > 2 || gprogression > 1) {
   getFirst(playerSprites[mode]).y -= 1;
+  } else if (gprogression == 1){
+    
+    getFirst(choose).remove()
+    addSprite(1, 0, choose)
   }
 });
 
@@ -1460,6 +1477,15 @@ onInput("a", () => {
   }
   else if (tprogression > 2 || gprogression > 1) {
     getFirst(playerSprites[mode]).x -= 1;
+  }else if (gprogression == 1){
+    if (boss2dead == true){
+    getFirst(choose).remove()
+    addSprite(0, 1, choose)
+    }else{
+    currentBoss = "Boss 2"
+    setMap(levels[1])
+  
+    }
   }
 });
 
@@ -1472,6 +1498,10 @@ onInput("s", () => {
   }
   else if (tprogression > 2 || gprogression > 1) {
   getFirst(playerSprites[mode]).y += 1;
+  }else if (gprogression == 1){
+    
+    getFirst(choose).remove()
+    addSprite(1, 0, choose)
   }
 });
 
@@ -1484,6 +1514,10 @@ onInput("d", () => {
     checkInput();
   }else if (tprogression > 2 || gprogression > 1) {
     getFirst(playerSprites[mode]).x += 1;
+  }else if (gprogression == 1){
+    
+    getFirst(choose).remove()
+    addSprite(1, 0, choose)
   }
 });
 
@@ -1854,7 +1888,6 @@ function stopChipTimer() {
   clearInterval(chipTimer);
 
 }
-
 
 
 
