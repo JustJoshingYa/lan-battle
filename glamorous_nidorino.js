@@ -814,10 +814,8 @@ onInput("j", () => {
       startChargingCooldown(); // Start the cooldown after releasing 'j'
       
       for (i = 0; i < 6; i++){
-
-      let frontTile = getTile(playerSprites[mode].x + i, playerSprites[mode].y) ;
-      let enemyInFront = frontTile.some(sprite => sprite.type === enemy);
-      
+        let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
+        let enemyInFront = frontTile.some(sprite => sprite.type === enemy);
       if (enemyInFront) {
         playTune(shot)
         ehit = ehit - 1
