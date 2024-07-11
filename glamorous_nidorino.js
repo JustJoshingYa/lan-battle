@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/z9AnBV3WxwDO71gxh3uM
+ //link: https://sprig.hackclub.com/share/z9AnBV3WxwDO71gxh3uM
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
