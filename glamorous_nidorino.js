@@ -1,5 +1,4 @@
-//link: https://sprig.hackclub.com/share/aWUJHxAKAcN1hd2wSUmb 
-
+//link: https://sprig.hackclub.com/share/HMl22mQbC7aGLaoqIqu1 
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -38,13 +37,15 @@ const normalw = "("
 const normale = ")"
 const normalf = ","
 const normalg = ":"
-const fires = "`"
+const fires = "&"
 
 const wfloor = ">"
 const efloor = "f"
 const pfloor = "r"
 const spike = "i"
-const enemy = "e"
+const enemy1 = "e"
+const enemy2 = "~"
+const enemy3 = "'"
 const title1 = "1"
 const title2 = "2"
 const title3 = "3"
@@ -1092,7 +1093,41 @@ CCCCCCC.........
 C101101.........
 .101.0..........
 ..0..0..........`],
-  [ enemy, bitmap`
+  [ enemy1, bitmap`
+................
+................
+.........0000...
+........044400..
+........004000..
+.........0000...
+.......0..00....
+......000.000...
+......3300110...
+......000.000...
+.......0..00....
+..........00....
+.........000....
+.........0.00...
+.......000..00..
+......0000..000.` ],
+  [ enemy2, bitmap`
+................
+................
+.........0000...
+........044400..
+........004000..
+.........0000...
+.......0..00....
+......000.000...
+......3300110...
+......000.000...
+.......0..00....
+..........00....
+.........000....
+.........0.00...
+.......000..00..
+......0000..000.` ],
+  [ enemy3, bitmap`
 ................
 ................
 .........0000...
@@ -1126,7 +1161,6 @@ C101101.........
 6666666666666666
 6666666666666666
 6666666666666666`],
-  
   [ wfloor, bitmap`
 1111111111111111
 1777777777777771
@@ -1369,7 +1403,7 @@ LLLLLLLLLLLLLLLL`],
 setMap(levels[level])
 addText("LAN Battle", { x:5, y:6, color: color `2` })
 addText("press i to proceed", { x:1, y:9, color: color `2` })
-setSolids([ pfloor, black, enemy])
+setSolids([ pfloor, black, enemy1])
 setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4]])
 setPushables({
   [ playerSprites[mode] ]: []
@@ -1484,7 +1518,12 @@ onInput("a", () => {
     }else{
     currentBoss = "Boss 2"
     setMap(levels[1])
-  
+    addSprite(5, 2, enemy1)
+    addSprite(4, 3, shield1)
+    addSprite(4, 4, shield2)
+    gprogression = 2 
+    moveShieldRandomly(shield1)
+    moveEnemyRandomly(enemy1)
     }
   }
 });
@@ -1656,20 +1695,28 @@ function checkInput(){
   }
 }
 }
-
-function moveShieldRandomly() {
+//function movement(){
+//while (gprogression == 2){
+ // setTimeout(
+ //moveEnemyRandomly() // Call the function to start moving the enemy
+///moveShieldRandomly()
+ // , 1000);
+//}
+//
+function moveShieldRandomly(spriteS) {
+  if (gprogression == 2){
   let ey = 0;
 
   const movementInterval = setInterval(() => {
-    let currentTile = getTile(getFirst(shield1).x, getFirst(shield1).y + ey);
+    let currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
     const nextDirection = getRandomDirectionY();
 
     switch (nextDirection) {
       case "up":
         ey = -1
-        currentTile = getTile(getFirst(shield1).x, getFirst(shield1).y + ey);
+        currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(shield1).y -= 1;
+          getFirst(spriteS).y -= 1;
           ey = 0;
         } else {
           ey = 0;
@@ -1677,9 +1724,9 @@ function moveShieldRandomly() {
         break;
       case "down":
         ey = 1
-        currentTile = getTile(getFirst(shield1).x, getFirst(shield1).y + ey);
+        currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(shield1).y += 1;
+          getFirst(spriteS).y += 1;
           ey = 0;
         } else {
           ey = 0;
@@ -1688,7 +1735,7 @@ function moveShieldRandomly() {
     }
   }, enemySpeed); // Adjust the interval for movement speed
 }
-
+}
 function getRandomDirectionY() {
   const directions = ["up", "down"];
   return directions[Math.floor(Math.random() * 2)];
@@ -1700,19 +1747,20 @@ function getRandomDirection() {
 }
 
 // Function to move the enemy on efloor
-function moveEnemyRandomly() {
+function moveEnemyRandomly(spriteE) {
   let ey = 0;
   let ex = 0;
+  if (gprogression == 2){
   const movementInterval = setInterval(() => {
-    let currentTile = getTile(getFirst(enemy).x + ex, getFirst(enemy).y + ey);
+    let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
     const nextDirection = getRandomDirection();
 
     switch (nextDirection) {
       case "up":
         ey = -1
-        currentTile = getTile(getFirst(enemy).x + ex, getFirst(enemy).y + ey);
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(enemy).y -= 1;
+          getFirst(spriteE).y -= 1;
           ey = 0;
           ex = 0;
         } else {
@@ -1722,9 +1770,9 @@ function moveEnemyRandomly() {
         break;
       case "down":
         ey = 1
-        currentTile = getTile(getFirst(enemy).x + ex, getFirst(enemy).y + ey);
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(enemy).y += 1;
+          getFirst(spriteE).y += 1;
           ey = 0;
           ex = 0;
           } else {
@@ -1734,9 +1782,9 @@ function moveEnemyRandomly() {
         break;
       case "left":
         ex = -1
-        currentTile = getTile(getFirst(enemy).x + ex, getFirst(enemy).y + ey);
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(enemy).x -= 1;
+          getFirst(spriteE).x -= 1;
           ey = 0;
           ex = 0;
           } else {
@@ -1746,9 +1794,9 @@ function moveEnemyRandomly() {
         break;
       case "right":
         ex = 1
-        currentTile = getTile(getFirst(enemy).x + ex, getFirst(enemy).y + ey);
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
-          getFirst(enemy).x += 1;
+          getFirst(spriteE).x += 1;
           ey = 0;
           ex = 0;
           } else {
@@ -1757,15 +1805,15 @@ function moveEnemyRandomly() {
         }
         break;
         case "shoot":
-        addSprite(getFirst(enemy).x, getFirst(enemy).y - 1, ball);
+        addSprite(getFirst(spriteE).x, getFirst(spriteE).y - 1, ball);
         
         break;
     }
   
          }, enemySpeed); // Adjust the interval for movement speed
 }
+}
 
- //moveEnemyRandomly(); // Call the function to start moving the enemy
 function startChargingAnimation() {
   
   chargeStartTime = performance.now();
@@ -1888,8 +1936,6 @@ function stopChipTimer() {
   clearInterval(chipTimer);
 
 }
-
-
 
 
 
