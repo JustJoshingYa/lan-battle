@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/WSezNLMV9rMvSaQ41Nuo
+//link: https://sprig.hackclub.com/share/nMZybvNhiaACsnA0NRBg
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -328,8 +328,8 @@ const nothing = tune`
 52.35602094240838: C5^52.35602094240838,
 1570.6806282722514`
 const melody = [charges, beams, chargebeams, superchargebeams, shot]
-const playerX = 2; 
-const playerY = 2;  
+let playerX = 2; 
+let playerY = 2;  
 let isButtonPressed = false;
 let buttonStartTime = 0;
 var Timer= 0;
@@ -353,8 +353,8 @@ let scheck = false;
 let dcheck = false;
 let jcheck = false;
 let shotland = 0
-let movementIntervals; 
-let movementIntervale; 
+var movementIntervals; 
+var movementIntervale; 
 let enemy1X;
 let enemy1Y;
 let enemy2X;
@@ -1608,6 +1608,7 @@ onInput("w", () => {
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
     gprogression = 2 
+    chipTimeStart()
     moveShieldRandomly(shield1)
     moveShieldRandomly(shield2)
     moveEnemyRandomly(enemy1)
@@ -1667,6 +1668,7 @@ onInput("s", () => {
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
     gprogression = 2 
+      chipTimeStart()
     moveShieldRandomly(shield1)
     moveShieldRandomly(shield2)
     moveEnemyRandomly(shield3)
@@ -1696,6 +1698,7 @@ onInput("d", () => {
     addSprite(4, 3, enemy2)
     addSprite(4, 4, shield1)
     gprogression = 2 
+    chipTimeStart()
     moveShieldRandomly(shield1)
     moveEnemyRandomly(enemy1)
     moveEnemyRandomly(enemy2)
@@ -2162,13 +2165,8 @@ phit = phit + 50
   phit = phit + 100 
 }
 }
-function battleStart(){
-  chipTimeStart()
-  
-}
 
 
-  
 function chipTimeStart() {
   chipStartTime = performance.now();
 
@@ -2188,8 +2186,9 @@ function ball1Exists(spriteType) {
 function ball2Exists(spriteType) {
   return getAll(ball2).length > 0;
 }
+
 function stopChipTimer() {
-  clearInterval(chipTimer);
+  clearInterval(chipTimer)
   if (ball1Exists == true){
   clearInterval(shotInterval1)
   }
@@ -2198,7 +2197,10 @@ function stopChipTimer() {
   }
   clearInterval(movementIntervale)
   clearInterval(movementIntervals)
+  clearInterval(movementIntervale)
+  clearInterval(movementIntervals)
   elapsedChipTime = 0
 }
+
 
 
