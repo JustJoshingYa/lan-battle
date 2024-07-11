@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/JlLpgHKJng2VkcKVGZ2a
+//link: https://sprig.hackclub.com/share/S9smY2AwTr7HXW4hUy7N
 
 /*
 First time? Check out the tutorial game:
@@ -37,7 +37,7 @@ const shield2 = "_"
 const arrow1 = "="
 const clips = "`"
 const boss1 = "<"
-const kaboom = "?"
+const boss2 = "?"
 const fire = "!"
 const cooldown = "@"
 const shield1 = "*"
@@ -52,6 +52,9 @@ let ehit = 10
 let t1hit = 2
 let s1hit = 4
 let s2hit = 1
+let cliphit = 15
+let arhit = 15
+let boss1hit = 20
 
 const playerSprites = [normal, charge, beam, chargebeam, superchargebeam, fire, cooldown]
 let mode = 0;
@@ -287,27 +290,30 @@ let chargeTimer;
 let playback;
 const directions = ["up", "down", "left", "right", "shoot"];
 let canCharge = true; // Flag to track if the player can start charging again
-const chargeCooldownTime = 2000; // Cooldown time in milliseconds
+var chargeCooldownTime = 2000; // Cooldown time in milliseconds
+var enemySpeed = 1000
+var bossSpeed = 500
 let progression = 0;
 let elapsedTime;
+let busterPw = 1
 setLegend(
-  [ kaboom, bitmap`
-................
-.00000000000000.
-.02222222222220.
-.02DDDDDDDDDD20.
-.02DD4DDDD4DD20.
-.02DD4DDDD4DD20.
-.02DD4DDDD4DD20.
-.02DDDDDDDDDD20.
-.02DDD....DDD20.
-.02DDDDDDDDDD20.
-.02222222222220.
-.00001111110000.
-....00000000....
+  [ boss2, bitmap`
+....444000......
+...44004.00.....
+...40444..0.....
+...444....0.....
+....0000000.....
+...001111100....
+..01111111110...
+..01332332110...
+..01322322110...
 ...0111111110...
-..022222222220..
-..000000000000..`],
+....011111110.00
+.....00000000000
+.00000000HHHHHH0
+00HHHHHHHHHHHHH0
+0HHHHHHHHHHHHHH0
+0000000000000000`],
   [ boss1, bitmap `
 ................
 .00000000000000.
@@ -1016,27 +1022,27 @@ function ouch(j){
   playTune(hit)
    if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyX === getFirst(playerSprites[mode]).x + j)){
         if (chargeState == 0){
-        t1hit = t1hit - 1
+        t1hit = t1hit - (1 * busterPw)
         }else if (chargeState == 1){
-        t1hit = t1hit - 1.5
+        t1hit = t1hit - (1.5 * busterPw)
         }else if (chargeState == 2){
-        t1hit = t1hit - 2
+        t1hit = t1hit - (2 * busterPw)
         }else if (chargeState == 3){
-        t1hit = t1hit - 3
+        t1hit = t1hit - (3 * busterPw)
         }else if (chargeState == 4){
-        t1hit = t1hit - 5
+        t1hit = t1hit - (5 * busterPw)
         }
    }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy && enemyX === getFirst(playerSprites[mode]).x + j)){
     if (chargeState == 0){
-        ehit = ehit - 1
+        ehit = ehit - (1 * busterPw)
         }else if (chargeState == 1){
-        ehit = ehit - 2
+        ehit = ehit - (2 * busterPw)
         }else if (chargeState == 2){
-        ehit = ehit - 3
+        ehit = ehit - (3 * busterPw)
         }else if (chargeState == 3){
-        ehit = ehit - 4
+        ehit = ehit - (4 * busterPw)
         }else if (chargeState == 4){
-        ehit = ehit - 5
+        ehit = ehit - (5 * busterPw)
     }
         }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
@@ -1044,11 +1050,12 @@ function ouch(j){
         }else if (chargeState == 1){
         s1hit = s1hit - 0
         }else if (chargeState == 2){
-        s1hit = s1hit - 2
+        s1hit = s1hit - (2 * busterPw)
         }else if (chargeState == 3){
-        s1hit = s1hit - 2.5
+        s1hit = s1hit - (2.5 * busterPw)
         }else if (chargeState == 4){
-        s1hit = s1hit - 3}
+        s1hit = s1hit - (3 * busterPw)
+      }
    }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
         s2hit = s2hit - 0
@@ -1074,7 +1081,7 @@ if (t1hit <= 0){
     progression = progression + 1
     tutorial();
         }
-}else if (t1hit <= 0){
+}else if (s1hit <= 0){
    getFirst(shield1).remove()
 }
 }
@@ -1122,16 +1129,14 @@ function moveShieldRandomly() {
         }
         break;
     }
-  }, 1000); // Adjust the interval for movement speed
+  }, enemySpeed); // Adjust the interval for movement speed
 }
 
 function getRandomDirectionY() {
   const directions = ["up", "down"];
   return directions[Math.floor(Math.random() * 2)];
 }
-
-
-  
+ 
 // Function to generate a random direction
 function getRandomDirection() {
   return directions[Math.floor(Math.random() * directions.length)];
@@ -1200,7 +1205,7 @@ function moveEnemyRandomly() {
         break;
     }
   
-         }, 1000); // Adjust the interval for movement speed
+         }, enemySpeed); // Adjust the interval for movement speed
 }
 
  //moveEnemyRandomly(); // Call the function to start moving the enemy
@@ -1281,6 +1286,15 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
 }
 
 
+function upgrade (what){
+if (what == "busterUp"){
+  busterPw = 1.5
+} else if (what == "cool"){
+  chargeCooldownTime = 1000
+} else if (what == "speed"){
+  enemySpeed = 2000
+}
 
+}
 
 
