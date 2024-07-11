@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/CTnvS9cdFStmuUuAZDUB
+//link:  https://sprig.hackclub.com/share/UzU3oOivhoEHxmTPOFmx
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -16,7 +16,27 @@ const chargebeam = "c"
 const superchargebeam = "h"
 const ball = "y"
 const bUp = "t"
-const tele2 = "a"
+const phead = "Q"
+
+const choose = "P"
+const port1 = "O"
+const port2 = "I"
+const port3 = "U"
+
+
+
+
+
+
+/*
+  const port2 = "H"
+const port3 = "J"
+const bUp = "K"
+const shotUp = "L"
+const speedUp = "Z"
+const coolUp = "X"
+const h30Up = "C"
+*/
 const efloor = "f"
 const pfloor = "r"
 const spike = "i"
@@ -80,9 +100,9 @@ const levels = [map`
 0rrrfff0
 00000000
 00000000`, map`
-...
-.f.
-...`];
+POP
+IQO
+POP`];
 
 let jcount = 0;
 const titlemelody = tune`
@@ -307,6 +327,12 @@ let gprogression = 0;
 let elapsedTime;
 let busterPw = 1
 let wave = 0
+var enemyInFront;
+let wcheck = false;
+let acheck = false;
+let scheck = false;
+let dcheck = false;
+let jcheck = false;
 setLegend(
   [ choose, bitmap`
 6666666666666666
@@ -326,22 +352,56 @@ setLegend(
 6..............6
 6666666666666666`],
   [ port1, bitmap `
-................
-.00000000000000.
-.02222222222220.
-.02DDDDDDDDDD20.
-.02DD4DDDD4DD20.
-.02DD4DDDD4DD20.
-.02DD4DDDD4DD20.
-.02DDDDDDDDDD20.
-.02DDD4444DDD20.
-.02DDDDDDDDDD20.
-.02222222222220.
-.00001111110000.
-....00000000....
-...0111111110...
-..022222222220..
-..000000000000..`],
+CCCCCCCCCCCCCCCC
+CDDD4DDDDDD4DDDC
+CDD444DDDD444DDC
+CDDD444DD444DDDC
+CDDDD444444DDDDC
+CDDDDD4444DDDDDC
+CDDDDDDDDDDDDDDC
+CDD44DDDDDD44DDC
+CDD44DDDDDD44DDC
+CDD44DDDDDD44DDC
+CDD44DDDDDD44DDC
+CDDDDDDDDDDDDDDC
+CDDD44444444DDDC
+CDD44DDDDDD44DDC
+CD44DDDDDDDD44DC
+CCCCCCCCCCCCCCCC`],
+  [ port2, bitmap `
+CCCCCCCCCCCCCCCC
+C011110DDD01110C
+C0111110D011110C
+C01111110111110C
+C01221111112210C
+C01222111122210C
+C01222211222210C
+C01233311233310C
+C01233311233310C
+C01233311233310C
+C01233111233110C
+C01111111111110C
+C01111011011110C
+C01111011011110C
+CL000000000000LC
+CCCCCCCCCCCCCCCC`],
+  [ port3, bitmap `
+CCCCCCCCCCCCCCCC
+C01111111111110C
+C01111111111110C
+C01111111111110C
+C01221111112210C
+C01222111122210C
+C01222211222210C
+C01233311233310C
+C01233311233310C
+C01233311233310C
+C01233111233110C
+C01111111111110C
+C01111111111110C
+C01111111111110C
+CL000000000000LC
+CCCCCCCCCCCCCCCC`],
   [ phead, bitmap`
 L05777777777750L
 0555555555555550
@@ -999,7 +1059,7 @@ setPushables({
 })
 onInput("l",() => {
 if (tprogression == 0){
-  setMap(levels[0])
+  setMap(levels[2])
   clearText();
   
   
@@ -1068,16 +1128,6 @@ tprogression = tprogression + 1
 }
 
 
-var enemyInFront;
-
-
-
-
-let wcheck = false;
-let acheck = false;
-let scheck = false;
-let dcheck = false;
-let jcheck = false;
 
 onInput("w", () => {
   if (tprogression == 2){
@@ -1493,6 +1543,7 @@ function stopChipTimer() {
   clearInterval(chipTimer);
 
 }
+
 
 
 
