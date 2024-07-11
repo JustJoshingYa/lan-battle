@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/nMZybvNhiaACsnA0NRBg
+//link: https://sprig.hackclub.com/share/ZBzgr8ihtc7yLL27TJvK
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -9,7 +9,7 @@ https://sprig.hackclub.com/gallery/getting_started
 @addedOn: 2024-00-00
 */
 
-const normal = "p"
+const normal = "€"
 const beam = "b"
 const charge = "q"
 const chargebeam = "c"
@@ -353,8 +353,10 @@ let scheck = false;
 let dcheck = false;
 let jcheck = false;
 let shotland = 0
-var movementIntervals; 
-var movementIntervale; 
+var movementIntervals1; 
+var movementIntervals2; 
+var movementIntervale1; 
+var movementIntervale2;
 let enemy1X;
 let enemy1Y;
 let enemy2X;
@@ -1854,18 +1856,18 @@ if (t1hit <= 0){
 
 if (gprogression > 1) {
     if (s1hit <= 0){
-    clearInterval(movementIntervals)
+    clearInterval(movementIntervals1)
    getFirst(shield1).remove()
 } else if (e1hit <= 0){
-   clearInterval(movementIntervale)
+   clearInterval(movementIntervale1)
       getFirst(enemy1).remove()  
 } else if (s2hit <= 0){
-  clearInterval(movementIntervals) 
+  clearInterval(movementIntervals2) 
     getFirst(shield2).remove()
       
 } else if (e2hit <= 0){
    getFirst(enemy2).remove() 
-  clearInterval(movementIntervale)
+  clearInterval(movementIntervale2)
 }
   }
 }
@@ -1886,8 +1888,8 @@ function checkInput(){
 function moveShieldRandomly(spriteS) {
   if (gprogression == 2){
   let ey = 0;
-
-  movementIntervals = setInterval(() => {
+ if (spriteS == shield1){
+  movementIntervals1 = setInterval(() => {
     let currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
     const nextDirection = getRandomDirectionY();
 
@@ -1913,8 +1915,37 @@ function moveShieldRandomly(spriteS) {
         }
         break;
     }
-  }, enemySpeed); // Adjust the interval for movement speed
-}
+  }, enemySpeed);
+ }else if (spriteS == shield2){
+  movementIntervals2 = setInterval(() => {
+    let currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
+    const nextDirection = getRandomDirectionY();
+
+    switch (nextDirection) {
+      case "up":
+        ey = -1
+        currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteS).y -= 1;
+          ey = 0;
+        } else {
+          ey = 0;
+        }
+        break;
+      case "down":
+        ey = 1
+        currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteS).y += 1;
+          ey = 0;
+        } else {
+          ey = 0;
+        }
+        break;
+    }
+  }, enemySpeed);// Adjust the interval for movement speed
+ }
+ }
 }
 function getRandomDirectionY() {
   const directions = ["up", "down"];
@@ -1933,7 +1964,8 @@ function moveEnemyRandomly(spriteE) {
   let ey = 0;
   let ex = 0;
   if (gprogression == 2){
-   movementIntervale = setInterval(() => {
+    if (spriteE == enemy1){
+   movementIntervale1 = setInterval(() => {
     let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
     const nextDirection = getRandomDirection();
 
@@ -2010,7 +2042,7 @@ function moveEnemyRandomly(spriteE) {
           }
            }, 500);
         }
-        } else {
+       /* } else {
           while (ball2Exists() != true){
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
         let movement = getFirst(spriteE).x
@@ -2033,13 +2065,98 @@ function moveEnemyRandomly(spriteE) {
           }
            }, 500);
         }
-        } 
+        }
+        */
         break;
     }
-  
+    }
          }, enemySpeed); // Adjust the interval for movement speed
+}else if (spriteE == enemy2){
+   movementIntervale2 = setInterval(() => {
+    let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+    const nextDirection = getRandomDirection();
+
+    switch (nextDirection) {
+      case "up":
+        ey = -1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).y -= 1;
+          ey = 0;
+          ex = 0;
+        } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "down":
+        ey = 1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).y += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "left":
+        ex = -1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).x -= 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "right":
+        ex = 1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).x += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+        case "shoot":
+        if (spriteE == enemy2){
+        while (ball1Exists() != true){
+        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
+        let movement = getFirst(spriteE).x
+       shotInterval2 = setInterval(() => {
+          playerhit()
+          if (shotland == 0){
+          movement = movement - 1
+          if (movement > 1){
+         getFirst(ball2).x -= 1; 
+          } else {
+          getFirst(ball2).remove()
+            clearInterval(shotInterval2)
+          }
+          }else if (shotland == 1){
+            getFirst(ball2).remove()
+            phit = phit - 5
+            updateBattleText();
+             clearInterval(shotInterval2)
+            shotland = 0
+          }
+           }, 500);
+        }
+           break;
+        }
+    }
+           }, enemySpeed); // Adjust the interval for movement speed
 }
+  }
 }
+
 
 function startChargingAnimation() {
   
@@ -2195,12 +2312,15 @@ function stopChipTimer() {
   if (ball2Exists == true){
   clearInterval(shotInterval2)
   }
-  clearInterval(movementIntervale)
-  clearInterval(movementIntervals)
-  clearInterval(movementIntervale)
-  clearInterval(movementIntervals)
+  clearInterval(movementIntervale1)
+  clearInterval(movementIntervals2)
+  clearInterval(movementIntervale2)
+  clearInterval(movementIntervals1)
   elapsedChipTime = 0
 }
+
+
+
 
 
 
