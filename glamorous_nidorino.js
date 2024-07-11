@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/23MY1VCqhsEFB4WQtALX
+//link: https://sprig.hackclub.com/share/TDlUmSb84b6DOwttGOTW 
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -43,7 +43,7 @@ const warning = "%"
 
 let charging = false;
 let chargeStartTime;
-let chargeAnimationTimer;
+var chargeAnimationTimer;
 let phit = 10
 let ehit = 10
 let t1hit = 2
@@ -998,8 +998,6 @@ function checkInput(){
 
 
 
-
-
   
 // Function to generate a random direction
 function getRandomDirection() {
@@ -1074,15 +1072,17 @@ function moveEnemyRandomly() {
 let elapsedTime;
  //moveEnemyRandomly(); // Call the function to start moving the enemy
 function startChargingAnimation() {
-  charging = true;
+  
   chargeStartTime = performance.now();
- 
+ charging = true;
+    
   chargeAnimationTimer = setInterval(() => {
-    
-    
     addText(`c time: ${elapsedTime}`, { x:0, y:0, color: color `D` })  
      elapsedTime = performance.now() - chargeStartTime;
-    if (elapsedTime > 100 && elapsedTime < 2900){
+    if (elapsedTime < 200){ 
+      chargeState = 0
+      replacePlayer(playerSprites[mode], 5);
+    }else if(elapsedTime < 2900){
       chargeState = 0
       replacePlayer(playerSprites[mode], 5);
     }else if (elapsedTime < 3000) {
@@ -1142,6 +1142,7 @@ function updateBattleText(){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
 }
+
 
 
 
