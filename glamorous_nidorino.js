@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/3N97pwmmUWiHu06HwgFs
+//link: https://sprig.hackclub.com/share/BdaX1fDAf3CjxgEoAUcL
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -250,6 +250,7 @@ let playback;
 const directions = ["up", "down", "left", "right", "shoot"];
 let canCharge = true; // Flag to track if the player can start charging again
 const chargeCooldownTime = 2000; // Cooldown time in milliseconds
+let progression = 0;
 
 setLegend(
   [ target, bitmap`
@@ -643,7 +644,6 @@ LLLLLLLLLLLLLLLL`],
 0000000000000000
 0000000000000000
 0000000000000000`],
-  
   )
 setMap(levels[level])
 addText("LAN Battle", { x:5, y:6, color: color `2` })
@@ -658,21 +658,29 @@ setPushables({
   [ playerSprites[mode] ]: []
 })
 onInput("i",() => {
+  if (progression == 0){
 level++
 setMap(levels[level])
 clearText(); 
 updateBattleText();
 tutorial();
-
+}else if (progression == 1){
+  clearText();
+    tutorial();
+}
 //addSprite(5, 3, enemy) // Spawn the enemy on efloor
 });
 function tutorial(){
-  let progression = 0;
+  if (progression == 0){
 addSprite(2, 3, playerSprites[mode])
 addText("Hey!", { x:9, y:12, color: color `2` })
 setTimeout(100);
-addText("Welcome to arena!", { x:2, y:13, color: color `2` })
-//addText("Move with WASD", { x:2, y:3, color: color `2` })
+addText("Welcome to arena!", { x:2, y:13, color: color `2` })  
+addText(" Press i to proceed", { x:0, y:14, color: color `2` })  
+progression = progression + 1
+  }else if (progression == 1){
+  addText("Move with WASD", { x:2, y:3, color: color `2` })
+}
 }
 
 
