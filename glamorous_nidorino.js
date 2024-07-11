@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/BdaX1fDAf3CjxgEoAUcL
+//link: https://sprig.hackclub.com/share/vILCg2ThKLNOMD8GqRz1
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -39,7 +39,10 @@ let chargeStartTime;
 let chargeAnimationTimer;
 let phit = 10
 let ehit = 10
- //starts timer
+let t1hit = 2
+let t2hit = 2
+let t3hit = 2
+
 const playerSprites = [normal, charge, beam, chargebeam, superchargebeam]
 let mode = 0;
 let level = 0;
@@ -59,7 +62,7 @@ const levels = [map`
 00000000
 00000000`];
 
-
+let jcount = 0;
 const titlemelody = tune`
 491.8032786885246: C4-491.8032786885246,
 491.8032786885246: C4-491.8032786885246 + C5^491.8032786885246 + A4/491.8032786885246,
@@ -662,7 +665,7 @@ onInput("i",() => {
 level++
 setMap(levels[level])
 clearText(); 
-updateBattleText();
+//updateBattleText();
 tutorial();
 }else if (progression == 1){
   clearText();
@@ -679,7 +682,13 @@ addText("Welcome to arena!", { x:2, y:13, color: color `2` })
 addText(" Press i to proceed", { x:0, y:14, color: color `2` })  
 progression = progression + 1
   }else if (progression == 1){
-  addText("Move with WASD", { x:2, y:3, color: color `2` })
+  addText("Move with WASD", { x:3, y:13, color: color `2` })
+    progression = progression + 1
+}else if (progression == 3){
+    clearText();
+    addSprite(5,3, target)
+   addText("Tap J twice", { x:3, y:13, color: color `2` }) 
+  addText("to shoot", { x:3, y:14, color: color `2` }) 
 }
 }
 
@@ -689,33 +698,104 @@ progression = progression + 1
 
 
 
-
-
-
-
-
+let wcheck = false;
+let acheck = false;
+let scheck = false;
+let dcheck = false;
+let jcheck = false;
 
 onInput("w", () => {
+  if (progression == 2){
+  addText("W", { x:13, y:13, color: color `4` })  
   getFirst(playerSprites[mode]).y -= 1;
-  
+  wcheck = true;
+  checkInput();
+  }else if (progression > 2) {
+  getFirst(playerSprites[mode]).y -= 1;
+  }
 });
 
 onInput("a", () => {
+  if (progression == 2){
+  addText("A", { x:14, y:13, color: color `4` })  
   getFirst(playerSprites[mode]).x -= 1;
-  
+  acheck = true;
+  checkInput();
+  }
+  else if (progression > 2) {
+    getFirst(playerSprites[mode]).x -= 1;
+  }
 });
 
 onInput("s", () => {
+  if (progression == 2){
+  addText("S", { x:15, y:13, color: color `4` })
   getFirst(playerSprites[mode]).y += 1; 
-  
+  scheck = true;
+  checkInput();
+  }
+  else if (progression > 2) {
+  getFirst(playerSprites[mode]).y += 1;
+  }
 });
 
 onInput("d", () => {
+  if (progression == 2){
+  addText("D", { x:16, y:13, color: color `4` })
   getFirst(playerSprites[mode]).x += 1;
-  
+  dcheck = true;
+    checkInput();
+  }else if (progression > 2) {
+    getFirst(playerSprites[mode]).x += 1;
+  }
 });
 
+onInput("j", () => {
+  
+  if (canCharge) {
+    if (!charging) {
+      startChargingAnimation();
+    } else {
+      stopChargingAnimation();
+      startChargingCooldown(); // Start the cooldown after releasing 'j'
+      
+      for (i = 0; i < 6; i++){
+        let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
+        let enemyInFront = frontTile.some(sprite => sprite.type === enemy);
+      if (enemyInFront) {
+        playTune(shot)
+        ehit = ehit - 1
+        updateBattleText();
+        if (ehit =< 0 || t1hit =< 0 || t2hit =< 0 || t3hit =< 0 || s1 = 
+      }
+    }
+    }
+  } else {
+    playTune(overheat)
+    
+  }
+});
 
+function checkInput(){
+  if (progression == 2){
+  if (wcheck == true && acheck == true && scheck == true && dcheck == true){
+    progression = progression + 1
+    tutorial();
+  }if (progression == 3){
+    if (jcheck == true){
+    progression = progression + 1
+    tutorial();
+    }
+  }
+}
+}
+
+
+
+
+
+
+  
 // Function to generate a random direction
 function getRandomDirection() {
   return directions[Math.floor(Math.random() * directions.length)];
@@ -834,29 +914,7 @@ function startChargingCooldown() {
   }, chargeCooldownTime);
 }
 
-onInput("j", () => {
-  if (canCharge) {
-    if (!charging) {
-      startChargingAnimation();
-    } else {
-      stopChargingAnimation();
-      startChargingCooldown(); // Start the cooldown after releasing 'j'
-      
-      for (i = 0; i < 6; i++){
-        let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-        let enemyInFront = frontTile.some(sprite => sprite.type === enemy);
-      if (enemyInFront) {
-        playTune(shot)
-        ehit = ehit - 1
-        updateBattleText();
-      }
-    }
-    }
-  } else {
-    playTune(overheat)
-    
-  }
-});
+
     
 function replacePlayer(oldSprite, newmode) {
   let x = getFirst(playerSprites[mode]).x
