@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/9bS3wXXUuSvAXGYWILts
+//link: https://sprig.hackclub.com/share/i0XlI6RfJPDjYz9L6UBZ
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1493,7 +1493,28 @@ tutorial();
 }
   }else if(gprogression > 1){
     if (canChip == true){
-    stopChipTimer()
+      stopChipTimer()
+      playerX = getFirst(playerSprites[mode]).x
+      playerY = getFirst(playerSprites[mode]).y
+      if (currentBoss == "Boss 1"){
+        if (gprogression > 1){
+          
+      }
+      }else if (currentBoss == "Boss 2"){
+        if (gprogression > 1){
+          
+      }
+      }else if (currentBoss == "Boss 3"){
+        if (gprogression > 1){
+          
+      }
+      }else if (currentBoss == "Boss 4"){
+        if (gprogression > 1){
+          
+      }
+      }
+    
+      clearText()
       setMap(levels[0])
       
     }
@@ -1875,6 +1896,9 @@ function getRandomDirectionY() {
 function getRandomDirection() {
   return directions[Math.floor(Math.random() * directions.length)];
 }
+let shotInterval1
+let shotInterval2
+
 
 // Function to move the enemy on efloor
 function moveEnemyRandomly(spriteE) {
@@ -1939,7 +1963,7 @@ function moveEnemyRandomly(spriteE) {
         while (ball1Exists() != true){
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
         let movement = getFirst(spriteE).x
-       shotInterval2= setInterval(() => {
+       shotInterval1 = setInterval(() => {
           playerhit()
           if (shotland == 0){
           movement = movement - 1
@@ -1953,7 +1977,7 @@ function moveEnemyRandomly(spriteE) {
             getFirst(ball1).remove()
             phit = phit - 5
             updateBattleText();
-             clearInterval(shotInterval2)
+             clearInterval(shotInterval1)
             shotland = 0
           }
            }, 500);
@@ -2143,7 +2167,14 @@ function ball2Exists(spriteType) {
 }
 function stopChipTimer() {
   clearInterval(chipTimer);
-
+  if (ball1Exists == true){
+  clearInterval(shotInterval1)
+  }
+  if (ball2Exists == true){
+  clearInterval(shotInterval2)
+  }
+  clearInterval(movementIntervale)
+  clearInterval(movementIntervals)
 }
 
 
