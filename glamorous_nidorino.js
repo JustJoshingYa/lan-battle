@@ -1,5 +1,5 @@
-//link: https://sprig.hackclub.com/share/eq5dqN46OmnjTcsNcC7Z
- /*
+//link: https://sprig.hackclub.com/share/CTnvS9cdFStmuUuAZDUB
+/*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
 
@@ -41,8 +41,15 @@ const fire = "!"
 const cooldown = "@"
 const shield1 = "*"
 const warning = "%"
+const shotUp = "A"
+const coolUp = "B"
+const h30Up = "C"
+const h50Up = "D"
+const h100Up = "E"
+const speedUp = "F"
 
 
+var canChip = false
 let charging = false;
 let chargeStartTime;
 var chargeAnimationTimer;
@@ -72,7 +79,10 @@ const levels = [map`
 0rrrfff0
 0rrrfff0
 00000000
-00000000`];
+00000000`, map`
+...
+.f.
+...`];
 
 let jcount = 0;
 const titlemelody = tune`
@@ -292,11 +302,63 @@ let canCharge = true; // Flag to track if the player can start charging again
 var chargeCooldownTime = 2000; // Cooldown time in milliseconds
 var enemySpeed = 1000
 var bossSpeed = 500
-let progression = 0;
+let tprogression = 0;
+let gprogression = 0;
 let elapsedTime;
 let busterPw = 1
 let wave = 0
 setLegend(
+  [ choose, bitmap`
+6666666666666666
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6..............6
+6666666666666666`],
+  [ port1, bitmap `
+................
+.00000000000000.
+.02222222222220.
+.02DDDDDDDDDD20.
+.02DD4DDDD4DD20.
+.02DD4DDDD4DD20.
+.02DD4DDDD4DD20.
+.02DDDDDDDDDD20.
+.02DDD4444DDD20.
+.02DDDDDDDDDD20.
+.02222222222220.
+.00001111110000.
+....00000000....
+...0111111110...
+..022222222220..
+..000000000000..`],
+  [ phead, bitmap`
+L05777777777750L
+0555555555555550
+0555555555555550
+0055555555555500
+0000000000000000
+9999999999999999
+9900000000000099
+900LLLLLLLLLL009
+901LLLLLLLLLLL09
+901LLLLLLLLLLL09
+99011LLLLLLLL099
+3390111111110999
+L33900000000999L
+LL339999999999LL
+LLL3339999999LLL
+LLLL33399999LLLL`],
   [ bUp, bitmap`
 0000000000000000
 0LL2LLLLLLLLLLL0
@@ -314,21 +376,21 @@ setLegend(
 03300000LLLLLLL0
 033300LLLLLLLLL0
 0000000000000000`],
-  [shotUp, bitmap`
+  [ shotUp, bitmap`
 0000000000000000
 0LLLLLLLLLLLLLL0
 0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
-0LLLLLLLLLLLLLL0
+0LLLLLLL777LLLL0
+0LLLLLL7757LLLL0
+0LLLL62L777LLLL0
+0LLL99LLLLLLLLL0
+033936LL777LLLL0
+01133927757LLLL0
+033936LL777LLLL0
+0LLL99LLLLLLLLL0
+0LLLL62L777LLLL0
+0LLLLLL7757LLLL0
+0LLLLLLL777LLLL0
 0LLLLLLLLLLLLLL0
 0000000000000000`],
   [ speedUp, bitmap`
@@ -569,23 +631,6 @@ C10..01.........
 ................
 ................
 ................` ],
-  [ tele2, bitmap`
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-.....99399......
-....9939399.....
-...993999399....
-..99393939399...` ],
   [ beam, bitmap`
 ................
 ....55..........
@@ -946,24 +991,38 @@ LLLLLLLLLLLLLLLL`],
   )
 setMap(levels[level])
 addText("LAN Battle", { x:5, y:6, color: color `2` })
-//addText("Move with WASD", { x:2, y:3, color: color `2` })
-//addText("Shoot with J", { x:3, y:4, color: color `2` })
-//addText("Hold down J", { x:1, y:5, color: color `2` })
-//addText( "to charge weapon", { x:1, y:6, color: color `2` })
 addText("press i to proceed", { x:1, y:9, color: color `2` })
 setSolids([ pfloor, black, enemy])
 setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4]])
 setPushables({
   [ playerSprites[mode] ]: []
 })
+onInput("l",() => {
+if (tprogression == 0){
+  setMap(levels[0])
+  clearText();
+  
+  
+}
+});
+
+
+
+
+
+
+
+
+
+        
 onInput("i",() => {
-  if (progression == 0){
+  if (tprogression == 0){
 level++
 setMap(levels[level])
 clearText(); 
 //updateBattleText();
 tutorial();
-}else if (progression == 1){
+}else if (tprogression == 1){
   clearText();
     tutorial();
 }
@@ -971,23 +1030,23 @@ tutorial();
 });
 
 function tutorial(){
-  if (progression == 0){
+  if (tprogression == 0){
 addSprite(2, 3, playerSprites[mode])
 addText("Hey!", { x:9, y:12, color: color `2` })
 setTimeout(100);
 addText("Welcome to arena!", { x:2, y:13, color: color `2` })  
 addText(" Press i to proceed", { x:0, y:14, color: color `2` })  
-progression = progression + 1
-  }else if (progression == 1){
+tprogression = tprogression + 1
+  }else if (tprogression == 1){
   addText("Move with WASD", { x:3, y:13, color: color `2` })
-    progression = progression + 1
-}else if (progression == 3){
+    tprogression = tprogression + 1
+}else if (tprogression == 3){
     clearText();
     addSprite(5,3, target1)
     updateBattleText()
    addText("Tap J twice", { x:3, y:13, color: color `2` }) 
   addText("to shoot", { x:3, y:14, color: color `2` }) 
-}else if (progression == 4){
+}else if (tprogression == 4){
     clearText();
     t1hit = 2
     updateBattleText();
@@ -995,7 +1054,7 @@ progression = progression + 1
    addText("Tap J, wait,", { x:3, y:12, color: color `2` }) 
   addText("then tap J again to", { x:1, y:13, color: color `2` }) 
     addText("fire a charged shot", { x:1, y:14, color: color `2` })
-}else if (progression == 5){
+}else if (tprogression == 5){
   clearText();
     t1hit = 4
   addSprite(4,2, shield1)
@@ -1021,60 +1080,61 @@ let dcheck = false;
 let jcheck = false;
 
 onInput("w", () => {
-  if (progression == 2){
+  if (tprogression == 2){
   addText("W", { x:13, y:13, color: color `4` })  
   getFirst(playerSprites[mode]).y -= 1;
   wcheck = true;
   checkInput();
-  }else if (progression > 2) {
+  }else if (tprogression > 2 || gprogression > 1) {
   getFirst(playerSprites[mode]).y -= 1;
   }
 });
 
 onInput("a", () => {
-  if (progression == 2){
+  if (tprogression == 2){
   addText("A", { x:14, y:13, color: color `4` })  
   getFirst(playerSprites[mode]).x -= 1;
   acheck = true;
   checkInput();
   }
-  else if (progression > 2) {
+  else if (tprogression > 2 || gprogression > 1) {
     getFirst(playerSprites[mode]).x -= 1;
   }
 });
 
 onInput("s", () => {
-  if (progression == 2){
+  if (tprogression == 2){
   addText("S", { x:15, y:13, color: color `4` })
   getFirst(playerSprites[mode]).y += 1; 
   scheck = true;
   checkInput();
   }
-  else if (progression > 2) {
+  else if (tprogression > 2 || gprogression > 1) {
   getFirst(playerSprites[mode]).y += 1;
   }
 });
 
 onInput("d", () => {
-  if (progression == 2){
+  if (gprogression == 0) 
+  if (tprogression == 2){
   addText("D", { x:16, y:13, color: color `4` })
   getFirst(playerSprites[mode]).x += 1;
   dcheck = true;
     checkInput();
-  }else if (progression > 2) {
+  }else if (tprogression > 2 || gprogression > 1) {
     getFirst(playerSprites[mode]).x += 1;
   }
 });
 
 onInput("j", () => {
-  if (progression == 3){
+  if (tprogression == 3){
     if (canCharge) {
       hitDetect();
       startChargingCooldown();
     }else {
     playTune(overheat)
   }
-    } else if (progression > 3){
+    } else if (tprogression > 3){
    if (canCharge) {
     if (!charging) {
       startChargingAnimation();
@@ -1176,11 +1236,11 @@ function ouch(j){
 function death(){
 if (t1hit <= 0){
    getFirst(target1).remove()
-  if (progression == 3){
-    progression = progression + 1
+  if (tprogression == 3){
+    tprogression = tprogression + 1
     tutorial();
-  }else if (progression == 4){
-    progression = progression + 1
+  }else if (tprogression == 4){
+    tprogression = tprogression + 1
     tutorial();
         }
 }else if (s1hit <= 0){
@@ -1189,13 +1249,13 @@ if (t1hit <= 0){
 }
 
 function checkInput(){
-  if (progression == 2){
+  if (tprogression == 2){
   if (wcheck == true && acheck == true && scheck == true && dcheck == true){
-    progression = progression + 1
+    tprogression = tprogression + 1
     tutorial();
-  }if (progression == 3){
+  }if (tprogression == 3){
     if (jcheck == true){
-    progression = progression + 1
+    tprogression = tprogression + 1
     tutorial();
     }
   }
@@ -1316,7 +1376,7 @@ function startChargingAnimation() {
   chargeStartTime = performance.now();
  charging = true;
   
-    if (progression >= 4){
+    if (tprogression >= 4){
     chargeAnimationTimer = setInterval(() => {
     addText(`c time: ${elapsedTime}`, { x:0, y:0, color: color `D` })  
      elapsedTime = performance.now() - chargeStartTime;
@@ -1352,7 +1412,7 @@ function stopChargingAnimation() {
   playTune(shot);
 }
 function stopChargingTimer() {
-  if (progression >= 4){
+  if (tprogression >= 4){
   clearInterval(chargeAnimationTimer);
 }
 }
@@ -1378,15 +1438,14 @@ addSprite(x, y, playerSprites[newmode]);
   mode = newmode;
 }
 function updateBattleText(){
-if (progression <= 4 && progression > 1){
+if (tprogression <= 4 && tprogression > 1){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
-}else if (progression == 5){
+}else if (tprogression == 5){
   addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
   addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
 }
 }
-
 
 function upgrade (what){
 if (what == "busterUp"){
@@ -1395,7 +1454,7 @@ if (what == "busterUp"){
   chargeCooldownTime = 1000
 } else if (what == "speed"){
   enemySpeed = 2000
-}else if (what == "autoFire"){
+}else if (what == "poison"){
 //player starts shooting lv 2 bullets automatically at a reduced cooldown rate, all the player needs to do is just move to avoid attacks
   
 }else if (what == "shotgun"){
@@ -1407,7 +1466,34 @@ phit = phit + 50
 }else if (what == "health100"){
 }
 }
+function battleStart(){
+  chipTimeStart()
   
+}
 
- 
+let chipStartTime;
+let chipTimer;
+let elapsedChipTime;
+  
+function chipTimeStart() {
+  chipStartTime = performance.now();
+
+  chipTimer = setInterval(() => {
+    addText(`c time: ${elapsedChipTime}`, { x:0, y:0, color: color `D` });
+    elapsedChipTime = performance.now() - chargeStartTime;
+    if (elapsedChipTime > 30000){
+      canChip = true;
+    }
+  }, 1000);
+}
+
+
+
+function stopChipTimer() {
+  clearInterval(chipTimer);
+
+}
+
+
+
 
