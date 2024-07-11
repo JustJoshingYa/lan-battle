@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/SOqVw6c6MrvGaxm8nxVm
+//link: https://sprig.hackclub.com/share/sfaNU7fY4kp88IiGxCeZ 
 
 /*
 First time? Check out the tutorial game:
@@ -20,7 +20,7 @@ const tele1 = "t"
 const tele2 = "a"
 const efloor = "f"
 const pfloor = "r"
-const pillar = "i"
+const spike = "i"
 const enemy = "e"
 const title1 = "1"
 const title2 = "2"
@@ -36,6 +36,11 @@ const target1 = "-"
 const target2 = "_"
 const target3 = "="
 const kaboom = "?"
+const fire = "!"
+const cooldown = "@"
+const shield = "*"
+const warning = "%"
+
 
 let charging = false;
 let chargeStartTime;
@@ -43,14 +48,14 @@ let chargeAnimationTimer;
 let phit = 10
 let ehit = 10
 let t1hit = 2
-let t2hit = 2
-let t3hit = 2
+let t2hit = 1
+let t3hit = 1
 
-const playerSprites = [normal, charge, beam, chargebeam, superchargebeam]
+const playerSprites = [normal, charge, beam, chargebeam, superchargebeam, fire, cooldown]
 let mode = 0;
 let level = 0;
 const levels = [map`
-12222222
+18888887
 29999996
 29999996
 29999996
@@ -245,12 +250,23 @@ const shot = tune`
 37.5: D5-37.5 + B4-37.5 + C5-37.5,
 37.5: C5-37.5,
 1050`
+const hit = tune`
+37.5,
+37.5: A5/37.5 + G5/37.5 + F5/37.5 + E5/37.5 + D5^37.5,
+37.5: A4/37.5 + G4/37.5 + F4/37.5 + E4/37.5 + B4^37.5,
+37.5: E5/37.5 + F5/37.5 + G5/37.5 + A5/37.5 + D5^37.5,
+37.5: A4/37.5 + G4/37.5 + F4/37.5 + E4/37.5 + B4^37.5,
+37.5: E5/37.5 + F5/37.5 + G5/37.5 + A5/37.5 + D5^37.5,
+37.5: A4/37.5 + G4/37.5 + F4/37.5 + E4/37.5 + B4^37.5,
+37.5: E5/37.5 + F5/37.5 + G5/37.5 + A5/37.5 + D5^37.5,
+900`
 const melody = [charges, beams, chargebeams, superchargebeams, shot]
 const playerX = 2; 
 const playerY = 2;  
 let isButtonPressed = false;
 let buttonStartTime = 0;
 var Timer= 0;
+let chargeState = 0
 let chargeTimer; 
 let playback;
 const directions = ["up", "down", "left", "right", "shoot"];
@@ -463,6 +479,57 @@ setLegend(
 .3339.333.......
 3333..3333......
 ................` ],
+  [ fire, bitmap`
+................
+....55..........
+.0.5555.........
+..007755........
+...000000.......
+...39911....7...
+.9933993..3337..
+9999333999326...
+99339999..3337..
+99.3999.....7...
+33.99999........
+...99999........
+..999.999.......
+.3339.333.......
+3333..3333......
+................` ],
+  [ cooldown, bitmap`
+................
+....55..........
+.0.5555.........
+..007755........
+...000000.1.....
+...39911...1....
+.9933993..1.....
+999933399..1....
+99339999993.....
+99.3999..333....
+33.99999..31....
+...99999........
+..999.999.......
+.3339.333.......
+3333..3333......
+................` ],
+  [ shield, bitmap`
+..CCCC..........
+.CC11...........
+CC111...........
+C111............
+C11.............
+C11.............
+C11.............
+C11.............
+C11.............
+C111............
+C1111...........
+CC111...........
+CCCCCCC.........
+C101101.........
+.101.0..........
+..0..0..........`],
   [ enemy, bitmap`
 ................
 ................
@@ -480,6 +547,23 @@ setLegend(
 .........0.00...
 .......000..00..
 ......0000..000.` ],
+  [ warning, bitmap `
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666
+6666666666666666`],
   [ efloor, bitmap`
 1111111111111111
 1HHHHHHHHHHHHHH1
@@ -514,22 +598,22 @@ setLegend(
 1LLLLLLLLLLLLLL1
 1LLLLLLLLLLLLLL1
 1111111111111111` ],
-  [ pillar, bitmap`
+  [ spike, bitmap`
 1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
-1111111111111111
+1LLL00000000LLL1
+1LL0000000000LL1
+1L011111111110L1
+1001111111111001
+10011LLLLLL11001
+10011LLLLLL11001
+10011LL11LL11001
+10011LL11LL11001
+10011LLLLLL11001
+10011LLLLLL11001
+1001111111111001
+1L011111111110L1
+1LL0000000000LL1
+1LLL00000000LLL1
 1111111111111111` ],
   [ title1,bitmap`
 0000000000000000
@@ -743,6 +827,14 @@ progression = progression + 1
     addSprite(5,3, target1)
    addText("Tap J twice", { x:3, y:13, color: color `2` }) 
   addText("to shoot", { x:3, y:14, color: color `2` }) 
+}else if (progression == 4){
+    clearText();
+    t1hit = 2
+    updateBattleText();
+    addSprite(5,3, target1)
+   addText("Tap J, wait,", { x:3, y:13, color: color `2` }) 
+  addText("then tap J again", { x:3, y:14, color: color `2` }) 
+    addText("to shoot", { x:3, y:15, color: color `2` })
 }
 }
 
@@ -807,6 +899,7 @@ onInput("d", () => {
 onInput("j", () => {
   if (progression == 3){
     if (canCharge) {
+      stopChargingAnimation();
       startChargingCooldown();
       hitDetect();
     }else {
@@ -818,11 +911,14 @@ onInput("j", () => {
       startChargingAnimation();
     } else {
       stopChargingAnimation();
-      startChargingCooldown();
       hitDetect();
-  }
+      startChargingCooldown();
+      
+  } 
+   }else {
+     playTune(overheat)}
    }
-  }
+  
 
 });
 
@@ -830,22 +926,12 @@ function hitDetect(){
 for (i = 0; i < 6; i++){
         let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
         let enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1);
-      if (enemyInFront) {
-        playTune(shot)
+      if (enemyInFront == frontTile.some(sprite => sprite.type === target1) ) {
+        playTune(hit)
         t1hit = t1hit - 1
         updateBattleText();
-        if (ehit <= 0){
-          
-        }else if (t1hit <= 0){
-          addSprite(getFirst(target1).x, getFirst(target1).y, kaboom)
-          getFirst(target1).remove
-          setTimeout(() => {getFirst(kaboom).remove},100);
-          
-        }else if (t2hit <= 0){
-          
-       }else if (t3hit <= 0){  
-        
-        }
+        death();
+        break
 
     
   } 
@@ -854,6 +940,15 @@ for (i = 0; i < 6; i++){
   
 }
 
+function death(){
+if (t1hit == 0){
+   getFirst(target1).remove()
+  if (progression == 3){
+    progression = progression + 1
+    tutorial();
+        }
+}
+}
 function checkInput(){
   if (progression == 2){
   if (wcheck == true && acheck == true && scheck == true && dcheck == true){
@@ -953,22 +1048,21 @@ function startChargingAnimation() {
   chargeAnimationTimer = setInterval(() => {
     const elapsedTime = performance.now() - chargeStartTime;
     
-    if (elapsedTime < 2000) {
-      replacePlayer(playerSprites[mode], 0); // Normal animation
-    } else if (elapsedTime < 3000) {
-      
+    
+    if (elapsedTime < 3000) {
+      chargeState = 1
       playback = playTune(melody[0]);
       replacePlayer(playerSprites[mode], 1); // Charge animation
     } else if (elapsedTime < 6000) {
-      
+      chargeState = 2
       playback = playTune(melody[1]);
       replacePlayer(playerSprites[mode], 2); // Beam animation
     } else if (elapsedTime < 10000) {
-     
+      chargeState = 3
       playback = playTune(melody[2]);
       replacePlayer(playerSprites[mode], 3); // Chargebeam animation
-    } else if (elapsedTime > 20000){
-      
+    } else if (elapsedTime > 11000){
+      chargeState = 4
       playback = playTune(melody[3]);
       replacePlayer(playerSprites[mode], 4); // Superchargebeam animation
     }
@@ -977,18 +1071,23 @@ function startChargingAnimation() {
 
 function stopChargingAnimation() {
   charging = false;
-  replacePlayer(playerSprites[mode], 0);
+  replacePlayer(playerSprites[mode], 5);
+  if (progression >= 4){
   clearInterval(chargeAnimationTimer);
   playback.end();
-  playTune(shot)
+  playTune(shot);
+}
 }
 
 
 
 function startChargingCooldown() {
+  chargeState = 0
   canCharge = false;
+  replacePlayer(playerSprites[mode], 6);
   setTimeout(() => {
-    canCharge = true; // Allow player to charge again after cooldown
+    canCharge = true;// Allow player to charge again after cooldown
+    replacePlayer(playerSprites[mode], 0);
   }, chargeCooldownTime);
 }
 
@@ -1002,10 +1101,13 @@ addSprite(x, y, playerSprites[newmode]);
   mode = newmode;
 }
 function updateBattleText(){
-  clearText();
-addText(`${phit}`, { x:1, y:2, color: color `2` })
-  
+
+addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
+addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
 }
+
+
+
 
 
 
