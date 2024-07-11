@@ -1,4 +1,5 @@
-//link: https://sprig.hackclub.com/share/vILCg2ThKLNOMD8GqRz1
+//link: https://sprig.hackclub.com/share/SOqVw6c6MrvGaxm8nxVm
+
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -31,8 +32,10 @@ const title7 = "7"
 const title8 = "8"
 const title9 = "9"
 const black = "0"
-const target = "-"
-
+const target1 = "-"
+const target2 = "_"
+const target3 = "="
+const kaboom = "?"
 
 let charging = false;
 let chargeStartTime;
@@ -256,7 +259,58 @@ const chargeCooldownTime = 2000; // Cooldown time in milliseconds
 let progression = 0;
 
 setLegend(
-  [ target, bitmap`
+  [ kaboom, bitmap`
+.99999999999999.
+9999333333339999
+9993333333333999
+9933399999933399
+9333999999993339
+9339993333999339
+9339933333399339
+9339933333399339
+9339933333399339
+9339933333399339
+9339993333999339
+9333999999993339
+9933399999933399
+9993333333333999
+9999333333339999
+.99999999999999.`],
+  [ target1, bitmap`
+................
+...222222.......
+..223333.2......
+.2232222322.....
+.2322332232.....
+.2323223232.....
+.232322323200...
+.2323223232.0...
+.2323223232.0...
+.2322332232.0...
+.22322223220....
+..2233332200....
+...222222L.00...
+......11111.0...
+.....111111L0...
+....LLLLLLLL0...` ],
+  [ target2, bitmap`
+................
+...222222.......
+..223333.2......
+.2232222322.....
+.2322332232.....
+.2323223232.....
+.232322323200...
+.2323223232.0...
+.2323223232.0...
+.2322332232.0...
+.22322223220....
+..2233332200....
+...222222L.00...
+......11111.0...
+.....111111L0...
+....LLLLLLLL0...` ],
+  [ target3, bitmap`
 ................
 ...222222.......
 ..223333.2......
@@ -656,7 +710,7 @@ addText("LAN Battle", { x:5, y:6, color: color `2` })
 //addText( "to charge weapon", { x:1, y:6, color: color `2` })
 addText("press i to proceed", { x:1, y:9, color: color `2` })
 setSolids([ pfloor, black, enemy])
-setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4],])
+setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4]])
 setPushables({
   [ playerSprites[mode] ]: []
 })
@@ -686,7 +740,7 @@ progression = progression + 1
     progression = progression + 1
 }else if (progression == 3){
     clearText();
-    addSprite(5,3, target)
+    addSprite(5,3, target1)
    addText("Tap J twice", { x:3, y:13, color: color `2` }) 
   addText("to shoot", { x:3, y:14, color: color `2` }) 
 }
@@ -751,30 +805,54 @@ onInput("d", () => {
 });
 
 onInput("j", () => {
-  
-  if (canCharge) {
+  if (progression == 3){
+    if (canCharge) {
+      startChargingCooldown();
+      hitDetect();
+    }else {
+    playTune(overheat)
+  }
+    } else if (progression > 3){
+   if (canCharge) {
     if (!charging) {
       startChargingAnimation();
     } else {
       stopChargingAnimation();
-      startChargingCooldown(); // Start the cooldown after releasing 'j'
-      
-      for (i = 0; i < 6; i++){
+      startChargingCooldown();
+      hitDetect();
+  }
+   }
+  }
+
+});
+
+function hitDetect(){
+for (i = 0; i < 6; i++){
         let frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-        let enemyInFront = frontTile.some(sprite => sprite.type === enemy);
+        let enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1);
       if (enemyInFront) {
         playTune(shot)
-        ehit = ehit - 1
+        t1hit = t1hit - 1
         updateBattleText();
-        if (ehit =< 0 || t1hit =< 0 || t2hit =< 0 || t3hit =< 0 || s1 = 
-      }
-    }
-    }
-  } else {
-    playTune(overheat)
+        if (ehit <= 0){
+          
+        }else if (t1hit <= 0){
+          addSprite(getFirst(target1).x, getFirst(target1).y, kaboom)
+          getFirst(target1).remove
+          setTimeout(() => {getFirst(kaboom).remove},100);
+          
+        }else if (t2hit <= 0){
+          
+       }else if (t3hit <= 0){  
+        
+        }
+
+    
+  } 
     
   }
-});
+  
+}
 
 function checkInput(){
   if (progression == 2){
@@ -928,5 +1006,6 @@ function updateBattleText(){
 addText(`${phit}`, { x:1, y:2, color: color `2` })
   
 }
+
 
 
