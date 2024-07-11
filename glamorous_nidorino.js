@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/lScPRwFqNWo08rH8TDDV
+//link: https://sprig.hackclub.com/share/CDwejZfoYIvqxILRg6Rh 
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -352,6 +352,9 @@ let acheck = false;
 let scheck = false;
 let dcheck = false;
 let jcheck = false;
+let shotland = 0
+let movementIntervals; 
+let movementIntervale; 
 setLegend(
   [ choose, bitmap`
 6666666666666666
@@ -1682,17 +1685,15 @@ for (let i = 0; i < 6; i++) {
    function playerhit(){
      if (ball1Exists() == true){
      if (getFirst(playerSprites[mode]).x == getFirst(ball1).x && getFirst(playerSprites[mode]).y == getFirst(ball1).y){
-       getFirst(ball1).remove()
-       phit = phit - 5
-       return clearInterval(shotInterval)
+       shotland = 1
      }
      }else if (ball2Exists() == true){
      if (getFirst(playerSprites[mode]).x == getFirst(ball2).x && getFirst(playerSprites[mode]).y == getFirst(ball2).y){
-     getFirst(ball2).remove()
-       phit = phit - 5
-       return clearInterval(shotInterval)
+     shotland = 2
      }    
-     }
+     }else{
+       shotland - 0
+   }
    }
 
 function ouch(j){
@@ -1761,6 +1762,7 @@ function ouch(j){
 }
 
 function death(){
+  //tutorial deaths
 if (t1hit <= 0){
    getFirst(target1).remove()
   if (tprogression == 3){
@@ -1773,8 +1775,24 @@ if (t1hit <= 0){
 }else if (s1hit <= 0){
    getFirst(shield1).remove()
 }
-}
 
+if (gprogression > 1) {
+    if (s1hit <= 0){
+  clearInterval(movementIntervals)
+   getFirst(shield1).remove()
+} else if (e1hit <= 0){
+   clearInterval(movementIntervale)
+    getFirst(enemy1).remove()  
+} else if (s2hit <= 0){
+  clearInterval(movementIntervals) 
+    getFirst(shield2).remove()
+      
+} else if (e2hit <= 0){
+  clearInterval(movementIntervale)
+   getFirst(enemy2).remove() 
+}
+  }
+}
 function checkInput(){
   if (tprogression == 2){
   if (wcheck == true && acheck == true && scheck == true && dcheck == true){
@@ -1788,19 +1806,12 @@ function checkInput(){
   }
 }
 }
-//function movement(){
-//while (gprogression == 2){
- // setTimeout(
- //moveEnemyRandomly() // Call the function to start moving the enemy
-///moveShieldRandomly()
- // , 1000);
-//}
-//
+
 function moveShieldRandomly(spriteS) {
   if (gprogression == 2){
   let ey = 0;
 
-  const movementInterval = setInterval(() => {
+  movementIntervals = setInterval(() => {
     let currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
     const nextDirection = getRandomDirectionY();
 
@@ -1844,7 +1855,7 @@ function moveEnemyRandomly(spriteE) {
   let ey = 0;
   let ex = 0;
   if (gprogression == 2){
-  const movementInterval = setInterval(() => {
+   movementIntervale = setInterval(() => {
     let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
     const nextDirection = getRandomDirection();
 
@@ -1902,14 +1913,22 @@ function moveEnemyRandomly(spriteE) {
         while (ball1Exists() != true){
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
         let movement = getFirst(spriteE).x
-        const shotInterval = setInterval(() => {
+        let shotInterval = setInterval(() => {
           playerhit()
+          if (shotland == 0){
           movement = movement - 1
           if (movement > 1){
          getFirst(ball1).x -= 1; 
           } else {
           getFirst(ball1).remove()
             clearInterval(shotInterval)
+          }
+          }else if (shotland == 1){
+            getFirst(ball1).remove()
+            phit = phit - 5
+            updateBattleText();
+             clearInterval(shotInterval)
+            shotland = 0
           }
            }, 500);
         }
@@ -1918,12 +1937,21 @@ function moveEnemyRandomly(spriteE) {
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
         let movement = getFirst(spriteE).x
         const shotInterval = setInterval(() => {
+          playerhit()
+          if (shotland == 0){
           movement = movement - 1
           if (movement > 1){
          getFirst(ball2).x -= 1; 
           } else {
           getFirst(ball2).remove()
             clearInterval(shotInterval)
+          }
+          }else if (shotland == 2){
+            getFirst(ball2).remove()
+            phit = phit - 5
+            updateBattleText();
+            shotland = 0
+          clearInterval(shotInterval)
           }
            }, 500);
         }
@@ -2021,7 +2049,7 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
 }
 }
 
-function upgrade (what){
+function upgrade(what){
 if (what == "busterUp"){
   busterPw = 1.5
 } else if (what == "cool"){
