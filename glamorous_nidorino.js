@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/77SRACJU1AnTRPxefO2B
+//link: https://sprig.hackclub.com/share/lScPRwFqNWo08rH8TDDV
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1679,7 +1679,21 @@ for (let i = 0; i < 6; i++) {
     
   }
 }
-  
+   function playerhit(){
+     if (ball1Exists() == true){
+     if (getFirst(playerSprites[mode]).x == getFirst(ball1).x && getFirst(playerSprites[mode]).y == getFirst(ball1).y){
+       getFirst(ball1).remove()
+       phit = phit - 5
+       return clearInterval(shotInterval)
+     }
+     }else if (ball2Exists() == true){
+     if (getFirst(playerSprites[mode]).x == getFirst(ball2).x && getFirst(playerSprites[mode]).y == getFirst(ball2).y){
+     getFirst(ball2).remove()
+       phit = phit - 5
+       return clearInterval(shotInterval)
+     }    
+     }
+   }
 
 function ouch(j){
   playTune(hit)
@@ -1889,6 +1903,7 @@ function moveEnemyRandomly(spriteE) {
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
         let movement = getFirst(spriteE).x
         const shotInterval = setInterval(() => {
+          playerhit()
           movement = movement - 1
           if (movement > 1){
          getFirst(ball1).x -= 1; 
@@ -1910,7 +1925,7 @@ function moveEnemyRandomly(spriteE) {
           getFirst(ball2).remove()
             clearInterval(shotInterval)
           }
-           }, enemySpeed);
+           }, 500);
         }
         } 
         break;
