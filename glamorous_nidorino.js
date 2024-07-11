@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/TDlUmSb84b6DOwttGOTW 
+//link: https://sprig.hackclub.com/share/styLtYqAWZacxQ8fduQu
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -908,6 +908,7 @@ onInput("d", () => {
 
 onInput("j", () => {
   if (progression == 3){
+    startChargingAnimation()
     if (canCharge) {
       stopChargingAnimation();
       startChargingCooldown();
@@ -920,6 +921,7 @@ onInput("j", () => {
     if (!charging) {
       startChargingAnimation();
     } else {
+      stopChargingTimer()
       stopChargingAnimation();
       hitDetect();
       startChargingCooldown();
@@ -1075,14 +1077,15 @@ function startChargingAnimation() {
   
   chargeStartTime = performance.now();
  charging = true;
-    
+  if (progression == 3){
+    chargeAnimationTimer = setInterval(() => {
+      }, 100);
+  }
+    else if (progression >= 4){
   chargeAnimationTimer = setInterval(() => {
     addText(`c time: ${elapsedTime}`, { x:0, y:0, color: color `D` })  
      elapsedTime = performance.now() - chargeStartTime;
-    if (elapsedTime < 200){ 
-      chargeState = 0
-      replacePlayer(playerSprites[mode], 5);
-    }else if(elapsedTime < 2900){
+    if(elapsedTime < 2900){
       chargeState = 0
       replacePlayer(playerSprites[mode], 5);
     }else if (elapsedTime < 3000) {
@@ -1104,18 +1107,19 @@ function startChargingAnimation() {
     }
   }, 100);
 }
-
+}
 function stopChargingAnimation() {
   elapsedTime = 0
   charging = false;
   replacePlayer(playerSprites[mode], 5);
-  if (progression >= 4){
-  clearInterval(chargeAnimationTimer);
   playback.end();
   playTune(shot);
 }
+function stopChargingTimer() {
+  if (progression >= 4){
+  clearInterval(chargeAnimationTimer);
 }
-
+}
 
 
 function startChargingCooldown() {
@@ -1142,7 +1146,6 @@ function updateBattleText(){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
 }
-
 
 
 
