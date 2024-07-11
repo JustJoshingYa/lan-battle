@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/styLtYqAWZacxQ8fduQu
+//link: https://sprig.hackclub.com/share/BhtkECF7ZsrnJEz8MLLl
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -269,6 +269,10 @@ const miss = tune`
 37.5: D4-37.5 + C4-37.5,
 37.5: C4-37.5,
 900`
+const nothing = tune`
+52.35602094240838: B4^52.35602094240838,
+52.35602094240838: C5^52.35602094240838,
+1570.6806282722514`
 const melody = [charges, beams, chargebeams, superchargebeams, shot]
 const playerX = 2; 
 const playerY = 2;  
@@ -820,6 +824,7 @@ tutorial();
 }
 //addSprite(5, 3, enemy) // Spawn the enemy on efloor
 });
+
 function tutorial(){
   if (progression == 0){
 addSprite(2, 3, playerSprites[mode])
@@ -842,10 +847,14 @@ progression = progression + 1
     t1hit = 2
     updateBattleText();
     addSprite(5,3, target1)
-   addText("Tap J, wait,", { x:3, y:13, color: color `2` }) 
-  addText("then tap J again to", { x:1, y:14, color: color `2` }) 
-    addText("fire a charged shot", { x:1, y:15, color: color `2` })
-}
+   addText("Tap J, wait,", { x:3, y:12, color: color `2` }) 
+  addText("then tap J again to", { x:1, y:13, color: color `2` }) 
+    addText("fire a charged shot", { x:1, y:14, color: color `2` })
+}else if (progression == 5){
+  clearText();
+  addSprite(4,2, shield)
+    moveShieldRandomly();
+  }
 }
 
 
@@ -908,11 +917,9 @@ onInput("d", () => {
 
 onInput("j", () => {
   if (progression == 3){
-    startChargingAnimation()
     if (canCharge) {
-      stopChargingAnimation();
-      startChargingCooldown();
       hitDetect();
+      startChargingCooldown();
     }else {
     playTune(overheat)
   }
@@ -980,9 +987,13 @@ if (t1hit == 0){
   if (progression == 3){
     progression = progression + 1
     tutorial();
+  }else if (progression == 4){
+    progression = progression + 1
+    tutorial();
         }
 }
 }
+
 function checkInput(){
   if (progression == 2){
   if (wcheck == true && acheck == true && scheck == true && dcheck == true){
@@ -997,7 +1008,42 @@ function checkInput(){
 }
 }
 
+function moveShieldRandomly() {
+  let ey = 0;
 
+  const movementInterval = setInterval(() => {
+    let currentTile = getTile(getFirst(shield).x, getFirst(shield).y + ey);
+    const nextDirection = getRandomDirectionY();
+
+    switch (nextDirection) {
+      case "up":
+        ey = -1
+        currentTile = getTile(getFirst(shield).x, getFirst(shield).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(shield).y -= 1;
+          ey = 0;
+        } else {
+          ey = 0;
+        }
+        break;
+      case "down":
+        ey = 1
+        currentTile = getTile(getFirst(shield).x, getFirst(shield).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(shield).y += 1;
+          ey = 0;
+        } else {
+          ey = 0;
+        }
+        break;
+    }
+  }, 1000); // Adjust the interval for movement speed
+}
+
+function getRandomDirectionY() {
+  const directions = ["up", "down"];
+  return directions[Math.floor(Math.random() * 2)];
+}
 
 
   
@@ -1077,17 +1123,15 @@ function startChargingAnimation() {
   
   chargeStartTime = performance.now();
  charging = true;
-  if (progression == 3){
+  
+    if (progression >= 4){
     chargeAnimationTimer = setInterval(() => {
-      }, 100);
-  }
-    else if (progression >= 4){
-  chargeAnimationTimer = setInterval(() => {
     addText(`c time: ${elapsedTime}`, { x:0, y:0, color: color `D` })  
      elapsedTime = performance.now() - chargeStartTime;
     if(elapsedTime < 2900){
       chargeState = 0
       replacePlayer(playerSprites[mode], 5);
+      playback = playTune(nothing);
     }else if (elapsedTime < 3000) {
       chargeState = 1
       playback = playTune(melody[0]);
@@ -1146,7 +1190,6 @@ function updateBattleText(){
 addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
 addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
 }
-
 
 
 
