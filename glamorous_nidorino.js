@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/szIjiSVekOwUuW2Q2c6y
+//link: https://sprig.hackclub.com/share/n2XCYchzuvxgLWm3YEnp
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -85,13 +85,20 @@ let boss3dead = false
 let boss4dead = false
 
 let phit = 10
-let ehit = 10
+let e1hit = 10
+let e2hit = 10
+let e3hit = 10
 let t1hit = 2
-let s1hit = 4
-let s2hit = 1
+let s1hit = 10
+let s2hit = 10
+let s3hit = 10
 let cliphit = 15
 let arhit = 15
-let boss1hit = 20
+let boss1hit = 40
+let boss2hit = 40
+let boss3hit = 40
+let boss4hit = 40
+
 const boss4Mouth = [boss49, boss410]
 const playerSprites = [normal, charge, beam, chargebeam, superchargebeam, fire, cooldown]
 let mode = 0;
@@ -1643,9 +1650,9 @@ function hitDetect(){
   let k = 0
 for (let i = 0; i < 6; i++) {
     frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-     enemyInFront = frontTile.some(sprite => sprite.type === enemy || sprite.type === target1 || sprite.type === shield1);
+     enemyInFront = frontTile.some(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1);
     
-    enemyX = frontTile.find(sprite => sprite.type === enemy || sprite.type === target1 || sprite.type === shield1)?.x;
+    enemyX = frontTile.find(sprite => sprite.type === enemy1 || sprite.type === target1 || sprite.type === shield1)?.x;
 
     // Check if enemy is directly in front on the same x-axis
     if (enemyInFront && enemyX === getFirst(playerSprites[mode]).x + i) {
@@ -1859,7 +1866,7 @@ function moveEnemyRandomly(spriteE) {
         case "shoot":
         if (spriteE == enemy1){
         while (ball1Exists() != true){
-        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball);
+        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
         let movement = getFirst(spriteE).x
         const shotInterval = setInterval(() => {
           movement = movement - 1
@@ -1869,11 +1876,11 @@ function moveEnemyRandomly(spriteE) {
           getFirst(ball1).remove()
             clearInterval(shotInterval)
           }
-           }, enemySpeed);
+           }, 500);
         }
         } else {
           while (ball2Exists() != true){
-        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball);
+        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
         let movement = getFirst(spriteE).x
         const shotInterval = setInterval(() => {
           movement = movement - 1
@@ -1966,6 +1973,16 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
 }else if (tprogression == 5){
   addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
   addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
+} else if (gprogression > 1){
+  addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
+  
+  if (currentBoss == "Boss 1"){
+     if (gprogression == 2){
+       addText(`E1: ${e1hit}`, { x:12, y:2, color: color `3` })
+       addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
+       addText(`S2: ${s2hit}`, { x:12, y:2, color: color `3` })
+     }
+  }
 }
 }
 
@@ -1986,6 +2003,7 @@ phit = phit + 30
 }else if (what == "health50"){
 phit = phit + 50
 }else if (what == "health100"){
+  phit = phit + 100 
 }
 }
 function battleStart(){
@@ -2010,19 +2028,16 @@ function chipTimeStart() {
 }
 
 
-function ballExists(spriteType) {
-  return getAll(ball).length > 0;
+function ball1Exists(spriteType) {
+  return getAll(ball1).length > 0;
 }
-
+function ball2Exists(spriteType) {
+  return getAll(ball2).length > 0;
+}
 function stopChipTimer() {
   clearInterval(chipTimer);
 
 }
-
-
-
-
-
 
 
 
