@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/NhygSlYFsoILb8Zyj71B
+//link: https://sprig.hackclub.com/share/jBxhvDVXGYAMgcHkUAm0
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1517,9 +1517,9 @@ tutorial();
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
       shield1X = getFirst(shield1).x
-      shield1X = getFirst(shield1).y 
+      shield1Y = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
-      shield2X = getFirst(shield2).y 
+      shield2Y = getFirst(shield2).y 
         getFirst(enemy1).remove()
         getFirst(shield1).remove()  
         getFirst(shield2).remove()
@@ -1531,9 +1531,9 @@ tutorial();
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
       shield1X = getFirst(shield1).x
-      shield1X = getFirst(shield1).y 
+      shield1Y = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
-      shield2X = getFirst(shield2).y 
+      shield2Y = getFirst(shield2).y 
           getFirst(enemy1).remove()
         getFirst(shield1).remove()  
         getFirst(shield2).remove()
@@ -1545,9 +1545,9 @@ tutorial();
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
       shield1X = getFirst(shield1).x
-      shield1X = getFirst(shield1).y 
+      shield1Y = getFirst(shield1).y 
       enemy2X = getFirst(enemy2).x
-      enemy2X = getFirst(enemy2).y 
+      enemy2Y = getFirst(enemy2).y 
           getFirst(enemy1).remove()
         getFirst(shield1).remove()  
         getFirst(enemy2).remove()
@@ -1558,11 +1558,11 @@ tutorial();
       }else if (currentBoss == "Boss 4"){
         if (gprogression > 1){
           shield1X = getFirst(shield1).x
-      shield1X = getFirst(shield1).y 
+      shield1Y = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
-      shield2X = getFirst(shield2).y 
+      shield2Y = getFirst(shield2).y 
       shield3X = getFirst(shield3).x
-      shield3X = getFirst(shield3).y
+      shield3Y = getFirst(shield3).y
           getFirst(shield3).remove()
         getFirst(shield1).remove()  
         getFirst(shield2).remove()
@@ -1659,7 +1659,7 @@ onInput("w", () => {
     }
   }else if(gprogression == 55){
     upgrade(upgradeslot2)
-    exit()
+    exitu()
   }
 });
 
@@ -1692,7 +1692,7 @@ onInput("a", () => {
     }
     }else if(gprogression == 55){
     upgrade(upgradeslot1)
-    exit()
+    exitu()
   }
 });
 
@@ -1756,10 +1756,10 @@ onInput("d", () => {
     }
     }else if(gprogression == 55){
     upgrade(upgradeslot3)
-    exit()
+    exitu()
   }
 });
-function exit(){
+function exitu(){
 if (gprogression == 55){
   disablechange = false
   disableTimer = 0
@@ -1767,24 +1767,38 @@ if (gprogression == 55){
   getFirst(upgradechip[upgradeslot2]).remove()  
   getFirst(upgradechip[upgradeslot3]).remove()
   setMap(levels[1])
+  gprogression = 2
       if (currentBoss == "Boss 1"){
     addSprite(playerX, playerY, playerSprites[mode])
+     if (e1hit >= 0){   
     addSprite(enemy1X, enemy1Y, enemy1)
+     moveEnemyRandomly(enemy1)   
+     }
+    if (s1hit >= 0){   
     addSprite(shield1X, shield1Y, shield1)
+     moveShieldRandomly(shield1)   
+     }
+    if (s2hit >= 0){   
     addSprite(shield2X, shield2Y, shield2)
+     moveShieldRandomly(shield2)   
+     }
     chipTimeStart()
-    moveShieldRandomly(shield1)
-    moveShieldRandomly(shield2)
-    moveEnemyRandomly(enemy1)    
+       
       }else if (currentBoss == "Boss 2"){
   addSprite(playerX, playerY, playerSprites[mode])
+     if (e1hit >= 0){   
     addSprite(enemy1X, enemy1Y, enemy1)
+     moveEnemyRandomly(enemy1)   
+     }
+    if (s1hit >= 0){   
     addSprite(shield1X, shield1Y, shield1)
+     moveShieldRandomly(shield1)   
+     }
+    if (s2hit >= 0){   
     addSprite(shield2X, shield2Y, shield2)
+     moveShieldRandomly(shield2)   
+     }
     chipTimeStart()
-    moveShieldRandomly(shield1)
-    moveShieldRandomly(shield2)
-    moveEnemyRandomly(enemy1)
       }else if (currentBoss == "Boss 3"){
     addSprite(playerX, playerY, playerSprites[mode]) 
     addSprite(enemy1X, enemy1Y, enemy1)
@@ -1805,7 +1819,7 @@ if (gprogression == 55){
     moveEnemyRandomly(shield3)
       }
     
-      gprogression = 2
+     
       
     }
 }
@@ -2438,5 +2452,7 @@ function stopChipTimer() {
   
   elapsedChipTime = 0
 }
+
+
 
 
