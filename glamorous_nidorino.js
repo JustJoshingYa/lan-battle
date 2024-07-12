@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/A6AjOpRgYaVVpZLDis51
+//link: https://sprig.hackclub.com/share/7Lmkixu24jg2iIzlIaZf
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -83,7 +83,7 @@ let boss1dead = false
 let boss2dead = false
 let boss3dead = false
 let boss4dead = false
-
+let timerEnable = true
 let phit = 10
 let e1hit = 10
 let e2hit = 10
@@ -387,7 +387,7 @@ let upgradeslot1 = 0
 let upgradeslot2 = 0
 let upgradeslot3 = 0
 let disableChange = false
-
+let disableTimer = 0;
 setLegend(
   [ choose, bitmap`
 6666666666666666
@@ -1487,7 +1487,7 @@ if (tprogression == 0){
 }
 });
 
-
+let disableTimers = 0
 
 
 
@@ -1519,6 +1519,7 @@ tutorial();
       shield1X = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
       shield2X = getFirst(shield2).y 
+       disableTimer = 1 
           chipselect()
       }
       }else if (currentBoss == "Boss 2"){
@@ -1529,6 +1530,7 @@ tutorial();
       shield1X = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
       shield2X = getFirst(shield2).y 
+          disableTimer = 1 
           chipselect()
       }
       }else if (currentBoss == "Boss 3"){
@@ -1539,6 +1541,7 @@ tutorial();
       shield1X = getFirst(shield1).y 
       enemy2X = getFirst(enemy2).x
       enemy2X = getFirst(enemy2).y 
+          disableTimer = 1 
           chipselect()
      
       }
@@ -1550,6 +1553,7 @@ tutorial();
       shield2X = getFirst(shield2).y 
       shield3X = getFirst(shield3).x
       shield3X = getFirst(shield3).y
+          disableTimer = 1 
           chipselect()
       }
       }
@@ -1967,10 +1971,12 @@ function moveShieldRandomly(spriteS) {
   if (gprogression == 2){
   let ey = 0;
  if (spriteS == shield1){
+   
   movementIntervals1 = setInterval(() => {
+    
     let currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
     const nextDirection = getRandomDirectionY();
-
+   if (disableTimer == 0){
     switch (nextDirection) {
       case "up":
         ey = -1
@@ -1993,12 +1999,15 @@ function moveShieldRandomly(spriteS) {
         }
         break;
     }
+  } else {
+     clearInterval(movementIntervals1)
+   }
   }, enemySpeed);
  }else if (spriteS == shield2){
   movementIntervals2 = setInterval(() => {
     let currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
     const nextDirection = getRandomDirectionY();
-
+if (disableTimer == 0){
     switch (nextDirection) {
       case "up":
         ey = -1
@@ -2021,6 +2030,9 @@ function moveShieldRandomly(spriteS) {
         }
         break;
     }
+    } else {
+     clearInterval(movementIntervals2)
+   }
   }, enemySpeed);// Adjust the interval for movement speed
  }
  }
@@ -2046,7 +2058,7 @@ function moveEnemyRandomly(spriteE) {
    movementIntervale1 = setInterval(() => {
     let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
     const nextDirection = getRandomDirection();
-
+    if (disableTimer == 0){
     switch (nextDirection) {
       case "up":
         ey = -1
@@ -2102,6 +2114,7 @@ function moveEnemyRandomly(spriteE) {
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
         let movement = getFirst(spriteE).x
        shotInterval1 = setInterval(() => {
+         if (disableTimer == 0){
           playerhit()
           if (shotland == 0){
           movement = movement - 1
@@ -2118,18 +2131,26 @@ function moveEnemyRandomly(spriteE) {
              clearInterval(shotInterval1)
             shotland = 0
           }
+      }else if(disableTimer == 1){
+    clearInterval(shotInterval1)  
+      
+    } 
            }, 500);
         }
       
         break;
     }
     }
+    }else if(disableTimer == 1){
+    clearInterval(movementIntervale1)  
+      
+    }
          }, enemySpeed); // Adjust the interval for movement speed
 }else if (spriteE == enemy2){
    movementIntervale2 = setInterval(() => {
     let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
     const nextDirection = getRandomDirection();
-
+if (disableTimer == 0){
     switch (nextDirection) {
       case "up":
         ey = -1
@@ -2185,6 +2206,7 @@ function moveEnemyRandomly(spriteE) {
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
         let movement = getFirst(spriteE).x
        shotInterval2 = setInterval(() => {
+         if (disableTimer == 0){
           playerhit()
           if (shotland == 0){
           movement = movement - 1
@@ -2201,10 +2223,19 @@ function moveEnemyRandomly(spriteE) {
              clearInterval(shotInterval2)
             shotland = 0
           }
+  
+         }else if(disableTimer == 1){
+    clearInterval(shotInterval2)  
+      
+    } 
            }, 500);
         }
            break;
         }
+    }
+}else if(disableTimer == 1){
+    clearInterval(movementIntervale2)  
+      
     }
            }, enemySpeed); // Adjust the interval for movement speed
 }
