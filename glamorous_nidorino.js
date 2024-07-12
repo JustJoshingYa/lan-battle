@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/YcjEKpOq8ZcJKaZX3V4W
+//link: https://sprig.hackclub.com/share/naCkhuAopdvjw1mHKcRN
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1735,9 +1735,54 @@ onInput("d", () => {
     }
     }else if(gprogression == 55){
     upgrade(upgradeslot3)
+    exit()
   }
 });
-
+function exit(){
+if (gprogression == 55){
+      if (currentBoss == "Boss 1"){
+    addSprite(playerX, playerY, playerSprites[mode])
+    addSprite(enemy1X, enemy1Y, enemy1)
+    addSprite(shield1X, shield1Y, shield1)
+    addSprite(shield2X, shield2Y, shield2)
+    chipTimeStart()
+    moveShieldRandomly(shield1)
+    moveShieldRandomly(shield2)
+    moveEnemyRandomly(enemy1)    
+      }else if (currentBoss == "Boss 2"){
+  addSprite(playerX, playerY, playerSprites[mode])
+    addSprite(enemy1X, enemy1Y, enemy1)
+    addSprite(shield1X, shield1Y, shield1)
+    addSprite(shield2X, shield2Y, shield2)
+    chipTimeStart()
+    moveShieldRandomly(shield1)
+    moveShieldRandomly(shield2)
+    moveEnemyRandomly(enemy1)
+      }else if (currentBoss == "Boss 3"){
+    addSprite(playerX, playerY, playerSprites[mode]) 
+    addSprite(enemy1X, enemy1Y, enemy1)
+    addSprite(enemy2X, enemy2Y, enemy2)
+    addSprite(shield1X, shield1Y, shield1)
+    chipTimeStart()
+    moveShieldRandomly(shield1)
+    moveEnemyRandomly(enemy1)
+    moveEnemyRandomly(enemy2)
+      }else if (currentBoss == "Boss 4"){
+    addSprite(playerX, playerY, playerSprites[mode])
+    addSprite(shield3X, shield3Y, shield3)
+    addSprite(shield1X, shield1Y, shield1)
+    addSprite(shield2X, shield2Y, shield2)
+    chipTimeStart()
+    moveShieldRandomly(shield1)
+    moveShieldRandomly(shield2)
+    moveEnemyRandomly(shield3)
+      }
+    
+      gprogression = 2
+      
+    }
+}
+  
 onInput("j", () => {
   if (tprogression == 3){
     if (canCharge) {
@@ -2328,6 +2373,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals1)
   elapsedChipTime = 0
 }
+
 
 
 
