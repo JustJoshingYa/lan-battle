@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/ZBzgr8ihtc7yLL27TJvK
+//link: https://sprig.hackclub.com/share/6Lw7Us0RTWqTXPhcSlue
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -117,9 +117,11 @@ const levels = [map`
 fOf
 IQU
 fNf`, map`
-XCZ
-LMV
-KJH`];
+1888887
+2999996
+2999996
+2999996
+3444445`];
 let jcount = 0;
 let currentBoss = "No Boss"
 const titlemelody = tune`
@@ -380,6 +382,11 @@ var chipTimer;
 var elapsedChipTime;
 var shotInterval1
 var shotInterval2
+const upgradechip = [bUp,shotUp,speedUp,coolUp,h30Up,h50Up,h100Up]
+let upgradeslot1 = 0
+let upgradeslot2 = 0
+let upgradeslot3 = 0
+
 setLegend(
   [ choose, bitmap`
 6666666666666666
@@ -1511,6 +1518,7 @@ tutorial();
       shield1X = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
       shield2X = getFirst(shield2).y 
+          chipselect()
       }
       }else if (currentBoss == "Boss 2"){
         if (gprogression > 1){
@@ -1520,6 +1528,7 @@ tutorial();
       shield1X = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
       shield2X = getFirst(shield2).y 
+          chipselect()
       }
       }else if (currentBoss == "Boss 3"){
         if (gprogression > 1){
@@ -1529,6 +1538,7 @@ tutorial();
       shield1X = getFirst(shield1).y 
       enemy2X = getFirst(enemy2).x
       enemy2X = getFirst(enemy2).y 
+          chipselect()
      
       }
       }else if (currentBoss == "Boss 4"){
@@ -1538,17 +1548,29 @@ tutorial();
       shield2X = getFirst(shield2).x
       shield2X = getFirst(shield2).y 
       shield3X = getFirst(shield3).x
-      shield3X = getFirst(shield3).y 
+      shield3X = getFirst(shield3).y
+          chipselect()
       }
       }
     
-      clearText()
-      setMap(levels[0])
+      
       
     }
   }
 });
 
+function chipselect(){
+if (canChip == true){
+clearText()
+setMap(levels[3])
+upgradeslot1 = Math.floor(Math.random() * 7);
+upgradeslot2 = Math.floor(Math.random() * 7);
+upgradeslot3 = Math.floor(Math.random() * 7);
+ addSprite(1, 2, upgradechip[upgradeslot1]) 
+  addSprite(3, 2, upgradechip[upgradeslot2]) 
+  addSprite(5, 2, upgradechip[upgradeslot3]) 
+}
+}
 function tutorial(){
   if (tprogression == 0){
 addSprite(2, 3, playerSprites[mode])
@@ -1642,7 +1664,7 @@ onInput("a", () => {
     gprogression = 2 
     chipTimeStart()
     moveShieldRandomly(shield1)
-      moveShieldRandomly(shield2)
+    moveShieldRandomly(shield2)
     moveEnemyRandomly(enemy1)
     }
   }
@@ -2318,9 +2340,5 @@ function stopChipTimer() {
   clearInterval(movementIntervals1)
   elapsedChipTime = 0
 }
-
-
-
-
 
 
