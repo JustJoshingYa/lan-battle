@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/naCkhuAopdvjw1mHKcRN
+//link: https://sprig.hackclub.com/share/A6AjOpRgYaVVpZLDis51
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -386,6 +386,7 @@ const upgradechip = [bUp,shotUp,speedUp,coolUp,h30Up,h50Up,h100Up]
 let upgradeslot1 = 0
 let upgradeslot2 = 0
 let upgradeslot3 = 0
+let disableChange = false
 
 setLegend(
   [ choose, bitmap`
@@ -1651,7 +1652,7 @@ onInput("a", () => {
   acheck = true;
   checkInput();
   }
-  else if (tprogression > 2 || gprogression > 1) {
+  else if (tprogression > 2 || gprogression == 2) {
     getFirst(playerSprites[mode]).x -= 1;
   }else if (gprogression == 1){
     if (boss2dead == true){
@@ -1713,7 +1714,7 @@ onInput("d", () => {
   getFirst(playerSprites[mode]).x += 1;
   dcheck = true;
     checkInput();
-  }else if (tprogression > 2 || gprogression > 1) {
+  }else if (tprogression > 2 || gprogression == 2) {
     getFirst(playerSprites[mode]).x += 1;
   }else if (gprogression == 1){
     if (boss3dead == true){
@@ -1740,6 +1741,8 @@ onInput("d", () => {
 });
 function exit(){
 if (gprogression == 55){
+  disablechange = false
+  setMap(levels[1])
       if (currentBoss == "Boss 1"){
     addSprite(playerX, playerY, playerSprites[mode])
     addSprite(enemy1X, enemy1Y, enemy1)
@@ -2266,13 +2269,15 @@ function startChargingCooldown() {
 }
 
 
-    
+
 function replacePlayer(oldSprite, newmode) {
+  if (disableChange == false){
   let x = getFirst(playerSprites[mode]).x
   let y = getFirst(playerSprites[mode]).y
  getFirst(playerSprites[mode]).remove();
 addSprite(x, y, playerSprites[newmode]);
   mode = newmode;
+  }
 }
 function updateBattleText(){
 if (tprogression <= 4 && tprogression > 1){
@@ -2360,6 +2365,7 @@ function ball2Exists(spriteType) {
 }
 
 function stopChipTimer() {
+  disableChange = true
   clearInterval(chipTimer)
   if (ball1Exists == true){
   clearInterval(shotInterval1)
@@ -2371,9 +2377,9 @@ function stopChipTimer() {
   clearInterval(movementIntervals2)
   clearInterval(movementIntervale2)
   clearInterval(movementIntervals1)
+  
   elapsedChipTime = 0
 }
-
 
 
 
