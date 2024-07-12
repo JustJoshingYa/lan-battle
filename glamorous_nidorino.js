@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/7Lmkixu24jg2iIzlIaZf
+//link: https://sprig.hackclub.com/share/NhygSlYFsoILb8Zyj71B
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1511,6 +1511,7 @@ tutorial();
       stopChipTimer()
       playerX = getFirst(playerSprites[mode]).x
       playerY = getFirst(playerSprites[mode]).y
+       getFirst(playerSprites[mode]).remove()
       if (currentBoss == "Boss 1"){
         if (gprogression > 1){
       enemy1X = getFirst(enemy1).x
@@ -1519,6 +1520,9 @@ tutorial();
       shield1X = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
       shield2X = getFirst(shield2).y 
+        getFirst(enemy1).remove()
+        getFirst(shield1).remove()  
+        getFirst(shield2).remove()
        disableTimer = 1 
           chipselect()
       }
@@ -1530,6 +1534,9 @@ tutorial();
       shield1X = getFirst(shield1).y 
       shield2X = getFirst(shield2).x
       shield2X = getFirst(shield2).y 
+          getFirst(enemy1).remove()
+        getFirst(shield1).remove()  
+        getFirst(shield2).remove()
           disableTimer = 1 
           chipselect()
       }
@@ -1541,6 +1548,9 @@ tutorial();
       shield1X = getFirst(shield1).y 
       enemy2X = getFirst(enemy2).x
       enemy2X = getFirst(enemy2).y 
+          getFirst(enemy1).remove()
+        getFirst(shield1).remove()  
+        getFirst(enemy2).remove()
           disableTimer = 1 
           chipselect()
      
@@ -1553,6 +1563,9 @@ tutorial();
       shield2X = getFirst(shield2).y 
       shield3X = getFirst(shield3).x
       shield3X = getFirst(shield3).y
+          getFirst(shield3).remove()
+        getFirst(shield1).remove()  
+        getFirst(shield2).remove()
           disableTimer = 1 
           chipselect()
       }
@@ -1624,7 +1637,7 @@ onInput("w", () => {
   getFirst(playerSprites[mode]).y -= 1;
   wcheck = true;
   checkInput();
-  }else if (tprogression > 2 || gprogression > 1) {
+  }else if (tprogression > 2 || gprogression == 2) {
   getFirst(playerSprites[mode]).y -= 1;
   } else if (gprogression == 1){
      if (boss1dead == true){
@@ -1646,6 +1659,7 @@ onInput("w", () => {
     }
   }else if(gprogression == 55){
     upgrade(upgradeslot2)
+    exit()
   }
 });
 
@@ -1678,6 +1692,7 @@ onInput("a", () => {
     }
     }else if(gprogression == 55){
     upgrade(upgradeslot1)
+    exit()
   }
 });
 
@@ -1688,7 +1703,7 @@ onInput("s", () => {
   scheck = true;
   checkInput();
   }
-  else if (tprogression > 2 || gprogression > 1) {
+  else if (tprogression > 2 || gprogression == 2) {
   getFirst(playerSprites[mode]).y += 1;
   }else if (gprogression == 1){
     if (boss4dead == true){
@@ -1707,6 +1722,7 @@ onInput("s", () => {
     moveShieldRandomly(shield1)
     moveShieldRandomly(shield2)
     moveEnemyRandomly(shield3)
+      
     }
   }
 });
@@ -1746,6 +1762,10 @@ onInput("d", () => {
 function exit(){
 if (gprogression == 55){
   disablechange = false
+  disableTimer = 0
+  getFirst(upgradechip[upgradeslot1]).remove()
+  getFirst(upgradechip[upgradeslot2]).remove()  
+  getFirst(upgradechip[upgradeslot3]).remove()
   setMap(levels[1])
       if (currentBoss == "Boss 1"){
     addSprite(playerX, playerY, playerSprites[mode])
@@ -2352,23 +2372,30 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
 function upgrade(what){
 if (what == 0){
   //busterUp
+  console.log("bup");
   busterPw = 1.5
 } else if (what == 3){
   //cool
+  console.log("cool");
   chargeCooldownTime = 1000
 } else if (what == 2){
   //speed
+  console.log("speed");
   enemySpeed = 2000
 }else if (what == 1){
   //shotgun
+  console.log("shot");
   //does small damage to all enemies 
 }else if (what == 4){
+  console.log("h30");
   //health30
 phit = phit + 30
 }else if (what == 5){
+  console.log("h50");
   //health50
 phit = phit + 50
 }else if (what == 6){
+  console.log("h100");
   //health100
   phit = phit + 100 
 }
@@ -2411,6 +2438,5 @@ function stopChipTimer() {
   
   elapsedChipTime = 0
 }
-
 
 
