@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/6Lw7Us0RTWqTXPhcSlue
+//link: https://sprig.hackclub.com/share/YcjEKpOq8ZcJKaZX3V4W
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1566,9 +1566,11 @@ setMap(levels[3])
 upgradeslot1 = Math.floor(Math.random() * 7);
 upgradeslot2 = Math.floor(Math.random() * 7);
 upgradeslot3 = Math.floor(Math.random() * 7);
+  gprogression = 55
  addSprite(1, 2, upgradechip[upgradeslot1]) 
   addSprite(3, 2, upgradechip[upgradeslot2]) 
   addSprite(5, 2, upgradechip[upgradeslot3]) 
+  
 }
 }
 function tutorial(){
@@ -1637,6 +1639,8 @@ onInput("w", () => {
     moveShieldRandomly(shield2)
     moveEnemyRandomly(enemy1)
     }
+  }else if(gprogression == 55){
+    upgrade(upgradeslot2)
   }
 });
 
@@ -1667,6 +1671,8 @@ onInput("a", () => {
     moveShieldRandomly(shield2)
     moveEnemyRandomly(enemy1)
     }
+    }else if(gprogression == 55){
+    upgrade(upgradeslot1)
   }
 });
 
@@ -1727,6 +1733,8 @@ onInput("d", () => {
     moveEnemyRandomly(enemy1)
     moveEnemyRandomly(enemy2)
     }
+    }else if(gprogression == 55){
+    upgrade(upgradeslot3)
   }
 });
 
@@ -2064,31 +2072,7 @@ function moveEnemyRandomly(spriteE) {
           }
            }, 500);
         }
-       /* } else {
-          while (ball2Exists() != true){
-        addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
-        let movement = getFirst(spriteE).x
-         shotInterval2 = setInterval(() => {
-          playerhit()
-          if (shotland == 0){
-          movement = movement - 1
-          if (movement > 1){
-         getFirst(ball2).x -= 1; 
-          } else {
-          getFirst(ball2).remove()
-            clearInterval(shotInterval2)
-          }
-          }else if (shotland == 2){
-            getFirst(ball2).remove()
-            phit = phit - 5
-            updateBattleText();
-            shotland = 0
-          clearInterval(shotInterval2)
-          }
-           }, 500);
-        }
-        }
-        */
+      
         break;
     }
     }
@@ -2285,22 +2269,26 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
 
 
 function upgrade(what){
-if (what == "busterUp"){
+if (what == 0){
+  //busterUp
   busterPw = 1.5
-} else if (what == "cool"){
+} else if (what == 3){
+  //cool
   chargeCooldownTime = 1000
-} else if (what == "speed"){
+} else if (what == 2){
+  //speed
   enemySpeed = 2000
-}else if (what == "poison"){
-//player starts shooting lv 2 bullets automatically at a reduced cooldown rate, all the player needs to do is just move to avoid attacks
-  
-}else if (what == "shotgun"){
+}else if (what == 1){
+  //shotgun
   //does small damage to all enemies 
-}else if (what == "health30"){
+}else if (what == 4){
+  //health30
 phit = phit + 30
-}else if (what == "health50"){
+}else if (what == 5){
+  //health50
 phit = phit + 50
-}else if (what == "health100"){
+}else if (what == 6){
+  //health100
   phit = phit + 100 
 }
 }
@@ -2340,5 +2328,6 @@ function stopChipTimer() {
   clearInterval(movementIntervals1)
   elapsedChipTime = 0
 }
+
 
 
