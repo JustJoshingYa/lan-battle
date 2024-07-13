@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/DwRxygHZ81ehpY2HRCou
+//link: https://sprig.hackclub.com/share/HACc8ZBWtrtCF9jsQQ2A
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1669,7 +1669,10 @@ onInput("w", () => {
     currentBoss = "Boss 1"
     setMap(levels[1])
     gprogression = 2 
-    updateBattleText()
+    e1hit = 10
+    s1hit = 10
+    s2hit = 10
+    updateBattleText() 
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, enemy1)
     addSprite(4, 3, shield1)
@@ -1702,7 +1705,10 @@ onInput("a", () => {
     currentBoss = "Boss 2"
     setMap(levels[1])
     gprogression = 2 
-    updateBattleText()
+     e1hit = 10
+     s1hit = 10
+     s2hit = 10
+       updateBattleText()
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, enemy1)
     addSprite(4, 3, shield1)
@@ -1736,6 +1742,10 @@ onInput("s", () => {
      
     setMap(levels[1])
       gprogression = 2 
+ 
+     s1hit = 10
+     s2hit = 10
+     s3hit = 10
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, shield3)
     addSprite(4, 3, shield1)
@@ -1767,6 +1777,9 @@ onInput("d", () => {
     currentBoss = "Boss 3"
     setMap(levels[1])
     gprogression = 2 
+    e1hit = 1
+    e2hit = 1
+    s1hit = 1
     updateBattleText()
     addSprite(3, 3, playerSprites[mode]) 
     addSprite(5, 2, enemy1)
@@ -1785,6 +1798,7 @@ onInput("d", () => {
 });
 function exitu(){
 if (gprogression == 55){
+  death()
   disablechange = false
   disableTimer = 0
   getFirst(upgradechip[upgradeslot1]).remove()
@@ -2153,27 +2167,49 @@ if (e2hit <= 0){
    getFirst(enemy2).remove() 
   
 }
+ }
  if (currentBoss == "Boss 1"){
-    
+    if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
+    waveVic()
       
+    }
       }else if (currentBoss == "Boss 2"){
-       
+    if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
+    waveVic()
+    }
       
-      }else if (currentBoss == "Boss 3"){
-       
+    }else if (currentBoss == "Boss 3"){
+    if (e1hit <= 0 && s1hit <= 0 && e2hit <= 0){
+    waveVic()
+    setTimeout(() => {
+    
+      }, 2000);
+    }
       
       }else if (currentBoss == "Boss 4"){
-       
+    if (s1hit <= 0 && s2hit <= 0 && s3hit <= 0){
+    waveVic()
+    }   
       
-      }
-    
-      
-      
-
-
+ 
    
   }
 }
+function bossSpawn(){
+
+  
+}
+function waveVic(){
+setMap(levels[0])
+clearText()
+addText("Pre Boss Wave", { x:4, y:6, color: color `2` })
+addText("Complete!", { x:6, y:8, color: color `4` })
+setTimeout(() => {
+  addText("Loading Boss", { x:4, y:10, color: color `4` })
+         
+          }, 2000);
+}
+
 function checkInput(){
   if (tprogression == 2){
   if (wcheck == true && acheck == true && scheck == true && dcheck == true){
@@ -2667,6 +2703,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
 
 
 
