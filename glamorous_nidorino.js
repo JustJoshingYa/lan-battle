@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/jBxhvDVXGYAMgcHkUAm0
+//link: https://sprig.hackclub.com/share/9fLX5Bb65g3Ayh9ObUCF
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -357,6 +357,7 @@ let jcheck = false;
 let shotland = 0
 var movementIntervals1; 
 var movementIntervals2; 
+var movementIntervals3;
 var movementIntervale1; 
 var movementIntervale2;
 let enemy1X;
@@ -1463,7 +1464,8 @@ LLLLLLLLLLLLLLLL`],
   )
 setMap(levels[level])
 addText("LAN Battle", { x:5, y:6, color: color `2` })
-addText("press i to proceed", { x:1, y:9, color: color `2` })
+addText("press i for tutorial", { x:1, y:9, color: color `2` })
+addText("or l to battle", { x:1, y:11, color: color `2` })
 setSolids([ pfloor, black, enemy1])
 setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4],playerSprites[5],playerSprites[6],playerSprites[7],playerSprites[8],playerSprites[9],playerSprites[10]])
 setPushables({
@@ -1478,14 +1480,7 @@ if (tprogression == 0){
 }
 });
 
-onInput("k",() => {
-if (tprogression == 0){
-  setMap(levels[2])
-  clearText();
-  gprogression = 1
-  addSprite(0, 1, choose)
-}
-});
+
 
 let disableTimers = 0
 
@@ -1770,15 +1765,15 @@ if (gprogression == 55){
   gprogression = 2
       if (currentBoss == "Boss 1"){
     addSprite(playerX, playerY, playerSprites[mode])
-     if (e1hit >= 0){   
+     if (e1hit > 0){   
     addSprite(enemy1X, enemy1Y, enemy1)
      moveEnemyRandomly(enemy1)   
      }
-    if (s1hit >= 0){   
+    if (s1hit > 0){   
     addSprite(shield1X, shield1Y, shield1)
      moveShieldRandomly(shield1)   
      }
-    if (s2hit >= 0){   
+    if (s2hit > 0){   
     addSprite(shield2X, shield2Y, shield2)
      moveShieldRandomly(shield2)   
      }
@@ -1786,37 +1781,53 @@ if (gprogression == 55){
        
       }else if (currentBoss == "Boss 2"){
   addSprite(playerX, playerY, playerSprites[mode])
-     if (e1hit >= 0){   
+     if (e1hit > 0){   
     addSprite(enemy1X, enemy1Y, enemy1)
      moveEnemyRandomly(enemy1)   
      }
-    if (s1hit >= 0){   
+    if (s1hit > 0){   
     addSprite(shield1X, shield1Y, shield1)
      moveShieldRandomly(shield1)   
      }
-    if (s2hit >= 0){   
+    if (s2hit > 0){   
     addSprite(shield2X, shield2Y, shield2)
      moveShieldRandomly(shield2)   
      }
     chipTimeStart()
-      }else if (currentBoss == "Boss 3"){
-    addSprite(playerX, playerY, playerSprites[mode]) 
+        
+      }else if (currentBoss == "Boss 3"){ 
+   addSprite(playerX, playerY, playerSprites[mode])
+     if (e1hit > 0){   
     addSprite(enemy1X, enemy1Y, enemy1)
-    addSprite(enemy2X, enemy2Y, enemy2)
+     moveEnemyRandomly(enemy1)   
+     }
+    if (s1hit > 0){   
     addSprite(shield1X, shield1Y, shield1)
+     moveShieldRandomly(shield1)   
+     }
+    if (e2hit > 0){   
+    addSprite(enemy2X, enemy2Y, enemy2)
+     moveEnemyRandomly(enemy2)   
+     }
+
     chipTimeStart()
-    moveShieldRandomly(shield1)
-    moveEnemyRandomly(enemy1)
-    moveEnemyRandomly(enemy2)
+  
+    
       }else if (currentBoss == "Boss 4"){
     addSprite(playerX, playerY, playerSprites[mode])
+     if (s3hit > 0){   
     addSprite(shield3X, shield3Y, shield3)
+      moveShieldRandomly(shield3)
+     }
+    if (s1hit > 0){   
     addSprite(shield1X, shield1Y, shield1)
-    addSprite(shield2X, shield2Y, shield2)
+     moveShieldRandomly(shield1)   
+     }
+    if (s2hit > 0){   
+    addSprite(enemy2X, enemy2Y, enemy2)
+      moveShieldRandomly(shield2) 
+    }
     chipTimeStart()
-    moveShieldRandomly(shield1)
-    moveShieldRandomly(shield2)
-    moveEnemyRandomly(shield3)
       }
     
      
@@ -2066,6 +2077,37 @@ if (disableTimer == 0){
     }
     } else {
      clearInterval(movementIntervals2)
+   }
+  }, enemySpeed);// Adjust the interval for movement speed
+ }else if (spriteS == shield3){
+  movementIntervals3 = setInterval(() => {
+    let currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
+    const nextDirection = getRandomDirectionY();
+if (disableTimer == 0){
+    switch (nextDirection) {
+      case "up":
+        ey = -1
+        currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteS).y -= 1;
+          ey = 0;
+        } else {
+          ey = 0;
+        }
+        break;
+      case "down":
+        ey = 1
+        currentTile = getTile(getFirst(spriteS).x, getFirst(spriteS).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteS).y += 1;
+          ey = 0;
+        } else {
+          ey = 0;
+        }
+        break;
+    }
+    } else {
+     clearInterval(movementIntervals3)
    }
   }, enemySpeed);// Adjust the interval for movement speed
  }
@@ -2452,6 +2494,7 @@ function stopChipTimer() {
   
   elapsedChipTime = 0
 }
+
 
 
 
