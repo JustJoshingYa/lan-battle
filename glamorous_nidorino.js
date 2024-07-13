@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/Q4svLFQP2L8bT20y9M1y
+//link: https://sprig.hackclub.com/share/ZJJ4u0ZaCAPhObFS7CEN
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1668,12 +1668,12 @@ onInput("w", () => {
   }else{
     currentBoss = "Boss 1"
     setMap(levels[1])
+    gprogression = 2 
     updateBattleText()
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, enemy1)
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
-    gprogression = 2 
     chipTimeStart()
     moveShieldRandomly(shield1)
     moveShieldRandomly(shield2)
@@ -1701,12 +1701,12 @@ onInput("a", () => {
     }else{
     currentBoss = "Boss 2"
     setMap(levels[1])
-      updateBattleText()
+    gprogression = 2 
+    updateBattleText()
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, enemy1)
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
-    gprogression = 2 
     chipTimeStart()
     moveShieldRandomly(shield1)
     moveShieldRandomly(shield2)
@@ -1733,13 +1733,14 @@ onInput("s", () => {
     addSprite(1, 0, choose)
   }else{
     currentBoss = "Boss 4"
-     updateBattleText()
+     
     setMap(levels[1])
+      gprogression = 2 
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, shield3)
     addSprite(4, 3, shield1)
     addSprite(4, 4, shield2)
-    gprogression = 2 
+    updateBattleText()
       chipTimeStart()
     moveShieldRandomly(shield1)
     moveShieldRandomly(shield2)
@@ -1765,12 +1766,13 @@ onInput("d", () => {
   }else{
     currentBoss = "Boss 3"
     setMap(levels[1])
+    gprogression = 2 
     updateBattleText()
     addSprite(3, 3, playerSprites[mode]) 
     addSprite(5, 2, enemy1)
     addSprite(4, 3, enemy2)
     addSprite(4, 4, shield1)
-    gprogression = 2 
+    
     chipTimeStart()
     moveShieldRandomly(shield1)
     moveEnemyRandomly(enemy1)
@@ -1959,7 +1961,8 @@ for (let i = 0; i < 2; i++) {
 
 function ouch(j){
   playTune(hit)
-   if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyX === getFirst(playerSprites[mode]).x + j)){
+  if (shotEnable == false){
+   if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyY === 4 - j)){
         if (chargeState == 0){
         t1hit = t1hit - (1 * busterPw)
         }else if (chargeState == 1){
@@ -1969,9 +1972,9 @@ function ouch(j){
         }else if (chargeState == 3){
         t1hit = t1hit - (3 * busterPw)
         }else if (chargeState == 4){
-        t1hit = t1hit - (5 * busterPw)
+        t1hit = t1hit - (8 * busterPw)
         }
-   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy1 && enemyX === getFirst(playerSprites[mode]).x + j)){
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy1 && enemyY === 4 - j)){
     if (chargeState == 0){
         e1hit = e1hit - (1 * busterPw)
         }else if (chargeState == 1){
@@ -1981,9 +1984,9 @@ function ouch(j){
         }else if (chargeState == 3){
         e1hit = e1hit - (4 * busterPw)
         }else if (chargeState == 4){
-        e1hit = e1hit - (5 * busterPw)
+        e1hit = e1hit - (8 * busterPw)
     }
-     }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy2 && enemyX === getFirst(playerSprites[mode]).x + j)){
+     }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy2 && enemyY === 4 - j)){
     if (chargeState == 0){
         e2hit = e2hit - (1 * busterPw)
         }else if (chargeState == 1){
@@ -1993,9 +1996,9 @@ function ouch(j){
         }else if (chargeState == 3){
         e2hit = e2hit - (4 * busterPw)
         }else if (chargeState == 4){
-        e2hit = e2hit - (5 * busterPw)
+        e2hit = e2hit - (8 * busterPw)
     }
-        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyX === getFirst(playerSprites[mode]).x + j)){
+        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyY === 4 - j)){
       if (chargeState == 0){
         s1hit = s1hit - 0
         }else if (chargeState == 1){
@@ -2005,9 +2008,9 @@ function ouch(j){
         }else if (chargeState == 3){
         s1hit = s1hit - (2.5 * busterPw)
         }else if (chargeState == 4){
-        s1hit = s1hit - (3 * busterPw)
+        s1hit = s1hit - (8 * busterPw)
       }
-   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyX === getFirst(playerSprites[mode]).x + j)){
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyY === 4 - j)){
       if (chargeState == 0){
         s2hit = s2hit - 0
         }else if (chargeState == 1){
@@ -2017,11 +2020,97 @@ function ouch(j){
         }else if (chargeState == 3){
         s2hit = s2hit - 2.5
         }else if (chargeState == 4){
+        s2hit = s2hit - 5
+   }
+}else if(enemyInFront = frontTile.some(sprite => sprite.type === shield3 && enemyY === 4 - j)){
+      if (chargeState == 0){
+        s3hit = s3hit - 3
+        }else if (chargeState == 1){
+        s3hit = s3hit - 3
+        }else if (chargeState == 2){
+        s3hit = s3hit - 3
+        }else if (chargeState == 3){
+        s3hit = s3hit - 3
+        }else if (chargeState == 4){
+        s3hit = s3hit - 3
+   }
+}
+  }else if (shotEnable == true){
+   if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyY === 4 + j)){
+        if (chargeState == 0){
+        t1hit = t1hit - (4 * busterPw)
+        }else if (chargeState == 1){
+        t1hit = t1hit - (4 * busterPw)
+        }else if (chargeState == 2){
+        t1hit = t1hit - (4 * busterPw)
+        }else if (chargeState == 3){
+        t1hit = t1hit - (4 * busterPw)
+        }else if (chargeState == 4){
+        t1hit = t1hit - (4 * busterPw)
+        }
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy1 && enemyY === 4 - j)){
+    if (chargeState == 0){
+        e1hit = e1hit - (4 * busterPw)
+        }else if (chargeState == 1){
+        e1hit = e1hit - (4 * busterPw)
+        }else if (chargeState == 2){
+        e1hit = e1hit - (4 * busterPw)
+        }else if (chargeState == 3){
+        e1hit = e1hit - (4 * busterPw)
+        }else if (chargeState == 4){
+        e1hit = e1hit - (4 * busterPw)
+    }
+     }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy2 && enemyY === 4 - j)){
+    if (chargeState == 0){
+        e2hit = e2hit - (4 * busterPw)
+        }else if (chargeState == 1){
+        e2hit = e2hit - (4 * busterPw)
+        }else if (chargeState == 2){
+        e2hit = e2hit - (4 * busterPw)
+        }else if (chargeState == 3){
+        e2hit = e2hit - (4 * busterPw)
+        }else if (chargeState == 4){
+        e2hit = e2hit - (4 * busterPw)
+    }
+        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyY === 4 - j)){
+      if (chargeState == 0){
+        s1hit = s1hit - 3
+        }else if (chargeState == 1){
+        s1hit = s1hit - 3
+        }else if (chargeState == 2){
+        s1hit = s1hit - (3 * busterPw)
+        }else if (chargeState == 3){
+        s1hit = s1hit - (3 * busterPw)
+        }else if (chargeState == 4){
+        s1hit = s1hit - (3 * busterPw)
+      }
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyY === 4 - j)){
+      if (chargeState == 0){
         s2hit = s2hit - 3
+        }else if (chargeState == 1){
+        s2hit = s2hit - 3
+        }else if (chargeState == 2){
+        s2hit = s2hit - 3
+        }else if (chargeState == 3){
+        s2hit = s2hit - 3
+        }else if (chargeState == 4){
+        s2hit = s2hit - 3
+   }
+}else if(enemyInFront = frontTile.some(sprite => sprite.type === shield3 && enemyY === 4 - j)){
+      if (chargeState == 0){
+        s3hit = s3hit - 3
+        }else if (chargeState == 1){
+        s3hit = s3hit - 3
+        }else if (chargeState == 2){
+        s3hit = s3hit - 3
+        }else if (chargeState == 3){
+        s3hit = s3hit - 3
+        }else if (chargeState == 4){
+        s3hit = s3hit - 3
    }
 }
 }
-
+}
 function death(){
   //tutorial deaths
 if (t1hit <= 0){
@@ -2037,9 +2126,9 @@ if (t1hit <= 0){
    getFirst(shield1).remove()
 }
 
-if (gprogression > 1) {
+if (gprogression == 2) {
     if (s1hit <= 0){
-    clearInterval(movementIntervals1)
+  clearInterval(movementIntervals1)
    getFirst(shield1).remove()
 } else if (e1hit <= 0){
    clearInterval(movementIntervale1)
@@ -2049,8 +2138,9 @@ if (gprogression > 1) {
     getFirst(shield2).remove()
       
 } else if (e2hit <= 0){
-   getFirst(enemy2).remove() 
   clearInterval(movementIntervale2)
+   getFirst(enemy2).remove() 
+  
 }
   }
 }
@@ -2458,8 +2548,8 @@ addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` })
   }else if (currentBoss == "Boss 3"){
      if (gprogression == 2){
        addText(`E1: ${e1hit}`, { x:12, y:3, color: color `3` })
-       addText(`S1: ${e2hit}`, { x:12, y:2, color: color `3` })
-       addText(`S2: ${s1hit}`, { x:12, y:1, color: color `3` })
+       addText(`E2: ${e2hit}`, { x:12, y:2, color: color `3` })
+       addText(`S1: ${s1hit}`, { x:12, y:1, color: color `3` })
      }
     }else if (currentBoss == "Boss 4"){
      if (gprogression == 2){
@@ -2547,5 +2637,6 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
 
 
