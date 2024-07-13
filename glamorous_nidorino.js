@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/ELzvVE5qSJpJH8aTOr1w
+//link: https://sprig.hackclub.com/share/Q4svLFQP2L8bT20y9M1y
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1766,7 +1766,7 @@ onInput("d", () => {
     currentBoss = "Boss 3"
     setMap(levels[1])
     updateBattleText()
-    addSprite(2, 3, playerSprites[mode]) 
+    addSprite(3, 3, playerSprites[mode]) 
     addSprite(5, 2, enemy1)
     addSprite(4, 3, enemy2)
     addSprite(4, 4, shield1)
@@ -1889,7 +1889,10 @@ onInput("j", () => {
 });
 let frontTile;
 let enemyX;
+let enemyY;
+let shotEnable = true
 function hitDetect(){
+  if (shotEnable == false){
   let k = 0
 for (let i = 0; i < 6; i++) {
     frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
@@ -1912,6 +1915,32 @@ for (let i = 0; i < 6; i++) {
     playTune(miss)  
   }
     
+  }
+  }else if (shotEnable == true && getFirst(playerSprites[mode]).x == 3) {
+    let k = 0
+for (let i = 0; i < 2; i++) {
+    frontTile = getTile(getFirst(playerSprites[mode]).x + 1,  4 - i);
+     enemyInFront = frontTile.some(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2);
+    
+    enemyY = frontTile.find(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2)?.y;
+
+    // Check if enemy is directly in front on the same x-axis
+    if (enemyInFront && enemyY === 4 - i) {
+      
+      k = k + 1
+      ouch(i); // Call hit function only if enemy is on the same x-axis
+      updateBattleText();
+      death();
+     
+      
+    
+}
+  if(k = 0){
+    playTune(miss)  
+  }
+    
+  }
+  
   }
 }
    function playerhit(){
@@ -2305,7 +2334,7 @@ if (disableTimer == 0){
         break;
         case "shoot":
         if (spriteE == enemy2){
-        while (ball1Exists() != true){
+        while (ball2Exists() != true){
         addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball2);
         let movement = getFirst(spriteE).x
        shotInterval2 = setInterval(() => {
@@ -2326,10 +2355,8 @@ if (disableTimer == 0){
              clearInterval(shotInterval2)
             shotland = 0
           }
-  
          }else if(disableTimer == 1){
     clearInterval(shotInterval2)  
-      
     } 
            }, 500);
         }
@@ -2338,7 +2365,6 @@ if (disableTimer == 0){
     }
 }else if(disableTimer == 1){
     clearInterval(movementIntervale2)  
-      
     }
            }, enemySpeed); // Adjust the interval for movement speed
 }
@@ -2468,7 +2494,7 @@ if (what == 0){
 }else if (what == 1){
   //shotgun
   console.log("shot");
-  //does small damage to all enemies 
+  shotEnable = true 
 }else if (what == 4){
   console.log("h30");
   //health30
@@ -2521,8 +2547,5 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
-
-
-
 
 
