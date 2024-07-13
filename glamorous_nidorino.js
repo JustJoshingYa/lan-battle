@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/HACc8ZBWtrtCF9jsQQ2A
+//link: https://sprig.hackclub.com/share/i6n1kZ2iTuJVOyriNtrp
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1659,7 +1659,7 @@ onInput("w", () => {
   getFirst(playerSprites[mode]).y -= 1;
   wcheck = true;
   checkInput();
-  }else if (tprogression > 2 || gprogression == 2) {
+  }else if (tprogression > 2 || gprogression == 2 || gprogression == 4) {
   getFirst(playerSprites[mode]).y -= 1;
   } else if (gprogression == 1){
      if (boss1dead == true){
@@ -1695,7 +1695,7 @@ onInput("a", () => {
   acheck = true;
   checkInput();
   }
-  else if (tprogression > 2 || gprogression == 2) {
+  else if (tprogression > 2 || gprogression == 2 || gprogression == 4) {
     getFirst(playerSprites[mode]).x -= 1;
   }else if (gprogression == 1){
     if (boss2dead == true){
@@ -1731,7 +1731,7 @@ onInput("s", () => {
   scheck = true;
   checkInput();
   }
-  else if (tprogression > 2 || gprogression == 2) {
+  else if (tprogression > 2 || gprogression == 2|| gprogression == 4) {
   getFirst(playerSprites[mode]).y += 1;
   }else if (gprogression == 1){
     if (boss4dead == true){
@@ -1767,7 +1767,7 @@ onInput("d", () => {
   getFirst(playerSprites[mode]).x += 1;
   dcheck = true;
     checkInput();
-  }else if (tprogression > 2 || gprogression == 2) {
+  }else if (tprogression > 2 || gprogression == 2 || gprogression == 4) {
     getFirst(playerSprites[mode]).x += 1;
   }else if (gprogression == 1){
     if (boss3dead == true){
@@ -1887,7 +1887,7 @@ onInput("j", () => {
     }else {
     playTune(overheat)
   }
-    } else if (tprogression > 3 || gprogression > 1){
+    } else if (tprogression > 3 || gprogression == 2 || gprogression == 4){
    if (canCharge) {
     if (!charging) {
       startChargingAnimation();
@@ -2171,8 +2171,19 @@ if (e2hit <= 0){
  if (currentBoss == "Boss 1"){
     if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
     waveVic()
-      
-    }
+    setTimeout(() => {
+    gprogression = 4 
+    setMap(levels[1])
+    updateBattleText()
+    addSprite(2, 3, playerSprites[mode]) 
+    addSprite(6, 3, boss1)
+    addSprite(6, 2, clips)
+    addSprite(6, 1, arrow1)
+    chipTimeStart()
+    
+    
+      }, 4000);
+    } 
       }else if (currentBoss == "Boss 2"){
     if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
     waveVic()
@@ -2183,7 +2194,7 @@ if (e2hit <= 0){
     waveVic()
     setTimeout(() => {
     
-      }, 2000);
+      }, 4000);
     }
       
       }else if (currentBoss == "Boss 4"){
@@ -2194,10 +2205,6 @@ if (e2hit <= 0){
  
    
   }
-}
-function bossSpawn(){
-
-  
 }
 function waveVic(){
 setMap(levels[0])
@@ -2334,8 +2341,104 @@ function getRandomDirectionY() {
 function getRandomDirection() {
   return directions[Math.floor(Math.random() * directions.length)];
 }
-
-
+let movementIntervalb1a
+// Function to move the enemy on efloor
+function moveboss1Randomly(spriteE) {
+  let ey = 0;
+  let ex = 0;
+  if (gprogression == 4){
+    if (spriteE == arrow1){
+   movementIntervalb1a = setInterval(() => {
+    let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+    const nextDirection = getRandomDirection();
+    if (disableTimer == 0){
+    switch (nextDirection) {
+      case "up":
+        ey = -1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).y -= 1;
+          ey = 0;
+          ex = 0;
+        } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "down":
+        ey = 1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).y += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "left":
+        ex = -1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).x -= 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "right":
+        ex = 1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).x += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+        case "shoot":
+        if (spriteE == arrow){
+        let randX = 0 
+        let randy = 0 
+        /*addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
+        let movement = getFirst(spriteE).x
+       shotInterval1 = setInterval(() => {
+         if (disableTimer == 0){
+          playerhit()
+          if (shotland == 0){
+          movement = movement - 1
+          if (movement > 1){
+         getFirst(ball1).x -= 1; 
+          } else {
+          getFirst(ball1).remove()
+            clearInterval(shotInterval1)
+          }
+          }else if (shotland == 1){
+            getFirst(ball1).remove()
+            phit = phit - 5
+            updateBattleText();
+             clearInterval(shotInterval1)
+            shotland = 0
+          */
+          }
+        }
+    
+   
+    
+    
+    }else if(disableTimer == 1){
+    clearInterval(movementIntervale1)  
+      
+    }
+         }, enemySpeed); // Adjust the interval for movement speed
+}
+  }
+}
 
 // Function to move the enemy on efloor
 function moveEnemyRandomly(spriteE) {
@@ -2703,7 +2806,6 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
-
 
 
 
