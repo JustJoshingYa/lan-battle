@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/ZJJ4u0ZaCAPhObFS7CEN
+//link: https://sprig.hackclub.com/share/DwRxygHZ81ehpY2HRCou
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1791,6 +1791,7 @@ if (gprogression == 55){
   getFirst(upgradechip[upgradeslot2]).remove()  
   getFirst(upgradechip[upgradeslot3]).remove()
   setMap(levels[1])
+  clearText()
   gprogression = 2
       if (currentBoss == "Boss 1"){
     addSprite(playerX, playerY, playerSprites[mode])
@@ -1852,7 +1853,7 @@ if (gprogression == 55){
     addSprite(shield1X, shield1Y, shield1)
      moveShieldRandomly(shield1)   
      }
-    if (s2hit > 0){   
+    if (e2hit > 0){   
     addSprite(enemy2X, enemy2Y, enemy2)
       moveShieldRandomly(shield2) 
     }
@@ -2113,6 +2114,7 @@ function ouch(j){
 }
 function death(){
   //tutorial deaths
+ if (gprogression < 2){ 
 if (t1hit <= 0){
    getFirst(target1).remove()
   if (tprogression == 3){
@@ -2126,22 +2128,50 @@ if (t1hit <= 0){
    getFirst(shield1).remove()
 }
 
-if (gprogression == 2) {
-    if (s1hit <= 0){
+ }else if (gprogression == 2) {
+if (s1hit <= 0){
   clearInterval(movementIntervals1)
    getFirst(shield1).remove()
-} else if (e1hit <= 0){
+     
+}  
+if (e1hit <= 0){
    clearInterval(movementIntervale1)
       getFirst(enemy1).remove()  
-} else if (s2hit <= 0){
+} 
+if (s2hit <= 0){
   clearInterval(movementIntervals2) 
     getFirst(shield2).remove()
+    } 
+if (s3hit <= 0){
+  clearInterval(movementIntervals3) 
+    getFirst(shield3).remove()
       
-} else if (e2hit <= 0){
+  
+} 
+if (e2hit <= 0){
   clearInterval(movementIntervale2)
    getFirst(enemy2).remove() 
   
 }
+ if (currentBoss == "Boss 1"){
+    
+      
+      }else if (currentBoss == "Boss 2"){
+       
+      
+      }else if (currentBoss == "Boss 3"){
+       
+      
+      }else if (currentBoss == "Boss 4"){
+       
+      
+      }
+    
+      
+      
+
+
+   
   }
 }
 function checkInput(){
@@ -2438,7 +2468,7 @@ if (disableTimer == 0){
           getFirst(ball2).remove()
             clearInterval(shotInterval2)
           }
-          }else if (shotland == 1){
+          }else if (shotland == 2){
             getFirst(ball2).remove()
             phit = phit - 5
             updateBattleText();
@@ -2637,6 +2667,8 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
+
 
 
 
