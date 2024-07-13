@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/9fLX5Bb65g3Ayh9ObUCF
+//link: https://sprig.hackclub.com/share/ELzvVE5qSJpJH8aTOr1w
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1464,8 +1464,8 @@ LLLLLLLLLLLLLLLL`],
   )
 setMap(levels[level])
 addText("LAN Battle", { x:5, y:6, color: color `2` })
-addText("press i for tutorial", { x:1, y:9, color: color `2` })
-addText("or l to battle", { x:1, y:11, color: color `2` })
+addText("i for tutorial", { x:3, y:9, color: color `2` })
+addText("or l to battle", { x:3, y:12, color: color `2` })
 setSolids([ pfloor, black, enemy1])
 setSolids([ efloor, playerSprites[0], black, playerSprites[1],playerSprites[2],playerSprites[3],playerSprites[4],playerSprites[5],playerSprites[6],playerSprites[7],playerSprites[8],playerSprites[9],playerSprites[10]])
 setPushables({
@@ -1509,58 +1509,82 @@ tutorial();
        getFirst(playerSprites[mode]).remove()
       if (currentBoss == "Boss 1"){
         if (gprogression > 1){
+          if (e1hit > 0){
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
+      getFirst(enemy1).remove()
+          }
+          if (s1hit > 0){
       shield1X = getFirst(shield1).x
       shield1Y = getFirst(shield1).y 
+      getFirst(shield1).remove() 
+          }
+        if (s2hit > 0){
       shield2X = getFirst(shield2).x
       shield2Y = getFirst(shield2).y 
-        getFirst(enemy1).remove()
-        getFirst(shield1).remove()  
-        getFirst(shield2).remove()
+      getFirst(shield2).remove()
+        }   
        disableTimer = 1 
           chipselect()
       }
       }else if (currentBoss == "Boss 2"){
         if (gprogression > 1){
+          if (e1hit > 0){
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
+      getFirst(enemy1).remove()
+          }
+          if (s1hit > 0){
       shield1X = getFirst(shield1).x
       shield1Y = getFirst(shield1).y 
+      getFirst(shield1).remove() 
+          }
+        if (s2hit > 0){
       shield2X = getFirst(shield2).x
       shield2Y = getFirst(shield2).y 
-          getFirst(enemy1).remove()
-        getFirst(shield1).remove()  
-        getFirst(shield2).remove()
-          disableTimer = 1 
+      getFirst(shield2).remove()
+        }   
+       disableTimer = 1 
           chipselect()
       }
       }else if (currentBoss == "Boss 3"){
         if (gprogression > 1){
+     if (e1hit > 0){
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
+      getFirst(enemy1).remove()
+          }
+      if (s1hit > 0){
       shield1X = getFirst(shield1).x
       shield1Y = getFirst(shield1).y 
+      getFirst(shield1).remove() 
+          }
+     if (e2hit > 0){
       enemy2X = getFirst(enemy2).x
-      enemy2Y = getFirst(enemy2).y 
-          getFirst(enemy1).remove()
-        getFirst(shield1).remove()  
-        getFirst(enemy2).remove()
+      enemy2Y = getFirst(enemy2).y
+      getFirst(enemy2).remove()
+          }
           disableTimer = 1 
           chipselect()
      
       }
       }else if (currentBoss == "Boss 4"){
         if (gprogression > 1){
-          shield1X = getFirst(shield1).x
+      if (s1hit > 0){
+      shield1X = getFirst(shield1).x
       shield1Y = getFirst(shield1).y 
+      getFirst(shield1).remove() 
+          }
+      if (s2hit > 0){
       shield2X = getFirst(shield2).x
       shield2Y = getFirst(shield2).y 
+      getFirst(shield2).remove() 
+          }
+      if (s3hit > 0){
       shield3X = getFirst(shield3).x
-      shield3Y = getFirst(shield3).y
-          getFirst(shield3).remove()
-        getFirst(shield1).remove()  
-        getFirst(shield2).remove()
+      shield3Y = getFirst(shield3).y 
+      getFirst(shield3).remove() 
+          }
           disableTimer = 1 
           chipselect()
       }
@@ -1583,7 +1607,10 @@ upgradeslot3 = Math.floor(Math.random() * 7);
  addSprite(1, 2, upgradechip[upgradeslot1]) 
   addSprite(3, 2, upgradechip[upgradeslot2]) 
   addSprite(5, 2, upgradechip[upgradeslot3]) 
-  
+ addText("Upgrade Chip", { x:4, y:2, color: color `2` }) 
+  addText("W", { x:4, y:10, color: color `2` }) 
+  addText("A", { x:10, y:10, color: color `2` }) 
+  addText("D", { x:15, y:10, color: color `2` }) 
 }
 }
 function tutorial(){
@@ -2491,7 +2518,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals2)
   clearInterval(movementIntervale2)
   clearInterval(movementIntervals1)
-  
+  clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
 
