@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/WGe7TrkphHaNsrMVv3Pr
+//link: https://sprig.hackclub.com/share/FX5TrCy3r7NbuuKMtQJ8
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -2403,37 +2403,50 @@ function moveboss1Randomly(spriteE) {
         }
         break;
         case "shoot":
-        if (spriteE == arrow1){
-        let randY = Math.floor(Math.random() * 3) + 1;
-        for (i = 3; i < 1; i--){
-          addSprite(i, randY, playerSprites[mode]) 
+     if (spriteE == arrow1){
+        randY = Math.floor(Math.random() * 3) + 1;
+        for (i = 1; i < 4; i++){
+          addSprite(i, randY, warning)
           }
-        setTimeout(() => {
+ setTimeout(() => {
   
- for (i = 0; i < 3; i++){
-  let sprites1 = getTile(getFirst(playerSprites[mode]).x, getFirst(playerSprites[mode]).y)
-  let sprites2 = getTile(getFirst(warning).x, getFirst(warning).y)
+ for (i = 0; i < 4; i++){
 
-  if((sprites1.some(s => sprites2.includes(s))) == true){
-  phit = phit = 8
+if (checkCollision()) {
+  phit = phit - 8 
+  getFirst(warning).remove()
+}
+getFirst(warning).remove()
   }
-
- }
-      }, 4000);
-      
+ 
+          
+      }, 1000);
+       
         }
     }
    
     
     
     }else if(disableTimer == 1){
-    clearInterval(movementIntervale1)  
+    clearInterval(movementIntervalb1a)  
       
     }
          }, enemySpeed); // Adjust the interval for movement speed
 }
   }
 }
+
+let randY;
+
+function checkCollision () {
+  const sprites1 = getTile(getFirst(playerSprites[mode]).x, getFirst(playerSprites[mode]).y)
+  const sprites2 = getTile(getFirst(warning).x, getFirst(warning).y)
+
+  return sprites1.some(s => sprites2.includes(s))
+}
+
+// Example of how to use the function
+
 
 // Function to move the enemy on efloor
 function moveEnemyRandomly(spriteE) {
@@ -2801,6 +2814,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
 
 
 
