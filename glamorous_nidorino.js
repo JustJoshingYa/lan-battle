@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/i6n1kZ2iTuJVOyriNtrp
+//link: https://sprig.hackclub.com/share/WGe7TrkphHaNsrMVv3Pr
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -2174,13 +2174,14 @@ if (e2hit <= 0){
     setTimeout(() => {
     gprogression = 4 
     setMap(levels[1])
+    clearText()
     updateBattleText()
     addSprite(2, 3, playerSprites[mode]) 
     addSprite(6, 3, boss1)
-    addSprite(6, 2, clips)
-    addSprite(6, 1, arrow1)
+    addSprite(6, 4, clips)
+    addSprite(6, 2, arrow1)
     chipTimeStart()
-    
+    moveboss1Randomly(arrow1)
     
       }, 4000);
     } 
@@ -2402,32 +2403,26 @@ function moveboss1Randomly(spriteE) {
         }
         break;
         case "shoot":
-        if (spriteE == arrow){
-        let randX = 0 
-        let randy = 0 
-        /*addSprite(getFirst(spriteE).x - 1, getFirst(spriteE).y, ball1);
-        let movement = getFirst(spriteE).x
-       shotInterval1 = setInterval(() => {
-         if (disableTimer == 0){
-          playerhit()
-          if (shotland == 0){
-          movement = movement - 1
-          if (movement > 1){
-         getFirst(ball1).x -= 1; 
-          } else {
-          getFirst(ball1).remove()
-            clearInterval(shotInterval1)
+        if (spriteE == arrow1){
+        let randY = Math.floor(Math.random() * 3) + 1;
+        for (i = 3; i < 1; i--){
+          addSprite(i, randY, playerSprites[mode]) 
           }
-          }else if (shotland == 1){
-            getFirst(ball1).remove()
-            phit = phit - 5
-            updateBattleText();
-             clearInterval(shotInterval1)
-            shotland = 0
-          */
-          }
+        setTimeout(() => {
+  
+ for (i = 0; i < 3; i++){
+  let sprites1 = getTile(getFirst(playerSprites[mode]).x, getFirst(playerSprites[mode]).y)
+  let sprites2 = getTile(getFirst(warning).x, getFirst(warning).y)
+
+  if((sprites1.some(s => sprites2.includes(s))) == true){
+  phit = phit = 8
+  }
+
+ }
+      }, 4000);
+      
         }
-    
+    }
    
     
     
@@ -2806,6 +2801,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
 
 
 
