@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/5T51Rb9ACnyRzG1ROeZB
+//link: https://sprig.hackclub.com/share/NSxEcAFurgy0YwlvP8fB
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1522,93 +1522,56 @@ tutorial();
       playerY = getFirst(playerSprites[mode]).y
        getFirst(playerSprites[mode]).remove()
       if (currentBoss == "Boss 1"){
-       
-          if (arhit > 0){
+       if (gprogression > 1){
+      if (arhit > 0 && ardead == false){
       arrow1X = getFirst(arrow1).x
       arrow1Y = getFirst(arrow1).y
       getFirst(arrow1).remove()
           }
-          if (chit > 0){
+      if (cliphit > 0 && cdead == false){
       clipsX = getFirst(clips).x
       clipsY = getFirst(clips).y 
       getFirst(clips).remove() 
           }
-        if (s2hit > 0){
-      shield2X = getFirst(shield2).x
-      shield2Y = getFirst(shield2).y 
-      getFirst(shield2).remove()
+      if (boss1hit > 0 && boss1dead == false){
+      boss1X = getFirst(boss1).x
+      boss1Y = getFirst(boss1).y 
+      getFirst(boss1).remove()
         } 
        disableTimer = 1 
           chipselect()
-      
+       }
       }else if (currentBoss == "Boss 2"){
         if (gprogression > 1){
-          if (e1hit > 0){
-      enemy1X = getFirst(enemy1).x
-      enemy1Y = getFirst(enemy1).y
-      getFirst(enemy1).remove()
-          }
-          if (s1hit > 0){
-      shield1X = getFirst(shield1).x
-      shield1Y = getFirst(shield1).y 
-      getFirst(shield1).remove() 
-          }
-        if (s2hit > 0){
-      shield2X = getFirst(shield2).x
-      shield2Y = getFirst(shield2).y 
-      getFirst(shield2).remove()
+    if (boss2hit > 0 && boss2dead == false ){
+      boss2X = getFirst(boss2).x
+      boss2Y = getFirst(boss2).y 
+      getFirst(boss1).remove()
         }   
        disableTimer = 1 
           chipselect()
-      }
-      }else if (currentBoss == "Boss 3"){
-        if (gprogression > 1){
-     if (e1hit > 0){
-      enemy1X = getFirst(enemy1).x
-      enemy1Y = getFirst(enemy1).y
-      getFirst(enemy1).remove()
-       
-          }
-      if (s1hit > 0){
-      shield1X = getFirst(shield1).x
-      shield1Y = getFirst(shield1).y 
-      getFirst(shield1).remove() 
-        
-          }
-     if (e2hit > 0){
-      enemy2X = getFirst(enemy2).x
-      enemy2Y = getFirst(enemy2).y
-      getFirst(enemy2).remove()
-       
+     }
+   }else if (currentBoss == "Boss 3"){
+         if (gprogression > 1){
+    if (boss3hit > 0 && boss3dead == false ){
+      boss3X = getFirst(boss3).x
+      boss3Y = getFirst(boss3).y 
+      getFirst(boss3).remove()
           }
           disableTimer = 1 
           chipselect()
-     
       }
       }else if (currentBoss == "Boss 4"){
         if (gprogression > 1){
-      if (s1hit > 0){
-      shield1X = getFirst(shield1).x
-      shield1Y = getFirst(shield1).y 
-      getFirst(shield1).remove() 
-          }
-      if (s2hit > 0){
-      shield2X = getFirst(shield2).x
-      shield2Y = getFirst(shield2).y 
-      getFirst(shield2).remove() 
-          }
-      if (s3hit > 0){
-      shield3X = getFirst(shield3).x
-      shield3Y = getFirst(shield3).y 
-      getFirst(shield3).remove() 
+    if (boss4hit > 0 && boss4dead == false ){
+      boss4X = getFirst(boss4).x
+      boss4Y = getFirst(boss4).y 
+      getFirst(boss4).remove()
           }
           disableTimer = 1 
           chipselect()
       }
       }
-    
-      
-      
     }
   }else if(gprogression == 2){
     if (canChip == true){
@@ -1662,23 +1625,19 @@ tutorial();
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
       getFirst(enemy1).remove()
-       
           }
       if (s1hit > 0){
       shield1X = getFirst(shield1).x
       shield1Y = getFirst(shield1).y 
       getFirst(shield1).remove() 
-        
           }
      if (e2hit > 0){
       enemy2X = getFirst(enemy2).x
       enemy2Y = getFirst(enemy2).y
       getFirst(enemy2).remove()
-       
           }
           disableTimer = 1 
           chipselect()
-     
       }
       }else if (currentBoss == "Boss 4"){
         if (gprogression > 1){
@@ -1701,9 +1660,7 @@ tutorial();
           chipselect()
       }
       }
-    
-      
-      
+    }
     }
 });
 
@@ -1939,22 +1896,38 @@ if (gprogression == 55){
   gprogression = 2
   }
       if (currentBoss == "Boss 1"){
+        if (bossTime == false){
     addSprite(playerX, playerY, playerSprites[mode])
-     if (e1hit > 0){   
+     if (e1hit > 0 && e1dead == false){   
     addSprite(enemy1X, enemy1Y, enemy1)
      moveEnemyRandomly(enemy1)   
      }
-    if (s1hit > 0){   
+    if (s1hit > 0 && s1dead == false){   
     addSprite(shield1X, shield1Y, shield1)
      moveShieldRandomly(shield1)   
      }
-    if (s2hit > 0){   
+    if (s2hit > 0 && s2dead == false){   
     addSprite(shield2X, shield2Y, shield2)
      moveShieldRandomly(shield2)   
      }
+          chipTimeStart()
+    }else{
+    addSprite(playerX, playerY, playerSprites[mode]) 
+     if (arhit > 0 && ardead == false){   
+    addSprite(arrow1X, arrow1Y, arrow1)
+     moveboss1Randomly(arrow1)   
+     }
+    if (chit > 0 && cdead == false){   
+    addSprite(clipsX, clipsY, clips)
+     moveboss1Randomly(clips)   
+     }
+    if (boss1hit > 0 && boss1dead == false){   
+    addSprite(boss1X, boss1Y, boss1)  
+        }
     chipTimeStart()
-       
-      }else if (currentBoss == "Boss 2"){
+        }
+  }else if (currentBoss == "Boss 2"){
+        if (bossTime == false){
   addSprite(playerX, playerY, playerSprites[mode])
      if (e1hit > 0){   
     addSprite(enemy1X, enemy1Y, enemy1)
@@ -1969,8 +1942,15 @@ if (gprogression == 55){
      moveShieldRandomly(shield2)   
      }
     chipTimeStart()
-        
+     }else{
+      if (boss2hit > 0){   
+    addSprite(boss2X, boss2Y, boss2)
+    // moveBoss2Randomly()   
+     }  
+          chipTimeStart()
+        }
       }else if (currentBoss == "Boss 3"){ 
+        if (bossTime == false){
    addSprite(playerX, playerY, playerSprites[mode])
      if (e1hit > 0){   
     addSprite(enemy1X, enemy1Y, enemy1)
@@ -1986,9 +1966,16 @@ if (gprogression == 55){
      }
 
     chipTimeStart()
-  
+  }else{
+      if (boss3hit > 0){   
+    addSprite(boss3X, boss3Y, boss3)
+     //moveBoss3Randomly()   
+     }  
+          chipTimeStart()
+        }
     
       }else if (currentBoss == "Boss 4"){
+        if (bossTime == false){
     addSprite(playerX, playerY, playerSprites[mode])
      if (s3hit > 0){   
     addSprite(shield3X, shield3Y, shield3)
@@ -2003,10 +1990,14 @@ if (gprogression == 55){
       moveShieldRandomly(shield2) 
     }
     chipTimeStart()
-      }
-    
-     
-      
+       }else{
+      if (boss4hit > 0){   
+    addSprite(boss4X, boss4Y, boss4)
+     //moveBoss4Randomly()   
+     }  
+          chipTimeStart()
+        }
+      }  
     }
 }
   
@@ -2093,7 +2084,7 @@ for (let i = 0; i < 2; i++) {
   
   }
 }
-   function playerhit(){
+function playerhit(){
      if (ball1Exists() == true){
      if (getFirst(playerSprites[mode]).x == getFirst(ball1).x && getFirst(playerSprites[mode]).y == getFirst(ball1).y){
        shotland = 1
@@ -2301,7 +2292,7 @@ if (e1hit <= 0 && e1dead == false){
 if (s2hit <= 0 && s2dead == false){
   clearInterval(movementIntervals2) 
     getFirst(shield2).remove()
-  s1dead = true
+  s2dead = true
     } 
 if (s3hit <= 0 && s3dead == false){
   clearInterval(movementIntervals3) 
@@ -2313,7 +2304,9 @@ if (e2hit <= 0 && e2dead == false){
    getFirst(enemy2).remove() 
   e2dead = true
 }
+if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){  
    bossSetup()
+}
  }
   }
 
@@ -2340,18 +2333,21 @@ if (currentBoss == "Boss 1"){
     } 
       }else if (currentBoss == "Boss 2"){
     if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
+    bossTime = true
     waveVic()
     }
       
     }else if (currentBoss == "Boss 3"){
     if (e1hit <= 0 && s1hit <= 0 && e2hit <= 0){
+    bossTime = true
     waveVic()
     setTimeout(() => {
     
       }, 4000);
     }
       
-      }else if (currentBoss == "Boss 4"){
+    }else if (currentBoss == "Boss 4"){
+    bossTime = true
     if (s1hit <= 0 && s2hit <= 0 && s3hit <= 0){
     waveVic()
     }   
