@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/wbDEjILthYuha2Godx6H
+//link: https://sprig.hackclub.com/share/5T51Rb9ACnyRzG1ROeZB
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -372,6 +372,10 @@ let shield3X;
 let shield3Y;
 let boss1X;
 let boss1Y;
+let clipsX;
+let clipsY;
+let arrow1X;
+let arrow1Y;
 let boss2X;
 let boss2Y;
 let boss3X;
@@ -389,6 +393,16 @@ let upgradeslot2 = 0
 let upgradeslot3 = 0
 let disableChange = false
 let disableTimer = 0;
+let e1dead = false
+let e2dead = false
+let s1dead = false
+let s2dead = false
+let s3dead = false
+let ardead = false
+let cdead = false
+
+
+
 setLegend(
   [ choose, bitmap`
 6666666666666666
@@ -1501,6 +1515,101 @@ tutorial();
   clearText();
     tutorial();
 }
+  }else if(gprogression == 4){
+    if (canChip == true){
+      stopChipTimer()
+      playerX = getFirst(playerSprites[mode]).x
+      playerY = getFirst(playerSprites[mode]).y
+       getFirst(playerSprites[mode]).remove()
+      if (currentBoss == "Boss 1"){
+       
+          if (arhit > 0){
+      arrow1X = getFirst(arrow1).x
+      arrow1Y = getFirst(arrow1).y
+      getFirst(arrow1).remove()
+          }
+          if (chit > 0){
+      clipsX = getFirst(clips).x
+      clipsY = getFirst(clips).y 
+      getFirst(clips).remove() 
+          }
+        if (s2hit > 0){
+      shield2X = getFirst(shield2).x
+      shield2Y = getFirst(shield2).y 
+      getFirst(shield2).remove()
+        } 
+       disableTimer = 1 
+          chipselect()
+      
+      }else if (currentBoss == "Boss 2"){
+        if (gprogression > 1){
+          if (e1hit > 0){
+      enemy1X = getFirst(enemy1).x
+      enemy1Y = getFirst(enemy1).y
+      getFirst(enemy1).remove()
+          }
+          if (s1hit > 0){
+      shield1X = getFirst(shield1).x
+      shield1Y = getFirst(shield1).y 
+      getFirst(shield1).remove() 
+          }
+        if (s2hit > 0){
+      shield2X = getFirst(shield2).x
+      shield2Y = getFirst(shield2).y 
+      getFirst(shield2).remove()
+        }   
+       disableTimer = 1 
+          chipselect()
+      }
+      }else if (currentBoss == "Boss 3"){
+        if (gprogression > 1){
+     if (e1hit > 0){
+      enemy1X = getFirst(enemy1).x
+      enemy1Y = getFirst(enemy1).y
+      getFirst(enemy1).remove()
+       
+          }
+      if (s1hit > 0){
+      shield1X = getFirst(shield1).x
+      shield1Y = getFirst(shield1).y 
+      getFirst(shield1).remove() 
+        
+          }
+     if (e2hit > 0){
+      enemy2X = getFirst(enemy2).x
+      enemy2Y = getFirst(enemy2).y
+      getFirst(enemy2).remove()
+       
+          }
+          disableTimer = 1 
+          chipselect()
+     
+      }
+      }else if (currentBoss == "Boss 4"){
+        if (gprogression > 1){
+      if (s1hit > 0){
+      shield1X = getFirst(shield1).x
+      shield1Y = getFirst(shield1).y 
+      getFirst(shield1).remove() 
+          }
+      if (s2hit > 0){
+      shield2X = getFirst(shield2).x
+      shield2Y = getFirst(shield2).y 
+      getFirst(shield2).remove() 
+          }
+      if (s3hit > 0){
+      shield3X = getFirst(shield3).x
+      shield3Y = getFirst(shield3).y 
+      getFirst(shield3).remove() 
+          }
+          disableTimer = 1 
+          chipselect()
+      }
+      }
+    
+      
+      
+    }
   }else if(gprogression == 2){
     if (canChip == true){
       stopChipTimer()
@@ -1553,16 +1662,19 @@ tutorial();
       enemy1X = getFirst(enemy1).x
       enemy1Y = getFirst(enemy1).y
       getFirst(enemy1).remove()
+       
           }
       if (s1hit > 0){
       shield1X = getFirst(shield1).x
       shield1Y = getFirst(shield1).y 
       getFirst(shield1).remove() 
+        
           }
      if (e2hit > 0){
       enemy2X = getFirst(enemy2).x
       enemy2Y = getFirst(enemy2).y
       getFirst(enemy2).remove()
+       
           }
           disableTimer = 1 
           chipselect()
@@ -1593,7 +1705,6 @@ tutorial();
       
       
     }
-  }
 });
 
 function chipselect(){
@@ -1670,6 +1781,9 @@ onInput("w", () => {
     setMap(levels[1])
     bossTime = false
     gprogression = 2 
+    e1dead = false
+    s1dead = false
+    s2dead = false
     e1hit = 10
     s1hit = 10
     s2hit = 10
@@ -1710,7 +1824,10 @@ onInput("a", () => {
      e1hit = 10
      s1hit = 10
      s2hit = 10
-       updateBattleText()
+    e1dead = false
+    s2dead = false
+    s1dead = false
+    updateBattleText()
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, enemy1)
     addSprite(4, 3, shield1)
@@ -1748,6 +1865,9 @@ onInput("s", () => {
      s1hit = 10
      s2hit = 10
      s3hit = 10
+    s1dead = false
+    s2dead = false
+    s3dead = false
     addSprite(2, 3, playerSprites[mode])
     addSprite(5, 2, shield3)
     addSprite(4, 3, shield1)
@@ -1783,6 +1903,9 @@ onInput("d", () => {
     e1hit = 1
     e2hit = 1
     s1hit = 1
+    e1dead = false
+    e2dead = false
+    s1dead = false
     updateBattleText()
     addSprite(3, 3, playerSprites[mode]) 
     addSprite(5, 2, enemy1)
@@ -2165,32 +2288,39 @@ if (t1hit <= 0){
 }
 
  }else if (gprogression == 2) {
-if (s1hit <= 0){
+if (s1hit <= 0 && s1dead == false){
   clearInterval(movementIntervals1)
    getFirst(shield1).remove()
-     
+   s1dead = true 
 }  
-if (e1hit <= 0){
+if (e1hit <= 0 && e1dead == false){
    clearInterval(movementIntervale1)
       getFirst(enemy1).remove()  
+  e1dead = true
 } 
-if (s2hit <= 0){
+if (s2hit <= 0 && s2dead == false){
   clearInterval(movementIntervals2) 
     getFirst(shield2).remove()
+  s1dead = true
     } 
-if (s3hit <= 0){
+if (s3hit <= 0 && s3dead == false){
   clearInterval(movementIntervals3) 
     getFirst(shield3).remove()
-      
-  
+    s1dead = true   
 } 
-if (e2hit <= 0){
+if (e2hit <= 0 && e2dead == false){
   clearInterval(movementIntervale2)
    getFirst(enemy2).remove() 
-  
+  e2dead = true
 }
+   bossSetup()
  }
- if (currentBoss == "Boss 1"){
+  }
+
+
+
+function bossSetup(){
+if (currentBoss == "Boss 1"){
     if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
     bossTime = true
     waveVic()
@@ -2225,10 +2355,7 @@ if (e2hit <= 0){
     if (s1hit <= 0 && s2hit <= 0 && s3hit <= 0){
     waveVic()
     }   
-      
- 
-   
-  }
+}
 }
 function waveVic(){
 setMap(levels[0])
@@ -2872,6 +2999,7 @@ addText(`T1: ${t1hit}  `, { x:12, y:2, color: color `3` })
        addText(`S2: ${s2hit}  `, { x:12, y:1, color: color `3` })
      }if (gprogression == 4){
        addText(`A1: ${arhit}  `, { x:12, y:3, color: color `3` })
+       addText(`C1: ${arhit}  `, { x:12, y:3, color: color `3` })
      }
 }
 }
@@ -2949,6 +3077,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
 
 
 
