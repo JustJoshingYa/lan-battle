@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/73K0yXlMo5YdlvCHOYq6
+//link: https://sprig.hackclub.com/share/GbWSVXhdK75oyJ7TULPi
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1488,10 +1488,7 @@ setPushables({
 })
 onInput("l",() => {
 if (tprogression == 0){
-  setMap(levels[2])
-  clearText();
-  gprogression = 1
-  addSprite(0, 1, choose)
+  backtoselect()
 }
 });
 
@@ -1968,9 +1965,12 @@ if (gprogression == 55){
 
     chipTimeStart()
   }else{
-      if (boss3hit > 0){   
+      if (boss3hit > 0){  
+        if (hidden == false){
     addSprite(boss3X, boss3Y, boss3)
-     //moveBoss3Randomly()   
+     //moveBoss3Randomly()
+        }else{
+    
      }  
           chipTimeStart()
         }
@@ -2349,7 +2349,7 @@ if (arhit <= 0 && ardead == false){
 if (boss1hit <= 0 && boss1dead == false){
     getFirst(boss1).remove()
   boss1dead = true
-  
+  backtoselect()
     }
    
      
@@ -2367,7 +2367,13 @@ if (boss1hit <= 0 && boss1dead == false){
  }
   }
 
-
+function backtoselect(){
+  stopChipTimer()
+  setMap(levels[2])
+  clearText();
+  gprogression = 1
+  addSprite(0, 1, choose)
+}
 
 function bossSetup(){
 if (currentBoss == "Boss 1"){
@@ -2390,23 +2396,51 @@ if (currentBoss == "Boss 1"){
     } 
       }else if (currentBoss == "Boss 2"){
     if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
-    bossTime = true
+   bossTime = true
     waveVic()
+    setTimeout(() => {
+    gprogression = 4 
+    setMap(levels[1])
+    clearText()
+    updateBattleText()
+    addSprite(2, 3, playerSprites[mode]) 
+    addSprite(6, 3, boss2)
+    //moveboss2Randomly()
+    
+      }, 4000);
     }
-      
     }else if (currentBoss == "Boss 3"){
     if (e1hit <= 0 && s1hit <= 0 && e2hit <= 0){
     bossTime = true
     waveVic()
     setTimeout(() => {
+    gprogression = 4 
+    setMap(levels[1])
+    clearText()
+    updateBattleText()
+    addSprite(2, 3, playerSprites[mode]) 
+    addSprite(6, 3, boss3)
+    chipTimeStart()
+    //moveboss3Randomly()
     
       }, 4000);
     }
+    
       
     }else if (currentBoss == "Boss 4"){
-    bossTime = true
-    if (s1hit <= 0 && s2hit <= 0 && s3hit <= 0){
+   bossTime = true
     waveVic()
+    setTimeout(() => {
+    gprogression = 4 
+    setMap(levels[1])
+    clearText()
+    updateBattleText()
+    addSprite(2, 3, playerSprites[mode]) 
+    //addSprite(6, 3, boss4)
+    chipTimeStart()
+    //moveboss4Randomly()
+    
+      }, 4000);
     }   
 }
 }
@@ -3131,6 +3165,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
 
 
 
