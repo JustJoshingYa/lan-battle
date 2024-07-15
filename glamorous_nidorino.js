@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/xle0VaJCi5BwvSEQFMUA
+//link: https://sprig.hackclub.com/share/O3FZDRCarRVNaloEHYmu
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1974,7 +1974,7 @@ if (gprogression == 55){
      }  
           chipTimeStart()
         }
-    
+        }
       }else if (currentBoss == "Boss 4"){
         if (bossTime == false){
     addSprite(playerX, playerY, playerSprites[mode])
@@ -2821,12 +2821,18 @@ function moveboss3Randomly(){
         }
         break;
         case "shoot":
-        let rand = Math.floor(Math.random() * 5);
-        if (rand <= 2){
-        hidden == false
-        }else{
-          hidden == true
-        }
+        let rand = Math.floor(Math.random() * 7);
+        if (rand <= 1){
+        hidden = false
+        let exist = b3Exists()
+        
+          if (exist == false){
+           addSprite(boss3X, boss3Y, boss3)
+          }
+        }else if (rand == 2 || rand == 3) {
+          hidden = true
+        }else{ 
+          
           
  if (hidden == false){
     addSprite(getFirst(boss3).x + 2, getFirst(boss3).y, warning)
@@ -2840,13 +2846,12 @@ if (checkCollision()) {
 }else{
 getFirst(warning).remove()
   }
- 
- 
-          
+    
       }, 1000); 
         
      }else{
-
+boss3X = Math.random() * (6 - 4) + 4
+boss3Y = Math.random() * (4 - 2) + 2   
 getFirst(boss3).remove()
        
      }
@@ -3249,6 +3254,28 @@ function ball2Exists(spriteType) {
   return getAll(ball2).length > 0;
 }
 
+function e1Exists(spriteType) {
+  return getAll(enemy1).length > 0;
+}
+function e2Exists(spriteType) {
+  return getAll(enemy2).length > 0;
+}
+function s1Exists(spriteType) {
+  return getAll(shield1).length > 0;
+}
+function s2Exists(spriteType) {
+  return getAll(shield2).length > 0;
+}
+function s3Exists(spriteType) {
+  return getAll(shield3).length > 0;
+}
+function b3Exists(spriteType) {
+  return getAll(boss3).length > 0;
+}
+
+
+
+  
 function stopChipTimer() {
   disableChange = true
   clearInterval(chipTimer)
