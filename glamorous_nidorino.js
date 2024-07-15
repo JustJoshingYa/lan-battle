@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/FX5TrCy3r7NbuuKMtQJ8
+//link: https://sprig.hackclub.com/share/qaQJnPXpsHoPgeqZ0zDW
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1501,7 +1501,7 @@ tutorial();
   clearText();
     tutorial();
 }
-  }else if(gprogression > 1){
+  }else if(gprogression == 2){
     if (canChip == true){
       stopChipTimer()
       playerX = getFirst(playerSprites[mode]).x
@@ -1651,7 +1651,7 @@ tprogression = tprogression + 1
   }
 }
 
-
+let bossTime = false
 
 onInput("w", () => {
   if (tprogression == 2){
@@ -1668,6 +1668,7 @@ onInput("w", () => {
   }else{
     currentBoss = "Boss 1"
     setMap(levels[1])
+    bossTime = false
     gprogression = 2 
     e1hit = 10
     s1hit = 10
@@ -1704,6 +1705,7 @@ onInput("a", () => {
     }else{
     currentBoss = "Boss 2"
     setMap(levels[1])
+        bossTime = false
     gprogression = 2 
      e1hit = 10
      s1hit = 10
@@ -1742,7 +1744,7 @@ onInput("s", () => {
      
     setMap(levels[1])
       gprogression = 2 
- 
+   bossTime = false
      s1hit = 10
      s2hit = 10
      s3hit = 10
@@ -1775,6 +1777,7 @@ onInput("d", () => {
     addSprite(1, 0, choose)
   }else{
     currentBoss = "Boss 3"
+      bossTime = false
     setMap(levels[1])
     gprogression = 2 
     e1hit = 1
@@ -1801,12 +1804,17 @@ if (gprogression == 55){
   death()
   disablechange = false
   disableTimer = 0
+  canChip = false
   getFirst(upgradechip[upgradeslot1]).remove()
   getFirst(upgradechip[upgradeslot2]).remove()  
   getFirst(upgradechip[upgradeslot3]).remove()
   setMap(levels[1])
   clearText()
+  if (bossTime == true){
+  gprogression = 4
+  }else{
   gprogression = 2
+  }
       if (currentBoss == "Boss 1"){
     addSprite(playerX, playerY, playerSprites[mode])
      if (e1hit > 0){   
@@ -1880,6 +1888,7 @@ if (gprogression == 55){
 }
   
 onInput("j", () => {
+  addText(`g: ${gprogression}`, { x:1, y:12, color: color `D` });
   if (tprogression == 3){
     if (canCharge) {
       hitDetect();
@@ -1887,7 +1896,7 @@ onInput("j", () => {
     }else {
     playTune(overheat)
   }
-    } else if (tprogression > 3 || gprogression == 2 || gprogression == 4){
+    }else if (tprogression > 3 || gprogression > 1){
    if (canCharge) {
     if (!charging) {
       startChargingAnimation();
@@ -1904,18 +1913,19 @@ onInput("j", () => {
   
 
 });
+
 let frontTile;
 let enemyX;
 let enemyY;
-let shotEnable = true
+let shotEnable = false
 function hitDetect(){
   if (shotEnable == false){
   let k = 0
 for (let i = 0; i < 6; i++) {
     frontTile = getTile(getFirst(playerSprites[mode]).x + i, getFirst(playerSprites[mode]).y);
-     enemyInFront = frontTile.some(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2);
+     enemyInFront = frontTile.some(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2|| sprite.type === boss1|| sprite.type === clips|| sprite.type === arrow1);
     
-    enemyX = frontTile.find(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2)?.x;
+    enemyX = frontTile.find(sprite => sprite.type === enemy1 || sprite.type === enemy2 || sprite.type === target1 || sprite.type === shield1|| sprite.type === shield2|| sprite.type === boss1|| sprite.type === clips|| sprite.type === arrow1)?.x;
 
     // Check if enemy is directly in front on the same x-axis
     if (enemyInFront && enemyX === getFirst(playerSprites[mode]).x + i) {
@@ -1977,7 +1987,7 @@ for (let i = 0; i < 2; i++) {
 function ouch(j){
   playTune(hit)
   if (shotEnable == false){
-   if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyY === 4 - j)){
+   if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyX === getFirst(playerSprites[mode]).x + j)){
         if (chargeState == 0){
         t1hit = t1hit - (1 * busterPw)
         }else if (chargeState == 1){
@@ -1989,7 +1999,7 @@ function ouch(j){
         }else if (chargeState == 4){
         t1hit = t1hit - (8 * busterPw)
         }
-   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy1 && enemyY === 4 - j)){
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy1 && enemyX === getFirst(playerSprites[mode]).x + j)){
     if (chargeState == 0){
         e1hit = e1hit - (1 * busterPw)
         }else if (chargeState == 1){
@@ -2001,7 +2011,7 @@ function ouch(j){
         }else if (chargeState == 4){
         e1hit = e1hit - (8 * busterPw)
     }
-     }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy2 && enemyY === 4 - j)){
+     }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy2 && enemyX === getFirst(playerSprites[mode]).x + j)){
     if (chargeState == 0){
         e2hit = e2hit - (1 * busterPw)
         }else if (chargeState == 1){
@@ -2013,7 +2023,7 @@ function ouch(j){
         }else if (chargeState == 4){
         e2hit = e2hit - (8 * busterPw)
     }
-        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyY === 4 - j)){
+        }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
         s1hit = s1hit - 0
         }else if (chargeState == 1){
@@ -2025,7 +2035,7 @@ function ouch(j){
         }else if (chargeState == 4){
         s1hit = s1hit - (8 * busterPw)
       }
-   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyY === 4 - j)){
+   }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
         s2hit = s2hit - 0
         }else if (chargeState == 1){
@@ -2037,7 +2047,7 @@ function ouch(j){
         }else if (chargeState == 4){
         s2hit = s2hit - 5
    }
-}else if(enemyInFront = frontTile.some(sprite => sprite.type === shield3 && enemyY === 4 - j)){
+}else if(enemyInFront = frontTile.some(sprite => sprite.type === shield3 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
         s3hit = s3hit - 3
         }else if (chargeState == 1){
@@ -2048,6 +2058,18 @@ function ouch(j){
         s3hit = s3hit - 3
         }else if (chargeState == 4){
         s3hit = s3hit - 3
+   }
+}else if(enemyInFront = frontTile.some(sprite => sprite.type === arrow1 && enemyX === getFirst(playerSprites[mode]).x + j)){
+      if (chargeState == 0){
+        arhit = arhit - 1
+        }else if (chargeState == 1){
+        arhit = arhit - 2
+        }else if (chargeState == 2){
+        arhit = arhit - 3
+        }else if (chargeState == 3){
+        arhit = arhit - 5
+        }else if (chargeState == 4){
+        arhit = arhit - 8
    }
 }
   }else if (shotEnable == true){
@@ -2170,6 +2192,7 @@ if (e2hit <= 0){
  }
  if (currentBoss == "Boss 1"){
     if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){
+    bossTime = true
     waveVic()
     setTimeout(() => {
     gprogression = 4 
@@ -2182,7 +2205,7 @@ if (e2hit <= 0){
     addSprite(6, 2, arrow1)
     chipTimeStart()
     moveboss1Randomly(arrow1)
-    
+    moveboss1Randomly(clips)
       }, 4000);
     } 
       }else if (currentBoss == "Boss 2"){
@@ -2343,6 +2366,7 @@ function getRandomDirection() {
   return directions[Math.floor(Math.random() * directions.length)];
 }
 let movementIntervalb1a
+let movementIntervalb1b
 // Function to move the enemy on efloor
 function moveboss1Randomly(spriteE) {
   let ey = 0;
@@ -2404,7 +2428,7 @@ function moveboss1Randomly(spriteE) {
         break;
         case "shoot":
      if (spriteE == arrow1){
-        randY = Math.floor(Math.random() * 3) + 1;
+        randY = Math.floor(Math.random() * ((4-2)+2) + 2);
         for (i = 1; i < 4; i++){
           addSprite(i, randY, warning)
           }
@@ -2413,11 +2437,13 @@ function moveboss1Randomly(spriteE) {
  for (i = 0; i < 4; i++){
 
 if (checkCollision()) {
-  phit = phit - 8 
+  poison()
+  updateBattleText()
   getFirst(warning).remove()
-}
+}else{
 getFirst(warning).remove()
   }
+ }
  
           
       }, 1000);
@@ -2432,11 +2458,115 @@ getFirst(warning).remove()
       
     }
          }, enemySpeed); // Adjust the interval for movement speed
-}
+}else if(spriteE == clips){
+movementIntervalb1b = setInterval(() => {
+    let currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+    const nextDirection = getRandomDirection();
+    if (disableTimer == 0){
+    switch (nextDirection) {
+      case "up":
+        ey = -1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).y -= 1;
+          ey = 0;
+          ex = 0;
+        } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "down":
+        ey = 1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).y += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "left":
+        ex = -1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).x -= 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "right":
+        ex = 1
+        currentTile = getTile(getFirst(spriteE).x + ex, getFirst(spriteE).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(spriteE).x += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+        case "shoot":
+     if (spriteE == clips){
+        randY = Math.floor(Math.random() * ((4-2)+2) + 2);
+        for (i = 1; i < 4; i++){
+          addSprite(i, randY, warning)
+          }
+ setTimeout(() => {
+  
+ for (i = 0; i < 4; i++){
+
+if (checkCollision()) {
+  poison()
+  updateBattleText()
+  getFirst(warning).remove()
+}else{
+getFirst(warning).remove()
+  }
+ }
+ 
+          
+      }, 1000);
+       
+        }
+    }
+   
+    
+    
+    }else if(disableTimer == 1){
+    clearInterval(movementIntervalb1b)  
+      
+    }
+         }, enemySpeed);
+
+    }
   }
 }
 
 let randY;
+let virus;
+let poisonloop = 0
+function poison(){
+poisonloop = 0
+virus = setInterval(() => {
+  if (poisonloop < 2){
+  phit = phit - 2
+    updateBattleText()
+    poisonloop = poisonloop + 1
+  }else{
+    clearInterval(virus)
+  }
+    
+}, 3000);
+}
+
+
 
 function checkCollision () {
   const sprites1 = getTile(getFirst(playerSprites[mode]).x, getFirst(playerSprites[mode]).y)
@@ -2643,7 +2773,7 @@ function startChargingAnimation() {
   
   chargeStartTime = performance.now();
  charging = true;
-  
+  if (disableChange == false){
     if (tprogression >= 4 || gprogression > 1){
     chargeAnimationTimer = setInterval(() => {
      elapsedTime = performance.now() - chargeStartTime;
@@ -2669,6 +2799,7 @@ function startChargingAnimation() {
       replacePlayer(playerSprites[mode], 4); // Superchargebeam animation
     }
   }, 100);
+}
 }
 }
 function stopChargingAnimation() {
@@ -2708,37 +2839,39 @@ addSprite(x, y, playerSprites[newmode]);
 }
 function updateBattleText(){
 if (tprogression <= 4 && tprogression > 1){
-addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
-addText(`T1: ${t1hit}`, { x:12, y:2, color: color `3` }) 
+addText(`HP: ${phit}  `, { x:1, y:2, color: color `2` })
+addText(`T1: ${t1hit}  `, { x:12, y:2, color: color `3` }) 
 }else if (tprogression == 5){
-  addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
-  addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
+  addText(`HP: ${phit}  `, { x:1, y:2, color: color `2` })
+  addText(`S1: ${s1hit}  `, { x:12, y:2, color: color `3` })
 } else if (gprogression > 1){
-  addText(`HP: ${phit}`, { x:1, y:2, color: color `2` })
+  addText(`HP: ${phit}  `, { x:1, y:2, color: color `2` })
   
   if (currentBoss == "Boss 2"){
      if (gprogression == 2){
-       addText(`E1: ${e1hit}`, { x:12, y:3, color: color `3` })
-       addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
-       addText(`S2: ${s2hit}`, { x:12, y:1, color: color `3` })
+       addText(`E1: ${e1hit}  `, { x:12, y:3, color: color `3` })
+       addText(`S1: ${s1hit}  `, { x:12, y:2, color: color `3` })
+       addText(`S2: ${s2hit}  `, { x:12, y:1, color: color `3` })
      }
   }else if (currentBoss == "Boss 3"){
      if (gprogression == 2){
-       addText(`E1: ${e1hit}`, { x:12, y:3, color: color `3` })
-       addText(`E2: ${e2hit}`, { x:12, y:2, color: color `3` })
-       addText(`S1: ${s1hit}`, { x:12, y:1, color: color `3` })
+       addText(`E1: ${e1hit}  `, { x:12, y:3, color: color `3` })
+       addText(`E2: ${e2hit}  `, { x:12, y:2, color: color `3` })
+       addText(`S1: ${s1hit}  `, { x:12, y:1, color: color `3` })
      }
     }else if (currentBoss == "Boss 4"){
      if (gprogression == 2){
-       addText(`S1: ${s1hit}`, { x:12, y:3, color: color `3` })
-       addText(`S2: ${s2hit}`, { x:12, y:2, color: color `3` })
-       addText(`S3: ${s3hit}`, { x:12, y:1, color: color `3` })
+       addText(`S1: ${s1hit}  `, { x:12, y:3, color: color `3` })
+       addText(`S2: ${s2hit}  `, { x:12, y:2, color: color `3` })
+       addText(`S3: ${s3hit}  `, { x:12, y:1, color: color `3` })
      }
     }else if (currentBoss == "Boss 1"){
      if (gprogression == 2){
-       addText(`E1: ${e1hit}`, { x:12, y:3, color: color `3` })
-       addText(`S1: ${s1hit}`, { x:12, y:2, color: color `3` })
-       addText(`S2: ${s2hit}`, { x:12, y:1, color: color `3` })
+       addText(`E1: ${e1hit}  `, { x:12, y:3, color: color `3` })
+       addText(`S1: ${s1hit}  `, { x:12, y:2, color: color `3` })
+       addText(`S2: ${s2hit}  `, { x:12, y:1, color: color `3` })
+     }if (gprogression == 4){
+       addText(`A1: ${arhit}  `, { x:12, y:3, color: color `3` })
      }
 }
 }
@@ -2786,6 +2919,8 @@ function chipTimeStart() {
     addText(`c time: ${elapsedChipTime}`, { x:0, y:0, color: color `D` });
     if (elapsedChipTime > 10000){
       canChip = true;
+    } else {
+     canChip = false;
     }
   }, 1000);
 }
@@ -2814,7 +2949,6 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
-
 
 
 
