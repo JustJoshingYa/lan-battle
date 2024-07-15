@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/NSxEcAFurgy0YwlvP8fB
+//link: https://sprig.hackclub.com/share/73K0yXlMo5YdlvCHOYq6
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -92,13 +92,14 @@ let t1hit = 2
 let s1hit = 10
 let s2hit = 10
 let s3hit = 10
-let cliphit = 15
+let chit = 15
 let arhit = 15
-let boss1hit = 40
+let boss1hit = 5
 let boss2hit = 40
 let boss3hit = 40
 let boss4hit = 40
 
+const specialW = [normal, normalg, normalf, normale, normalw]
 const boss4Mouth = [boss49, boss410]
 const playerSprites = [normal, charge, beam, chargebeam, superchargebeam, fire, cooldown, normalg, normalf, normale, normalw]
 let mode = 0;
@@ -400,8 +401,8 @@ let s2dead = false
 let s3dead = false
 let ardead = false
 let cdead = false
-
-
+let bossTime = false
+let disableTimers = 0
 
 setLegend(
   [ choose, bitmap`
@@ -1496,7 +1497,7 @@ if (tprogression == 0){
 
 
 
-let disableTimers = 0
+
 
 
 
@@ -1528,7 +1529,7 @@ tutorial();
       arrow1Y = getFirst(arrow1).y
       getFirst(arrow1).remove()
           }
-      if (cliphit > 0 && cdead == false){
+      if (chit > 0 && cdead == false){
       clipsX = getFirst(clips).x
       clipsY = getFirst(clips).y 
       getFirst(clips).remove() 
@@ -1719,7 +1720,7 @@ tprogression = tprogression + 1
   }
 }
 
-let bossTime = false
+
 
 onInput("w", () => {
   if (tprogression == 2){
@@ -2175,7 +2176,7 @@ function ouch(j){
    }
 }else if(enemyInFront = frontTile.some(sprite => sprite.type === arrow1 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
-        arhit = arhit - 1
+        arhit = arhit - 10
         }else if (chargeState == 1){
         arhit = arhit - 2
         }else if (chargeState == 2){
@@ -2185,6 +2186,32 @@ function ouch(j){
         }else if (chargeState == 4){
         arhit = arhit - 8
    }
+}else if(enemyInFront = frontTile.some(sprite => sprite.type === clips && enemyX === getFirst(playerSprites[mode]).x + j)){
+      if (chargeState == 0){
+        chit = chit - 10
+        }else if (chargeState == 1){
+        chit = chit - 2
+        }else if (chargeState == 2){
+        chit = chit - 3
+        }else if (chargeState == 3){
+        chit = chit - 5
+        }else if (chargeState == 4){
+        chit = chit - 8
+   }
+    }else if(enemyInFront = frontTile.some(sprite => sprite.type === boss1 && enemyX === getFirst(playerSprites[mode]).x + j)){
+     if (arhit <= 0 && chit <= 0){
+      if (chargeState == 0){
+        boss1hit = boss1hit - 1
+        }else if (chargeState == 1){
+        boss1hit = boss1hit - 2
+        }else if (chargeState == 2){
+        boss1hit = boss1hit - 3
+        }else if (chargeState == 3){
+        boss1hit = boss1hit - 5
+        }else if (chargeState == 4){
+        boss1hit = boss1hit - 8
+   }
+     }
 }
   }else if (shotEnable == true){
    if (enemyInFront == frontTile.some(sprite => sprite.type === target1 && enemyY === 4 + j)){
@@ -2304,9 +2331,39 @@ if (e2hit <= 0 && e2dead == false){
    getFirst(enemy2).remove() 
   e2dead = true
 }
-if (e1hit <= 0 && s1hit <= 0 && s2hit <= 0){  
+}else if (gprogression == 2 || gprogression == 55) {   
    bossSetup()
-}
+
+ }else if (gprogression = 4){
+ if (currentBoss == "Boss 1"){
+ if (chit <= 0 && cdead == false){
+  clearInterval(movementIntervalb1b)
+   getFirst(clips).remove()
+   cdead = true 
+}  
+if (arhit <= 0 && ardead == false){
+   clearInterval(movementIntervalb1a)
+      getFirst(arrow1).remove()  
+  ardead = true
+} 
+if (boss1hit <= 0 && boss1dead == false){
+    getFirst(boss1).remove()
+  boss1dead = true
+  
+    }
+   
+     
+ }else if (currentBoss == "Boss 2"){
+    
+    
+      
+ }else if (currentBoss == "Boss 3"){
+    
+    
+      
+}else if (currentBoss == "Boss 4"){
+   
+ } 
  }
   }
 
@@ -2994,8 +3051,9 @@ addText(`T1: ${t1hit}  `, { x:12, y:2, color: color `3` })
        addText(`S1: ${s1hit}  `, { x:12, y:2, color: color `3` })
        addText(`S2: ${s2hit}  `, { x:12, y:1, color: color `3` })
      }if (gprogression == 4){
-       addText(`A1: ${arhit}  `, { x:12, y:3, color: color `3` })
-       addText(`C1: ${arhit}  `, { x:12, y:3, color: color `3` })
+       addText(`A1: ${arhit}  `, { x:12, y:2, color: color `3` })
+       addText(`C1: ${chit}  `, { x:12, y:3, color: color `3` })
+       addText(`B1: ${boss1hit}  `, { x:12, y:1, color: color `3` })
      }
 }
 }
@@ -3073,9 +3131,6 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
-
-
-
 
 
 
