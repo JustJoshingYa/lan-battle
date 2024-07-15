@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/GbWSVXhdK75oyJ7TULPi
+//link: https://sprig.hackclub.com/share/xle0VaJCi5BwvSEQFMUA
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -2358,7 +2358,10 @@ if (boss1hit <= 0 && boss1dead == false){
     
       
  }else if (currentBoss == "Boss 3"){
-    
+    if (boss3hit <= 0 && boss3dead == false){
+    getFirst(boss1).remove()
+  boss3dead = true
+  backtoselect()
     
       
 }else if (currentBoss == "Boss 4"){
@@ -2442,7 +2445,7 @@ if (currentBoss == "Boss 1"){
     
       }, 4000);
     }   
-}
+
 }
 function waveVic(){
 setMap(levels[0])
@@ -2581,6 +2584,7 @@ function getRandomDirection() {
 }
 let movementIntervalb1a
 let movementIntervalb1b
+let movementIntervalb2
 // Function to move the enemy on efloor
 function moveboss1Randomly(spriteE) {
   let ey = 0;
@@ -2762,7 +2766,103 @@ getFirst(warning).remove()
     }
   }
 }
+function moveboss3Randomly(){
+   movementIntervalb2 = setInterval(() => {
+    let currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
+    const nextDirection = getRandomDirection();
+    if (disableTimer == 0){
+    switch (nextDirection) {
+      case "up":
+        ey = -1
+        currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(boss3).y -= 1;
+          ey = 0;
+          ex = 0;
+        } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "down":
+        ey = 1
+        currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(boss3).y += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "left":
+        ex = -1
+        currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(boss3).x -= 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+      case "right":
+        ex = 1
+        currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
+        if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
+          getFirst(boss3).x += 1;
+          ey = 0;
+          ex = 0;
+          } else {
+          ey = 0;
+          ex = 0;
+        }
+        break;
+        case "shoot":
+        let rand = Math.floor(Math.random() * 5);
+        if (rand <= 2){
+        hidden == false
+        }else{
+          hidden == true
+        }
+          
+ if (hidden == false){
+    addSprite(getFirst(boss3).x + 2, getFirst(boss3).y, warning)
+          
+ setTimeout(() => {
+  
+if (checkCollision()) {
+  phit = phit - 5
+  updateBattleText()
+  getFirst(warning).remove()
+}else{
+getFirst(warning).remove()
+  }
+ 
+ 
+          
+      }, 1000); 
+        
+     }else{
 
+getFirst(boss3).remove()
+       
+     }
+        }
+    }
+   
+    
+    
+    }else if(disableTimer == 1){
+    clearInterval(movementIntervalb1a)  
+      
+    }
+         }, enemySpeed); // Adjust the interval for movement speed
+}
+}
+  
 let randY;
 let virus;
 let poisonloop = 0
@@ -3165,6 +3265,8 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
+
 
 
 
