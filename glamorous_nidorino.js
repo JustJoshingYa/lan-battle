@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/qaQJnPXpsHoPgeqZ0zDW
+//link: https://sprig.hackclub.com/share/wbDEjILthYuha2Godx6H
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1802,7 +1802,7 @@ onInput("d", () => {
 function exitu(){
 if (gprogression == 55){
   death()
-  disablechange = false
+  
   disableTimer = 0
   canChip = false
   getFirst(upgradechip[upgradeslot1]).remove()
@@ -1888,7 +1888,7 @@ if (gprogression == 55){
 }
   
 onInput("j", () => {
-  addText(`g: ${gprogression}`, { x:1, y:12, color: color `D` });
+  addText(`g: ${disableChange}`, { x:1, y:12, color: color `D` });
   if (tprogression == 3){
     if (canCharge) {
       hitDetect();
@@ -2001,7 +2001,7 @@ function ouch(j){
         }
    }else if(enemyInFront = frontTile.some(sprite => sprite.type === enemy1 && enemyX === getFirst(playerSprites[mode]).x + j)){
     if (chargeState == 0){
-        e1hit = e1hit - (1 * busterPw)
+        e1hit = e1hit - (11 * busterPw)
         }else if (chargeState == 1){
         e1hit = e1hit - (2 * busterPw)
         }else if (chargeState == 2){
@@ -2025,7 +2025,7 @@ function ouch(j){
     }
         }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield1 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
-        s1hit = s1hit - 0
+        s1hit = s1hit - 10
         }else if (chargeState == 1){
         s1hit = s1hit - 0
         }else if (chargeState == 2){
@@ -2037,7 +2037,7 @@ function ouch(j){
       }
    }else if(enemyInFront = frontTile.some(sprite => sprite.type === shield2 && enemyX === getFirst(playerSprites[mode]).x + j)){
       if (chargeState == 0){
-        s2hit = s2hit - 0
+        s2hit = s2hit - 10
         }else if (chargeState == 1){
         s2hit = s2hit - 0
         }else if (chargeState == 2){
@@ -2514,7 +2514,7 @@ movementIntervalb1b = setInterval(() => {
         break;
         case "shoot":
      if (spriteE == clips){
-        randY = Math.floor(Math.random() * ((4-2)+2) + 2);
+        randY = Math.floor(Math.random() * 3) + 2
         for (i = 1; i < 4; i++){
           addSprite(i, randY, warning)
           }
@@ -2913,7 +2913,7 @@ phit = phit + 50
 
 function chipTimeStart() {
   chipStartTime = performance.now();
-
+disableChange = false
   chipTimer = setInterval(() => {
     elapsedChipTime = performance.now() - chipStartTime;
     addText(`c time: ${elapsedChipTime}`, { x:0, y:0, color: color `D` });
@@ -2949,7 +2949,6 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
-
 
 
 
