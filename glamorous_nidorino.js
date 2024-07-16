@@ -1,4 +1,4 @@
-//link: https://sprig.hackclub.com/share/O3FZDRCarRVNaloEHYmu
+//link: https://sprig.hackclub.com/share/zhJKenie2w7VyVzLzHak
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
@@ -1488,7 +1488,10 @@ setPushables({
 })
 onInput("l",() => {
 if (tprogression == 0){
-  backtoselect()
+  setMap(levels[2])
+  clearText();
+  gprogression = 1
+  addSprite(0, 1, choose)
 }
 });
 
@@ -2424,7 +2427,7 @@ if (currentBoss == "Boss 1"){
     addSprite(2, 3, playerSprites[mode]) 
     addSprite(6, 3, boss3)
     chipTimeStart()
-    //moveboss3Randomly()
+    moveboss3Randomly()
     
       }, 4000);
     }
@@ -2767,12 +2770,25 @@ getFirst(warning).remove()
   }
 }
 function moveboss3Randomly(){
+  let ey = 0;
+  let ex = 0;
+  let rand = Math.floor(Math.random() * 5);
+  if (gprogression == 4){
    movementIntervalb2 = setInterval(() => {
     let currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
     const nextDirection = getRandomDirection();
     if (disableTimer == 0){
     switch (nextDirection) {
       case "up":
+       rand = Math.floor(Math.random() * 5);
+        if (rand == 0){
+        hidden = false
+        let exist = b3Exists()
+        
+          if (exist == false){
+           addSprite(boss3X, boss3Y, boss3)
+          }
+        }
         ey = -1
         currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
@@ -2785,6 +2801,15 @@ function moveboss3Randomly(){
         }
         break;
       case "down":
+         rand = Math.floor(Math.random() * 5);
+        if (rand == 0){
+        hidden = false
+        let exist = b3Exists()
+        
+          if (exist == false){
+           addSprite(boss3X, boss3Y, boss3)
+          }
+        }
         ey = 1
         currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
@@ -2797,6 +2822,15 @@ function moveboss3Randomly(){
         }
         break;
       case "left":
+        rand = Math.floor(Math.random() * 5);
+        if (rand == 0){
+        hidden = false
+        let exist = b3Exists()
+        
+          if (exist == false){
+           addSprite(boss3X, boss3Y, boss3)
+          }
+        }
         ex = -1
         currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
@@ -2809,6 +2843,15 @@ function moveboss3Randomly(){
         }
         break;
       case "right":
+       rand = Math.floor(Math.random() * 5);
+        if (rand == 0){
+        hidden = false
+        let exist = b3Exists()
+        
+          if (exist == false){
+           addSprite(boss3X, boss3Y, boss3)
+          }
+        }
         ex = 1
         currentTile = getTile(getFirst(boss3).x + ex, getFirst(boss3).y + ey);
         if (currentTile.some(sprite => sprite.type === efloor && sprite.type !== black)) {
@@ -2821,21 +2864,21 @@ function moveboss3Randomly(){
         }
         break;
         case "shoot":
-        let rand = Math.floor(Math.random() * 7);
-        if (rand <= 1){
+         rand = Math.floor(Math.random() * 5);
+        if (rand == 0){
         hidden = false
         let exist = b3Exists()
         
           if (exist == false){
            addSprite(boss3X, boss3Y, boss3)
           }
-        }else if (rand == 2 || rand == 3) {
+        }else if (rand == 2) {
           hidden = true
         }else{ 
           
           
  if (hidden == false){
-    addSprite(getFirst(boss3).x + 2, getFirst(boss3).y, warning)
+    addSprite(getFirst(boss3).x - 3, getFirst(boss3).y, warning)
           
  setTimeout(() => {
   
@@ -2850,8 +2893,8 @@ getFirst(warning).remove()
       }, 1000); 
         
      }else{
-boss3X = Math.random() * (6 - 4) + 4
-boss3Y = Math.random() * (4 - 2) + 2   
+boss3X = getFirst(boss3).x
+boss3Y =  getFirst(boss3).y
 getFirst(boss3).remove()
        
      }
@@ -2861,13 +2904,13 @@ getFirst(boss3).remove()
     
     
     }else if(disableTimer == 1){
-    clearInterval(movementIntervalb1a)  
+    clearInterval(movementIntervalb2)  
       
     }
-         }, enemySpeed); // Adjust the interval for movement speed
+         }, 500); // Adjust the interval for movement speed
 }
 }
-  
+} 
 let randY;
 let virus;
 let poisonloop = 0
@@ -3292,6 +3335,7 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
+
 
 
 
