@@ -1,10 +1,10 @@
-//link: https://sprig.hackclub.com/share/zhJKenie2w7VyVzLzHak
+//link: https://sprig.hackclub.com/share/TBkP8tA880W1ApjzHlw4
 /*
 First time? Check out the tutorial game:
 https://sprig.hackclub.com/gallery/getting_started
 
-@title: 
-@author: 
+@title: Lan Battle
+@author: JustJoshingYa
 @tags: []
 @addedOn: 2024-00-00
 */
@@ -456,21 +456,21 @@ CDDD44444444DDDC
 CDD44DDDDDD44DDC
 CD44DDDDDDDD44DC
 CCCCCCCCCCCCCCCC`],
-  [ port2, bitmap `
+ [ port2, bitmap `
 CCCCCCCCCCCCCCCC
-C011110DDD01110C
-C0111110D011110C
-C01111110111110C
-C01221111112210C
-C01222111122210C
-C01233311233310C
-C01233311233310C
-C01233311233310C
-C01233311233310C
-C01222111222110C
-C01111111111110C
-C01111011011110C
-C01111011011110C
+C0LLLL0LLL0LLL0C
+C0LLLLL0L0LLLL0C
+C0LLLLLL0LLLLL0C
+C0L11LLLLLL11L0C
+C0L111LLLL111L0C
+C0L1000LL1000L0C
+C0L1000LL1000L0C
+C0L1000LL1000L0C
+C0L1000LL1000L0C
+C0L111LLL111LL0C
+C0LLLLLLLLLLLL0C
+C0LLLL0LL0LLLL0C
+C0LLLL0LL0LLLL0C
 CL000000000000LC
 CCCCCCCCCCCCCCCC`],
   [ port3, bitmap `
@@ -490,22 +490,22 @@ C77777777777777C
 C77777777777777C
 C77777777777777C
 CCCCCCCCCCCCCCCC`],
-  [ port4, bitmap `
+[ port4, bitmap `
 CCCCCCCCCCCCCCCC
-C77777777777777C
-C77777777777777C
-C77777777777777C
-C77777771177777C
-C77777711111777C
-C77771101011777C
-C77771111111777C
-C77711111111177C
-CDDD1111111114DC
-C4D1111111111D4C
-CD1111111111114C
-CD111111111111DC
-CD1LLLLLLLLLL1DC
-CD4DDD4DDDDD4DDC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLL1L1LLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
+CLLLLLLLLLLLLLLC
 CCCCCCCCCCCCCCCC`],
   [ boss41, bitmap `
 111111111111111L
@@ -2365,7 +2365,7 @@ if (boss1hit <= 0 && boss1dead == false){
     getFirst(boss1).remove()
   boss3dead = true
   backtoselect()
-    
+    } 
       
 }else if (currentBoss == "Boss 4"){
    
@@ -2910,7 +2910,7 @@ getFirst(boss3).remove()
          }, 500); // Adjust the interval for movement speed
 }
 }
-} 
+
 let randY;
 let virus;
 let poisonloop = 0
@@ -2937,7 +2937,7 @@ function checkCollision () {
   return sprites1.some(s => sprites2.includes(s))
 }
 
-// Example of how to use the function
+
 
 
 // Function to move the enemy on efloor
@@ -3290,29 +3290,29 @@ disableChange = false
 }
 
 
-function ball1Exists(spriteType) {
+function ball1Exists() {
   return getAll(ball1).length > 0;
 }
-function ball2Exists(spriteType) {
+function ball2Exists() {
   return getAll(ball2).length > 0;
 }
 
-function e1Exists(spriteType) {
+function e1Exists() {
   return getAll(enemy1).length > 0;
 }
-function e2Exists(spriteType) {
+function e2Exists() {
   return getAll(enemy2).length > 0;
 }
-function s1Exists(spriteType) {
+function s1Exists() {
   return getAll(shield1).length > 0;
 }
-function s2Exists(spriteType) {
+function s2Exists() {
   return getAll(shield2).length > 0;
 }
-function s3Exists(spriteType) {
+function s3Exists() {
   return getAll(shield3).length > 0;
 }
-function b3Exists(spriteType) {
+function b3Exists() {
   return getAll(boss3).length > 0;
 }
 
@@ -3335,10 +3335,5 @@ function stopChipTimer() {
   clearInterval(movementIntervals3)
   elapsedChipTime = 0
 }
-
-
-
-
-
 
 
